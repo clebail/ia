@@ -3,25 +3,29 @@
 
 #include <QObject>
 #include <QPainter>
-#include "CIndividu.h"
+#include "CCircuit.h"
+#include "CVoiture.h"
 
-#define TAILLE_POPULATION					100
-#define NOMBRE_GENERATION					1000
+#define TAILLE_POPULATION					10
+#define NOMBRE_GENERATION					100
 
 class CGenetic : public QObject {
     Q_OBJECT
 private:
-	CIndividu *population[TAILLE_POPULATION];
+	CVoiture *population[TAILLE_POPULATION];
+    CCircuit circuit;
 	
 	void initPopulation(void);
 	void triPopulation(void);
     void croisePopuplation(void);
 	void croiseIndividus(int i1, int i2, int ir, int seuil);
 public:
-	CIndividu * process(void);
+	CVoiture * process(void);
     void drawIndividu(int idx, QPainter *painter);
+    void setCircuit(CCircuit circuit);
+    void calculScores(void);
 signals:
-    void ready(void);
+    void readyToCalculScore(void);
 };
 
 #endif //CGENETIC_H

@@ -1,24 +1,34 @@
 #ifndef CVOITURE_H
 #define CVOITURE_H
 
-#include "CIndividu.h"
+#include <QPainter>
 #include "CCapteur.h"
 
-#define NB_GENE                 7
+#define NB_CAPTEUR              8
+#define NB_GENE                 (NB_CAPTEUR * 2 + 2)
 
-class CVoiture : public CIndividu {
+class CVoiture {
 public:
+    CVoiture(void);
     void init(void);
     int getScore(void);
     void mute(int idxGene);
-    void from(CIndividu *i1, CIndividu *i2, int seuil);
+    void from(CVoiture *i1, CVoiture *i2, int seuil);
     void draw(QPainter *painter);
+    void setInputs(double *inputs);
+    void move(void);
+    void setPosition(QPoint position);
 protected:
-    CGene * getGene(int idx);
+    CCapteur * getGene(int idx);
 private:
-    CCapteur capteurs[NB_GENE];
+    CCapteur poids[NB_GENE];
     QPoint position;
-    double angle;
+    int score;
+    double inputs[NB_CAPTEUR];
+    
+    double getVitesse(void);
+    double getAngle(void);
+    double transfert(int idxFirstGene);
 };
 
 #endif // CVOITURE_H

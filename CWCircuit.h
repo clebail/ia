@@ -13,7 +13,8 @@ protected:
     virtual void paintEvent(QPaintEvent *);
 private:
     CCircuit *circuit;
-    QImage image;
+signals:
+    void drawVoitures(QPainter *painter);
 };
 
 #endif // CWCIRCUIT_H

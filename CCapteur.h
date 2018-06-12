@@ -1,13 +1,11 @@
 #ifndef CCAPTEUR_H
 #define CCAPTEUR_H
 
-#include "CGene.h"
-
-class CCapteur : public CGene {
+class CCapteur {
 public:
     void init(void);
     double getValue(void);
-    void from(CGene *other);
+    void from(CCapteur *other);
 private:
     double value;
 };

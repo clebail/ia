@@ -7,7 +7,6 @@ CWCircuit::CWCircuit(QWidget *parent) : QWidget(parent) {
 
 void CWCircuit::setCircuit(CCircuit *circuit) {
     this->circuit = circuit;
-    image = QImage(circuit->getImgResource());
     repaint();
 }
 
@@ -19,6 +18,8 @@ void CWCircuit::paintEvent(QPaintEvent *) {
     painter.drawRect(rect());
 
     if(circuit != 0) {
-       painter.drawImage(QPoint(0, 0), image);
+       painter.drawImage(QPoint(0, 0), circuit->getImage());
     }
+    
+    emit drawVoitures(&painter);
 }

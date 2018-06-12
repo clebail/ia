@@ -3,16 +3,17 @@
 
 #include <QPoint>
 #include <QString>
+#include <QImage>
 
 class CCircuit {
 public:
     CCircuit(void);
     CCircuit(QPoint depart, QString imgResource);
     const QPoint& getDepart(void);
-    const QString& getImgResource(void);
+    const QImage& getImage(void);
 private:
     QPoint depart;
-    QString imgResource;
+    QImage image;
 };
 
 #endif // CCIRCUIT_H

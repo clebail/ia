@@ -29,19 +29,14 @@ SOURCES += \
     CCircuit.cpp \
     CWCircuit.cpp \
     CGenetic.cpp \
-    CIndividuFactory.cpp \
     CVoiture.cpp \
-    CCapteur.cpp \
-    CIndividu.cpp
+    CCapteur.cpp
 
 HEADERS += \
         CMainWindow.h \
     CCircuit.h \
     CWCircuit.h \
     CGenetic.h \
-    CIndividuFactory.h \
-    CGene.h \
-    CIndividu.h \
     CVoiture.h \
     CCapteur.h
 

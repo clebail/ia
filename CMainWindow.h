@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include "ui_CMainWindow.h"
 #include "CCircuit.h"
+#include "CGenetic.h"
 
 #define NB_CIRCUIT              4
 
@@ -13,6 +14,12 @@ public:
     explicit CMainWindow(QWidget *parent = 0);
 private:
     CCircuit circuits[NB_CIRCUIT];
+    CGenetic genetic;
+    
+    int currentCircuit;
+private slots:
+    void onGeneticReadyToCalculScore(void);
+    void on_wCircuit_drawVoitures(QPainter *painter);
 };
 
 #endif // CMAINWINDOW_H
