@@ -162,7 +162,7 @@ double CVoiture::calculDistance(QPoint p, QPoint oppose, double angle, QPainter 
     bool fini = false;
     int x = p.x();
     int y = p.y();
-
+    
     painter->setPen(QPen(color));
     
     if((angle > PI2 - 0.01 && angle < PI2 + 0.01) || (angle > 3 * PI2 - 0.01 && angle < 3 * PI2 + 0.01)) {

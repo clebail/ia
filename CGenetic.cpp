@@ -59,7 +59,7 @@ double CGenetic::calculDistance(QPoint p, QPoint oppose, double angle) {
     int x = p.x();
     int y = p.y();
     int dx, dy;
-
+    
     if((angle > PI2 - 0.01 && angle < PI2 + 0.01) || (angle > 3 * PI2 - 0.01 && angle < 3 * PI2 + 0.01)) {
         int sens = oppose.y() > p.y() ? -1 : 1;
         
@@ -138,6 +138,6 @@ void CGenetic::calculScores(void) {
 
         population[i]->setInputs(inputs);
 
-        //population[i]->move();
+        population[i]->move();
     }
 }
