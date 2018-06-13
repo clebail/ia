@@ -18,7 +18,7 @@ private:
     
     int currentCircuit;
 private slots:
-    void onGeneticReadyToCalculScore(void);
+    void onGeneticReadyToCalculScore(bool changeCircuit);
     void on_wCircuit_drawVoitures(QPainter *painter);
 };
 

@@ -1,8 +1,10 @@
+#include <QtDebug>
 #include <math.h>
 #include "CVoiture.h"
 
 CVoiture::CVoiture(void) {
     score = 0;
+    currentAngle = PI / 30;
 }
 
 void CVoiture::init(void) {
@@ -35,16 +37,45 @@ void CVoiture::from(CVoiture *i1, CVoiture *i2, int seuil) {
 }
 
 void CVoiture::draw(QPainter *painter) {
-    QRect rect;
+    QRect rect(-(WIDTH / 2), -(HEIGHT / 2), WIDTH, HEIGHT);
     
-    rect.setWidth(10);
-    rect.setHeight(6);
-    rect.setX(position.x() - 5);
-    rect.setY(position.y() - 3);
-    
+    painter->save();
+    painter->translate(position.x(), position.y());
+    painter->rotate(currentAngle * 180 / PI);
+
+    painter->setPen(QPen(Qt::blue));
+    painter->setBrush(QBrush(Qt::blue));
+    painter->drawRect(rect);
+
+    painter->restore();
+
+    painter->setPen(QPen(Qt::yellow));
+    painter->setBrush(QBrush(Qt::yellow));
+    painter->drawEllipse(posRoue[0].x(), posRoue[0].y(), 3, 3);
+
+    calculDistance(posRoue[0], currentAngle, -1, painter, Qt::yellow);
+    calculDistance(posRoue[0], currentAngle + PI / 2, -1, painter, Qt::yellow);
+
     painter->setPen(QPen(Qt::red));
     painter->setBrush(QBrush(Qt::red));
-    painter->drawRect(rect);
+    painter->drawEllipse(posRoue[1].x(), posRoue[1].y(), 3, 3);
+
+    calculDistance(posRoue[1], currentAngle, -1, painter, Qt::red);
+    calculDistance(posRoue[1], currentAngle - PI / 2, 1, painter, Qt::red);
+
+    painter->setPen(QPen(Qt::green));
+    painter->setBrush(QBrush(Qt::green));
+    painter->drawEllipse(posRoue[2].x(), posRoue[2].y(), 3, 3);
+
+    calculDistance(posRoue[2], currentAngle, 1, painter, Qt::green);
+    calculDistance(posRoue[2], currentAngle + PI / 2, -1, painter, Qt::green);
+
+    painter->setPen(QPen(Qt::cyan));
+    painter->setBrush(QBrush(Qt::cyan));
+    painter->drawEllipse(posRoue[3].x(), posRoue[3].y(), 3, 3);
+
+    calculDistance(posRoue[3], currentAngle, 1, painter, Qt::cyan);
+    calculDistance(posRoue[3], currentAngle - PI / 2, 1, painter, Qt::cyan);
 }
 
 void CVoiture::setInputs(double *inputs) {
@@ -52,12 +83,32 @@ void CVoiture::setInputs(double *inputs) {
 }
 
 void CVoiture::move(void) {
-    double vitesse = getVitesse();
-    double angle = getAngle();
+    double vitesse;
+
+    currentAngle = getAngle();
+    vitesse = getVitesse();
+
+    position.rx() += cos(currentAngle) * vitesse;
+    position.ry() += sin(currentAngle) * vitesse;
+
+    calculPosRoue();
 }
 
 void CVoiture::setPosition(QPoint position) {
     this->position = position;
+    calculPosRoue();
+}
+
+const QPoint& CVoiture::getPosition(void) {
+    return position;
+}
+
+double CVoiture::getCurrentAngle(void) {
+    return currentAngle;
+}
+
+QPoint * CVoiture::getPosRoue(void) {
+    return posRoue;
 }
 
 CCapteur * CVoiture::getGene(int idx) {
@@ -81,4 +132,48 @@ double CVoiture::transfert(int idxFirstGene) {
     }
     
     return 1 / (1 + exp(-sigma));
+}
+
+void CVoiture::calculPosRoue(void) {
+    double aP = currentAngle + ANGLE;
+    double aM = currentAngle - ANGLE;
+    double xP = cos(aP) * HYPO;
+    double xM = cos(aM) * HYPO;
+    double yP = sin(aP) * HYPO;
+    double yM = sin(aM) * HYPO;
+
+    posRoue[0] = QPoint(position.x() - xP, position.y() - yP);
+    posRoue[1] = QPoint(position.x() - xM, position.y() - yM);
+    posRoue[2] = QPoint(position.x() + xM, position.y() + yM);
+    posRoue[3] = QPoint(position.x() + xP, position.y() + yP);
+}
+
+double CVoiture::calculDistance(QPoint p, double angle, int sens, QPainter *painter, QColor color) {
+    bool fini = false;
+    int x = p.x();
+    int y = p.y();
+
+    painter->setPen(QPen(color));
+
+    angle = abs(angle);
+    if((angle > PI / 2 - 0.01 && angle < PI / 2 + 0.01) || (angle > 3 * PI / 2 - 0.01 && angle < 3 * PI / 2 + 0.01)) {
+        while(!fini) {
+            painter->drawPoint(QPoint(x, y));
+
+            y += sens;
+            fini = y <= 0 || y >= 500;
+        }
+    } else {
+        double a = tan(angle);
+        double b = y - a * x;
+        while(!fini) {
+            painter->drawPoint(QPoint(x, y));
+
+            x += sens;
+            y = a * x + b;
+            fini = y <= 0 || y >= 500 || x <= 0 || x >= 500;
+        }
+    }
+
+    return 0;
 }

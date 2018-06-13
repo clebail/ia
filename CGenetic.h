@@ -6,8 +6,8 @@
 #include "CCircuit.h"
 #include "CVoiture.h"
 
-#define TAILLE_POPULATION					10
-#define NOMBRE_GENERATION					100
+#define TAILLE_POPULATION					1
+#define NOMBRE_GENERATION					1
 
 class CGenetic : public QObject {
     Q_OBJECT
@@ -19,13 +19,14 @@ private:
 	void triPopulation(void);
     void croisePopuplation(void);
 	void croiseIndividus(int i1, int i2, int ir, int seuil);
+    double calculDistance(QPoint p, double angle, int sens);
 public:
 	CVoiture * process(void);
-    void drawIndividu(int idx, QPainter *painter);
     void setCircuit(CCircuit circuit);
     void calculScores(void);
+    void drawPopulation(QPainter *painter);
 signals:
-    void readyToCalculScore(void);
+    void readyToCalculScore(bool changeCircuit);
 };
 
 #endif //CGENETIC_H
