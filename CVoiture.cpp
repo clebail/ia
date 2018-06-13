@@ -54,7 +54,7 @@ void CVoiture::draw(QPainter *painter) {
     painter->drawEllipse(posRoue[0].x(), posRoue[0].y(), 3, 3);
 
     calculDistance(posRoue[0], currentAngle, -1, painter, Qt::yellow);
-    calculDistance(posRoue[0], currentAngle + PI / 2, -1, painter, Qt::yellow);
+    calculDistance(posRoue[0], PI / 2 + currentAngle, -1, painter, Qt::yellow);
 
     painter->setPen(QPen(Qt::red));
     painter->setBrush(QBrush(Qt::red));
