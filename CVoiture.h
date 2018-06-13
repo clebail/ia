@@ -11,6 +11,7 @@
 #define HYPO                    10
 #define ANGLE                   ((double)0.507)
 #define PI                      ((double)3.14159265)
+#define PI2                     (PI/2)
 #define NB_ROUE                 4
 
 class CVoiture {
@@ -41,7 +42,7 @@ private:
     double getAngle(void);
     double transfert(int idxFirstGene);
     void calculPosRoue(void);
-    double calculDistance(QPoint p, double angle, int sens, QPainter *painter, QColor color);
+    double calculDistance(QPoint p, QPoint oppose, double angle, QPainter *painter, QColor color);
 };
 
 #endif // CVOITURE_H

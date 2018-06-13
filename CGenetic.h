@@ -19,7 +19,7 @@ private:
 	void triPopulation(void);
     void croisePopuplation(void);
 	void croiseIndividus(int i1, int i2, int ir, int seuil);
-    double calculDistance(QPoint p, double angle, int sens);
+    double calculDistance(QPoint p, QPoint oppose, double angle);
 public:
 	CVoiture * process(void);
     void setCircuit(CCircuit circuit);
