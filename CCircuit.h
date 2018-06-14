@@ -11,6 +11,7 @@ public:
     CCircuit(QPoint depart, QString imgResource);
     const QPoint& getDepart(void);
     const QImage& getImage(void);
+    static int normCoordonnees(int i);
 private:
     QPoint depart;
     QImage image;

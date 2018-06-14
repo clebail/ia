@@ -3,23 +3,20 @@
 
 #include <QMainWindow>
 #include "ui_CMainWindow.h"
-#include "CCircuit.h"
 #include "CGenetic.h"
-
-#define NB_CIRCUIT              4
 
 class CMainWindow : public QMainWindow, private Ui::CMainWindow {
     Q_OBJECT
 public:
     explicit CMainWindow(QWidget *parent = 0);
+    ~CMainWindow(void);
 private:
-    CCircuit circuits[NB_CIRCUIT];
-    CGenetic genetic;
-    
-    int currentCircuit;
+    CGenetic *genetic;
 private slots:
-    void onGeneticReadyToCalculScore(bool changeCircuit);
-    void on_wCircuit_drawVoitures(QPainter *painter);
+    void onGeneticCalculOk(CVoiture *best);
+    void onGeneticCircuitChange(CCircuit *circuit);
+    void onGeneticRepaintRequested(void);
+    void on_pbTest_clicked(bool checked = false);
 };
 
 #endif // CMAINWINDOW_H

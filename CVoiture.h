@@ -3,6 +3,7 @@
 
 #include <QPainter>
 #include "CCapteur.h"
+#include "CCircuit.h"
 
 #define NB_CAPTEUR              8
 #define NB_GENE                 (NB_CAPTEUR * 2 + 2)
@@ -28,6 +29,9 @@ public:
     const QPoint& getPosition(void);
     double getCurrentAngle(void);
     QPoint * getPosRoue(void);
+    void setAlive(bool alive);
+    bool isAlive(void);
+    int normCoordonnees(int i);
 protected:
     CCapteur * getGene(int idx);
 private:
@@ -37,12 +41,14 @@ private:
     int score;
     double inputs[NB_CAPTEUR];
     double currentAngle;
+    bool alive;
     
     double getVitesse(void);
     double getAngle(void);
     double transfert(int idxFirstGene);
     void calculPosRoue(void);
     double calculDistance(QPoint p, QPoint oppose, double angle, QPainter *painter, QColor color);
+    double normAngle(double angle);
 };
 
 #endif // CVOITURE_H

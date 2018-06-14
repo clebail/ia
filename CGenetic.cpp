@@ -1,9 +1,26 @@
 #include <QtDebug>
+#include <QEventLoop>
 #include <iostream>
 #include <stdlib.h>
 #include <time.h>
 #include <math.h>
 #include "CGenetic.h"
+
+CGenetic::CGenetic(CWCircuit *wCircuit) {
+    this->wCircuit = wCircuit;
+
+    populationInited = false;
+
+    circuits[0] = CCircuit(QPoint(85, 51), ":/circuits/circuit1.png");
+    circuits[1] = CCircuit(QPoint(134, 54), ":/circuits/circuit2.png");
+    circuits[2] = CCircuit(QPoint(134, 30), ":/circuits/circuit3.png");
+    circuits[3] = CCircuit(QPoint(134, 28), ":/circuits/circuit4.png");
+
+    connect(this->wCircuit, SIGNAL(drawVoitures(QPainter*)), this, SLOT(onWCircuitDrawVoitures(QPainter*)));
+}
+
+CGenetic::~CGenetic(void) {
+}
 
 void CGenetic::initPopulation(void) {
 	int i;
@@ -12,6 +29,8 @@ void CGenetic::initPopulation(void) {
 		population[i] = new CVoiture();
 		population[i]->init();
 	}
+
+    populationInited = true;
 }
 
 void CGenetic::triPopulation(void) {
@@ -62,82 +81,124 @@ double CGenetic::calculDistance(QPoint p, QPoint oppose, double angle) {
     
     if((angle > PI2 - 0.01 && angle < PI2 + 0.01) || (angle > 3 * PI2 - 0.01 && angle < 3 * PI2 + 0.01)) {
         int sens = oppose.y() > p.y() ? -1 : 1;
+        bool fini = y < 0 || y > 500 || circuits[currentCircuit].getImage().pixel(x, y) == 0xFF000000;
         
-        while(circuit.getImage().pixel(x, y) != 0xFF000000) {
+        while(!fini) {
             y += sens;
+
+            fini = y < 0 || y > 500 || circuits[currentCircuit].getImage().pixel(x, y) == 0xFF000000;
         }
     } else {
         double a = tan(angle);
         double b = y - a * x;
         int sens = oppose.x() > p.x() ? -1 : 1;
+        bool fini = x < 0 || x > 500 || y < 0 || y > 500 || circuits[currentCircuit].getImage().pixel(x, y) == 0xFF000000;
         
-        while(circuit.getImage().pixel(x, y) != 0xFF000000) {
+        while(!fini) {
             x += sens;
             y = a * x + b;
+
+            fini = x < 0 || x > 500 || y < 0 || y > 500 || circuits[currentCircuit].getImage().pixel(x, y) == 0xFF000000;
         }
     }
 
-    dx = p.x() - x;
-    dy = p.y() - y;
-    
+    x = CCircuit::normCoordonnees(x);
+    y = CCircuit::normCoordonnees(y);
+
+    dx = abs(p.x() - x);
+    dy = abs(p.y() - y);
+
     return sqrt(dx * dx + dy * dy);
 }
 
-CVoiture * CGenetic::process(void) {
+void CGenetic::setCircuit(int numCircuit) {
+    int i;
+
+    currentCircuit = numCircuit;
+
+    for(i=0;i<TAILLE_POPULATION;i++) {
+        population[i]->setPosition(circuits[numCircuit].getDepart());
+        population[i]->setAlive(true);
+    }
+
+    emit circuitChange(&circuits[numCircuit]);
+}
+
+void CGenetic::run(void) {
     int i = 0;
 	
 	srand(time(NULL));
 		
 	initPopulation();
-    emit readyToCalculScore(false);
-    
+
+    setCircuit(0);
+
     do {
+        calculScores();
         triPopulation();
         croisePopuplation();
 
-        emit readyToCalculScore(false);
-    }while(++i != NOMBRE_GENERATION);
+        setCircuit((currentCircuit + 1) % NB_CIRCUIT);
+    }while(++i < NOMBRE_GENERATION);
 	
-	return population[0];
+    emit calculOk(population[0]);
 }
 
 void CGenetic::drawPopulation(QPainter *painter) {
-    int i;
+    if(populationInited) {
+        int i;
 
-    for(i=0;i<TAILLE_POPULATION;i++) {
-        population[i]->draw(painter);
-    }
-}
-
-void CGenetic::setCircuit(CCircuit circuit) {
-    int i;
-    
-    this->circuit = circuit;
-
-    for(i=0;i<TAILLE_POPULATION;i++) {
-        population[i]->setPosition(circuit.getDepart());
+        for(i=0;i<TAILLE_POPULATION;i++) {
+            if(population[i]->isAlive()) {
+                population[i]->draw(painter);
+            }
+        }
     }
 }
 
 void CGenetic::calculScores(void) {
     int i;
+    int nbAlive = TAILLE_POPULATION;
+    int nbIter = 0;
     
-    for(i=0;i<TAILLE_POPULATION;i++) {
-        double angle = population[i]->getCurrentAngle();
-        double inputs[NB_CAPTEUR];
-        QPoint *posRoue = population[i]->getPosRoue();
+    while(nbAlive != 0 && nbIter < 10) {
+        for(i=0;i<TAILLE_POPULATION;i++) {
+            if(population[i]->isAlive()) {
+                double angle = population[i]->getCurrentAngle();
+                double inputs[NB_CAPTEUR];
+                QPoint *posRoue = population[i]->getPosRoue();
+                int nbDehors = 0;
 
-        inputs[0] = calculDistance(posRoue[0], posRoue[2], angle);
-        inputs[1] = calculDistance(posRoue[0], posRoue[1], angle + PI2);
-        inputs[2] = calculDistance(posRoue[0], posRoue[3], angle + PI / 4);
-        inputs[3] = calculDistance(posRoue[1], posRoue[3], angle);
-        inputs[4] = calculDistance(posRoue[1], posRoue[0], angle + 3 * PI2);
-        inputs[5] = calculDistance(posRoue[1], posRoue[2], angle + 7 * PI / 4);
-        inputs[6] = calculDistance(posRoue[2], posRoue[3], angle + PI2);
-        inputs[7] = calculDistance(posRoue[3], posRoue[2], angle + 3 * PI2);
+                inputs[0] = calculDistance(posRoue[0], posRoue[2], angle);
+                inputs[1] = calculDistance(posRoue[0], posRoue[1], angle + PI2);
+                inputs[2] = calculDistance(posRoue[0], posRoue[3], angle + PI / 4);
+                inputs[3] = calculDistance(posRoue[1], posRoue[3], angle);
+                inputs[4] = calculDistance(posRoue[1], posRoue[0], angle + 3 * PI2);
+                inputs[5] = calculDistance(posRoue[1], posRoue[2], angle + 7 * PI / 4);
+                inputs[6] = calculDistance(posRoue[2], posRoue[3], angle + PI2);
+                inputs[7] = calculDistance(posRoue[3], posRoue[2], angle + 3 * PI2);
 
-        population[i]->setInputs(inputs);
+                population[i]->setInputs(inputs);
 
-        population[i]->move();
+                population[i]->move();
+
+                nbDehors += circuits[currentCircuit].getImage().pixel(posRoue[0]) == 0xFF000000 ? 1 : 0;
+                nbDehors += circuits[currentCircuit].getImage().pixel(posRoue[1]) == 0xFF000000 ? 1 : 0;
+                nbDehors += circuits[currentCircuit].getImage().pixel(posRoue[2]) == 0xFF000000 ? 1 : 0;
+                nbDehors += circuits[currentCircuit].getImage().pixel(posRoue[3]) == 0xFF000000 ? 1 : 0;
+
+                population[i]->setAlive(nbDehors < 2);
+                nbAlive -= nbDehors < 2 ? 0 : 1;
+            }
+        }
+
+        emit repaintRequested();
+        msleep(1000 / 24);
+
+        nbIter++;
     }
+}
+
+void CGenetic::onWCircuitDrawVoitures(QPainter *painter) {
+    drawPopulation(painter);
 }
