@@ -25,6 +25,7 @@ public:
     void draw(QPainter *painter);
     void setInputs(double *inputs);
     void move(void);
+	double realMove(double vitesse, double angle);
     void setPosition(QPoint position);
     const QPoint& getPosition(void);
     double getCurrentAngle(void);
@@ -45,7 +46,7 @@ private:
     
     double getVitesse(void);
     double getAngle(void);
-    double transfert(int idxFirstGene);
+    double transfert(int idxFirstGene, double a);
     void calculPosRoue(void);
     double calculDistance(QPoint p, QPoint oppose, double angle, QPainter *painter, QColor color);
     double normAngle(double angle);

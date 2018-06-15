@@ -85,25 +85,36 @@ void CVoiture::setInputs(double *inputs) {
 
 void CVoiture::move(void) {
     double vitesse;
-    int sensX = posRoue[0].x() < posRoue[3].x() ? -1 : 1;
-    int sensY = posRoue[0].y() < posRoue[3].y() ? -1 : 1;
 
     currentAngle = getAngle();
     vitesse = getVitesse();
+	
+	score += realMove(vitesse, currentAngle);
+}
 
-    position.rx() += cos(currentAngle) * vitesse * sensX;
-    position.ry() += sin(currentAngle) * vitesse * sensY;
+double CVoiture::realMove(double vitesse, double angle) {
+	double dx, dy;
+	int sensX = posRoue[0].x() < posRoue[3].x() ? -1 : 1;
+    int sensY = posRoue[0].y() < posRoue[3].y() ? -1 : 1;
+	
+	currentAngle = angle;
+	dx = fabs(cos(angle) * vitesse) * sensX;
+	dy = fabs(sin(angle) * vitesse) * sensY;
+	
+	position.rx() += dx;
+    position.ry() += dy;
 
     position.setX(CCircuit::normCoordonnees(position.x()));
     position.setY(CCircuit::normCoordonnees(position.y()));
-
-    score += vitesse;
-
-    calculPosRoue();
+	
+	calculPosRoue();
+	
+	return sqrt(dx*dx + dy*dy);
 }
 
 void CVoiture::setPosition(QPoint position) {
     this->position = position;
+	score = 0;
     calculPosRoue();
 }
 
@@ -132,18 +143,16 @@ CCapteur * CVoiture::getGene(int idx) {
 }
 
 double CVoiture::getVitesse(void) {
-    return transfert(0) * 10;
+    return transfert(0, 1) * 10;
 }
 
 double CVoiture::getAngle(void) {
-    double angle = normAngle(transfert(NB_CAPTEUR + 1) * 2 * PI);
-
-    qDebug() << angle;
+    double angle = normAngle(transfert(NB_CAPTEUR + 1, 200) * 2 * PI);
 
     return angle;
 }
 
-double CVoiture::transfert(int idxFirstGene) {
+double CVoiture::transfert(int idxFirstGene, double a) {
     double sigma = poids[idxFirstGene++].getValue();
     int i;
     
@@ -151,7 +160,7 @@ double CVoiture::transfert(int idxFirstGene) {
         sigma += inputs[i] * poids[idxFirstGene].getValue();
     }
     
-    return 1 / (1 + exp(-sigma));
+    return 1 / (1 + exp(-sigma / a));
 }
 
 void CVoiture::calculPosRoue(void) {

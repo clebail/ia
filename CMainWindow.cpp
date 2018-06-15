@@ -30,3 +30,20 @@ void CMainWindow::onGeneticRepaintRequested(void) {
 void CMainWindow::on_pbTest_clicked(bool) {
     genetic->start();
 }
+
+void CMainWindow::on_pbTestVoiture_clicked(bool) {
+	testVoiture.setPosition(QPoint(250, 250));
+	
+	connect(wCircuit, SIGNAL(drawVoitures(QPainter *)), this, SLOT(onTVdrawVoitures(QPainter *)));
+	
+	for(int i=0;i<50;i++) {
+		testVoiture.realMove(2, leAngle->text().toDouble());
+		wCircuit->repaint();
+	}
+	
+	disconnect(wCircuit, SIGNAL(drawVoitures(QPainter *)), this, SLOT(onTVdrawVoitures(QPainter *)));
+}
+
+void CMainWindow::onTVdrawVoitures(QPainter *painter) {
+	testVoiture.draw(painter);
+}
