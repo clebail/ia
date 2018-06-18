@@ -2,6 +2,8 @@
 #include <math.h>
 #include "CVoiture.h"
 
+#define DIFF_MAX			(PI / 4)
+
 CVoiture::CVoiture(void) {
     score = 0;
     currentAngle = 0;
@@ -85,8 +87,18 @@ void CVoiture::setInputs(double *inputs) {
 
 void CVoiture::move(void) {
     double vitesse;
+	double newAngle = getAngle();
 
-    currentAngle = getAngle();
+    if(fabs(currentAngle - newAngle) > DIFF_MAX) {
+		if(newAngle < currentAngle) {
+			currentAngle -= DIFF_MAX;
+		}else {
+			currentAngle += DIFF_MAX;
+		}
+	}else {
+		currentAngle = newAngle;
+	}
+	
     vitesse = getVitesse();
 	
 	score += realMove(vitesse, currentAngle);
