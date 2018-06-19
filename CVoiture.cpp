@@ -2,8 +2,6 @@
 #include <math.h>
 #include "CVoiture.h"
 
-#define DIFF_MAX			(PI / 4)
-
 CVoiture::CVoiture(void) : nVitesse(NB_CAPTEUR+1), nAngle(NB_CAPTEUR+1) {
     score = 0;
     currentAngle = 0;
@@ -35,17 +33,17 @@ void CVoiture::draw(QPainter *painter) {
     painter->setBrush(QBrush(Qt::yellow));
     painter->drawEllipse(posRoue[0].x(), posRoue[0].y(), 3, 3);
 
-    //calculDistance(posRoue[0], posRoue[2], currentAngle, painter, Qt::yellow);
-    //calculDistance(posRoue[0], posRoue[1], PI / 2 + currentAngle, painter, Qt::yellow);
-    //calculDistance(posRoue[0], posRoue[3], PI / 4 + currentAngle, painter, Qt::yellow);
+    /*calculDistance(posRoue[0], posRoue[2], currentAngle, painter, Qt::yellow);
+    calculDistance(posRoue[0], posRoue[1], PI / 2 + currentAngle, painter, Qt::yellow);
+    calculDistance(posRoue[0], posRoue[3], PI / 4 + currentAngle, painter, Qt::yellow);*/
 
     painter->setPen(QPen(Qt::red));
     painter->setBrush(QBrush(Qt::red));
     painter->drawEllipse(posRoue[1].x(), posRoue[1].y(), 3, 3);
 
-    //calculDistance(posRoue[1], posRoue[3], currentAngle, painter, Qt::red);
-    //calculDistance(posRoue[1], posRoue[0], 3 * PI / 2 + currentAngle, painter, Qt::red);
-    //calculDistance(posRoue[1], posRoue[2], 7 * PI / 4 + currentAngle, painter, Qt::red);
+    /*calculDistance(posRoue[1], posRoue[3], currentAngle, painter, Qt::red);
+    calculDistance(posRoue[1], posRoue[0], 3 * PI / 2 + currentAngle, painter, Qt::red);
+    calculDistance(posRoue[1], posRoue[2], 7 * PI / 4 + currentAngle, painter, Qt::red);*/
     
 
     painter->setPen(QPen(Qt::green));
@@ -68,9 +66,11 @@ void CVoiture::setInputs(double *inputs) {
 
 void CVoiture::move(void) {
     double vitesse;
-	double newAngle = getAngle();
+	
+	currentAngle += getAngle();
+	currentAngle = normAngle(currentAngle);
 
-    if(fabs(currentAngle - newAngle) > DIFF_MAX) {
+    /*if(fabs(currentAngle - newAngle) > DIFF_MAX) {
 		if(newAngle < currentAngle) {
 			currentAngle -= DIFF_MAX;
 		}else {
@@ -78,9 +78,14 @@ void CVoiture::move(void) {
 		}
 	}else {
 		currentAngle = newAngle;
-	}
+	}*/
 	
     vitesse = getVitesse();
+	if(vitesse < 1) {
+		score = 0;
+		alive = false;
+		return;
+	}
 	
 	score += realMove(vitesse, currentAngle);
 }
@@ -107,7 +112,7 @@ double CVoiture::realMove(double vitesse, double angle) {
 
 void CVoiture::setPosition(QPoint position) {
     this->position = position;
-    //score = 0;
+    score = 0;
     calculPosRoue();
 }
 
@@ -135,21 +140,23 @@ void CVoiture::from(CVoiture *v1, CVoiture *v2, int seuilVitesse, int seuilAngle
     nVitesse.from(v1->nVitesse, v2->nVitesse, seuilVitesse);
     nAngle.from(v1->nAngle, v2->nVitesse, seuilAngle);
 
-    if(rand() % 10 < 7) {
+    if(rand() % 10 < 4) {
         nVitesse.mute(rand() % nVitesse.getNbGene());
     }
 
-    if(rand() % 10 < 7) {
+    if(rand() % 10 < 8) {
         nAngle.mute(rand() % nAngle.getNbGene());
     }
+    
+    score = 0;
 }
 
 double CVoiture::getVitesse(void) {
-    return nVitesse.eval(1) * 10;
+    return nVitesse.eval(100) * 20;
 }
 
 double CVoiture::getAngle(void) {
-    double angle = normAngle(nAngle.eval(200) * 2 * PI);
+    double angle = nAngle.eval(100) * PI / 2 - (PI / 4);
 
     return angle;
 }

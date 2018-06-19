@@ -135,7 +135,7 @@ void CGenetic::run(void) {
         triPopulation();
         croisePopuplation();
 
-        setCircuit((currentCircuit + 1) % NB_CIRCUIT);
+        setCircuit(0/*(currentCircuit + 1) % NB_CIRCUIT*/);
     }while(++i < NOMBRE_GENERATION);
 	
     emit calculOk(population[0]);
@@ -158,7 +158,7 @@ void CGenetic::calculScores(void) {
     int nbAlive = TAILLE_POPULATION;
     int nbIter = 0;
     
-    while(nbAlive != 0 && nbIter < 200) {
+    while(nbAlive != 0 && nbIter < 400) {
         for(i=0;i<TAILLE_POPULATION;i++) {
             if(population[i]->isAlive()) {
                 double angle = population[i]->getCurrentAngle();

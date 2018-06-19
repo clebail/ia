@@ -7,8 +7,8 @@
 #include "CVoiture.h"
 #include "CWCircuit.h"
 
-#define TAILLE_POPULATION					150
-#define NOMBRE_GENERATION					100
+#define TAILLE_POPULATION					200
+#define NOMBRE_GENERATION					100000
 #define NB_CIRCUIT                          4
 
 class CGenetic : public QThread {
