@@ -20,6 +20,8 @@ private slots:
     void on_pbTest_clicked(bool checked = false);
 	void on_pbTestVoiture_clicked(bool checked = false);
 	void onTVdrawVoitures(QPainter *painter);
+    void on_pbTestBezier_clicked(bool checked = false);
+    void onTBmousePress(int x, int y);
 };
 
 #endif // CMAINWINDOW_H

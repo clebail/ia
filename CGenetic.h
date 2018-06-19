@@ -24,7 +24,7 @@ private:
 	void initPopulation(void);
 	void triPopulation(void);
     void croisePopuplation(void);
-	void croiseIndividus(int i1, int i2, int ir, int seuil);
+    void croiseIndividus(int i1, int i2, int ir, int seuilVitesse, int seuilAngle);
     double calculDistance(QPoint p, QPoint oppose, double angle);
     void setCircuit(int numCircuit);
 public:

@@ -44,6 +44,16 @@ void CMainWindow::on_pbTestVoiture_clicked(bool) {
 	disconnect(wCircuit, SIGNAL(drawVoitures(QPainter *)), this, SLOT(onTVdrawVoitures(QPainter *)));
 }
 
-void CMainWindow::onTVdrawVoitures(QPainter *painter) {
+void CMainWindow::CMainWindow::onTVdrawVoitures(QPainter *painter) {
 	testVoiture.draw(painter);
+}
+
+void CMainWindow::on_pbTestBezier_clicked(bool) {
+    wCircuit->drawTestCircuit();
+
+    connect(wCircuit, SIGNAL(mousePress(int,int)), this, SLOT(onTBmousePress(int,int)));
+}
+
+void CMainWindow::onTBmousePress(int x, int y) {
+
 }

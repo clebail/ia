@@ -4,38 +4,18 @@
 
 #define DIFF_MAX			(PI / 4)
 
-CVoiture::CVoiture(void) {
+CVoiture::CVoiture(void) : nVitesse(NB_CAPTEUR+1), nAngle(NB_CAPTEUR+1) {
     score = 0;
     currentAngle = 0;
 }
 
 void CVoiture::init(void) {
-    int i;
-
-    for(i=0;i<NB_GENE;i++) {
-        poids[i].init();
-    }
+    nVitesse.init();
+    nAngle.init();
 }
 
 int CVoiture::getScore(void) {
     return score;
-}
-
-void CVoiture::mute(int idxGene) {
-     poids[idxGene].init();
-}
-
-void CVoiture::from(CVoiture *i1, CVoiture *i2, int seuil) {
-    int i;
-    CVoiture *src = i1;
-
-    for(i=0;i<NB_GENE;i++) {
-        if(i == seuil) {
-            src = i2;
-        }
-
-        poids[i].from(src->getGene(i));
-    }
 }
 
 void CVoiture::draw(QPainter *painter) {
@@ -82,7 +62,8 @@ void CVoiture::draw(QPainter *painter) {
 }
 
 void CVoiture::setInputs(double *inputs) {
-    memcpy(this->inputs, inputs, NB_CAPTEUR * sizeof(double));
+    nVitesse.setInputs(inputs);
+    nAngle.setInputs(inputs);
 }
 
 void CVoiture::move(void) {
@@ -126,7 +107,7 @@ double CVoiture::realMove(double vitesse, double angle) {
 
 void CVoiture::setPosition(QPoint position) {
     this->position = position;
-	score = 0;
+    //score = 0;
     calculPosRoue();
 }
 
@@ -150,29 +131,27 @@ bool CVoiture::isAlive(void) {
     return alive;
 }
 
-CCapteur * CVoiture::getGene(int idx) {
-    return &poids[idx];
+void CVoiture::from(CVoiture *v1, CVoiture *v2, int seuilVitesse, int seuilAngle) {
+    nVitesse.from(v1->nVitesse, v2->nVitesse, seuilVitesse);
+    nAngle.from(v1->nAngle, v2->nVitesse, seuilAngle);
+
+    if(rand() % 10 < 7) {
+        nVitesse.mute(rand() % nVitesse.getNbGene());
+    }
+
+    if(rand() % 10 < 7) {
+        nAngle.mute(rand() % nAngle.getNbGene());
+    }
 }
 
 double CVoiture::getVitesse(void) {
-    return transfert(0, 1) * 10;
+    return nVitesse.eval(1) * 10;
 }
 
 double CVoiture::getAngle(void) {
-    double angle = normAngle(transfert(NB_CAPTEUR + 1, 200) * 2 * PI);
+    double angle = normAngle(nAngle.eval(200) * 2 * PI);
 
     return angle;
-}
-
-double CVoiture::transfert(int idxFirstGene, double a) {
-    double sigma = poids[idxFirstGene++].getValue();
-    int i;
-    
-    for(i=0;i<NB_CAPTEUR;i++,idxFirstGene++) {
-        sigma += inputs[i] * poids[idxFirstGene].getValue();
-    }
-    
-    return 1 / (1 + exp(-sigma / a));
 }
 
 void CVoiture::calculPosRoue(void) {

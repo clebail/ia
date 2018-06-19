@@ -56,22 +56,19 @@ void CGenetic::croisePopuplation(void) {
 	max = TAILLE_POPULATION / 2;
 	
 	while(i < max) {
-		int seuil = (rand() % (NB_GENE - 2)) + 1;
+        int seuilVitesse = (rand() % (NB_CAPTEUR - 1)) + 1;
+        int seuilAngle = (rand() % (NB_CAPTEUR - 1)) + 1;
 		
-		croiseIndividus(i-1, i, ir, seuil);
-		croiseIndividus(i, i-1, ir-1, seuil);
+        croiseIndividus(i-1, i, ir, seuilVitesse, seuilAngle);
+        croiseIndividus(i, i-1, ir-1, seuilVitesse, seuilAngle);
 		
         i+=2;
 		ir-=2;
 	}
 }
 
-void CGenetic::croiseIndividus(int i1, int i2, int ir, int seuil) {
-	population[ir]->from(population[i1], population[i2], seuil);
-	
-	if(rand() % 10 < 7) {
-		population[ir]->mute(rand() % NB_GENE);
-	}
+void CGenetic::croiseIndividus(int i1, int i2, int ir, int seuilVitesse, int seuilAngle) {
+    population[ir]->from(population[i1], population[i2], seuilVitesse, seuilAngle);
 }
 
 double CGenetic::calculDistance(QPoint p, QPoint oppose, double angle) {

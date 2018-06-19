@@ -4,9 +4,9 @@
 #include <QPainter>
 #include "CCapteur.h"
 #include "CCircuit.h"
+#include "CNeurone.h"
 
 #define NB_CAPTEUR              8
-#define NB_GENE                 (NB_CAPTEUR * 2 + 2)
 #define WIDTH                   19
 #define HEIGHT                  11
 #define HYPO                    10
@@ -20,8 +20,6 @@ public:
     CVoiture(void);
     void init(void);
     int getScore(void);
-    void mute(int idxGene);
-    void from(CVoiture *i1, CVoiture *i2, int seuil);
     void draw(QPainter *painter);
     void setInputs(double *inputs);
     void move(void);
@@ -32,21 +30,20 @@ public:
     QPoint * getPosRoue(void);
     void setAlive(bool alive);
     bool isAlive(void);
-    int normCoordonnees(int i);
+    void from(CVoiture *v1, CVoiture *v2, int seuilVitesse, int seuilAngle);
 protected:
     CCapteur * getGene(int idx);
 private:
-    CCapteur poids[NB_GENE];
     QPoint position;
     QPoint posRoue[NB_ROUE];
     int score;
-    double inputs[NB_CAPTEUR];
     double currentAngle;
     bool alive;
+    CNeurone nVitesse;
+    CNeurone nAngle;
     
     double getVitesse(void);
     double getAngle(void);
-    double transfert(int idxFirstGene, double a);
     void calculPosRoue(void);
     double calculDistance(QPoint p, QPoint oppose, double angle, QPainter *painter, QColor color);
     double normAngle(double angle);

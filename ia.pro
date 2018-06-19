@@ -30,7 +30,8 @@ SOURCES += \
     CWCircuit.cpp \
     CGenetic.cpp \
     CVoiture.cpp \
-    CCapteur.cpp
+    CCapteur.cpp \
+    CNeurone.cpp
 
 HEADERS += \
         CMainWindow.h \
@@ -38,7 +39,8 @@ HEADERS += \
     CWCircuit.h \
     CGenetic.h \
     CVoiture.h \
-    CCapteur.h
+    CCapteur.h \
+    CNeurone.h
 
 FORMS += \
         CMainWindow.ui
