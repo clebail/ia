@@ -4,17 +4,24 @@
 #include <stdlib.h>
 #include <time.h>
 #include <math.h>
+#include "commun.h"
 #include "CGenetic.h"
 
 CGenetic::CGenetic(CWCircuit *wCircuit) {
+    QList<CMarker> mks1;
+
+    mks1 << CMarker(QPoint(0, 0), &CMarker::depasseGauche);
+
     this->wCircuit = wCircuit;
 
     populationInited = false;
 
-    circuits[0] = CCircuit(QPoint(85, 51), ":/circuits/circuit1.png");
-    circuits[1] = CCircuit(QPoint(134, 54), ":/circuits/circuit2.png");
-    circuits[2] = CCircuit(QPoint(134, 30), ":/circuits/circuit3.png");
-    circuits[3] = CCircuit(QPoint(134, 28), ":/circuits/circuit4.png");
+    circuits[0] = CCircuit(QPoint(311, 24), 0, ":/circuits/circuit1.png");
+    circuits[1] = CCircuit(QPoint(305, 25), 0, ":/circuits/circuit2.png");
+    circuits[2] = CCircuit(QPoint(41, 264), PI2, ":/circuits/circuit3.png");
+    circuits[3] = CCircuit(QPoint(244, 442), PI, ":/circuits/circuit4.png");
+
+    circuits[0].setMarkers(mks1);
 
     connect(this->wCircuit, SIGNAL(drawVoitures(QPainter*)), this, SLOT(onWCircuitDrawVoitures(QPainter*)));
 }
@@ -114,7 +121,7 @@ void CGenetic::setCircuit(int numCircuit) {
     currentCircuit = numCircuit;
 
     for(i=0;i<TAILLE_POPULATION;i++) {
-        population[i]->setPosition(circuits[numCircuit].getDepart());
+        population[i]->setStartInfo(circuits[numCircuit].getDepart(), circuits[numCircuit].getAngle());
         population[i]->setAlive(true);
     }
 
@@ -135,7 +142,7 @@ void CGenetic::run(void) {
         triPopulation();
         croisePopuplation();
 
-        setCircuit(0/*(currentCircuit + 1) % NB_CIRCUIT*/);
+        setCircuit((currentCircuit + 1) % NB_CIRCUIT);
     }while(++i < NOMBRE_GENERATION);
 	
     emit calculOk(population[0]);

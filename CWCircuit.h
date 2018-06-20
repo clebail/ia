@@ -9,16 +9,16 @@ class CWCircuit : public QWidget {
 public:
     explicit CWCircuit(QWidget *parent = 0);
     void setCircuit(CCircuit *circuit);
-    void drawTestCircuit(void);
+    void calculMarkers(const QPoint &depart, double distance, double angleDepart);
 protected:
     virtual void paintEvent(QPaintEvent *);
-    virtual void mousePressEvent(QMouseEvent * event);
 private:
     CCircuit *circuit;
-    QPainterPath *path;
+    QList<QPoint> markers;
+
+    double normAngle(double angle);
 signals:
     void drawVoitures(QPainter *painter);
-    void mousePress(int x, int y);
 };
 
 #endif // CWCIRCUIT_H

@@ -55,9 +55,9 @@
            </widget>
           </item>
           <item>
-           <widget class="QPushButton" name="pbTestBezier">
+           <widget class="QPushButton" name="pbCalculMarkers">
             <property name="text">
-             <string>Test Bézier</string>
+             <string>Calcul des markers</string>
             </property>
            </widget>
           </item>
@@ -91,6 +91,86 @@
            <widget class="QLineEdit" name="leAngle">
             <property name="text">
              <string>3.14</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QWidget" name="widget_3" native="true">
+         <layout class="QHBoxLayout" name="horizontalLayout_3">
+          <item>
+           <widget class="QLabel" name="label_2">
+            <property name="text">
+             <string>Circuit</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="leCircuit">
+            <property name="text">
+             <string>:/circuits/circuit1.png</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="label_4">
+            <property name="text">
+             <string>Départ</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="leDepart">
+            <property name="maximumSize">
+             <size>
+              <width>80</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>311,24</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="label_3">
+            <property name="text">
+             <string>Distance</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="leDistance">
+            <property name="maximumSize">
+             <size>
+              <width>60</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>20</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLabel" name="label_5">
+            <property name="text">
+             <string>Angle</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="leAngleDepart">
+            <property name="maximumSize">
+             <size>
+              <width>60</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>1.57</string>
             </property>
            </widget>
           </item>

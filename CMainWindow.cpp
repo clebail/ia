@@ -32,7 +32,7 @@ void CMainWindow::on_pbTest_clicked(bool) {
 }
 
 void CMainWindow::on_pbTestVoiture_clicked(bool) {
-	testVoiture.setPosition(QPoint(250, 250));
+    testVoiture.setStartInfo(QPoint(250, 250), 0);
 	
 	connect(wCircuit, SIGNAL(drawVoitures(QPainter *)), this, SLOT(onTVdrawVoitures(QPainter *)));
 	
@@ -48,12 +48,11 @@ void CMainWindow::CMainWindow::onTVdrawVoitures(QPainter *painter) {
 	testVoiture.draw(painter);
 }
 
-void CMainWindow::on_pbTestBezier_clicked(bool) {
-    wCircuit->drawTestCircuit();
+void CMainWindow::on_pbCalculMarkers_clicked(bool) {
+    QStringList l = leDepart->text().split(",");
+    QPoint depart(QPoint(l.at(0).toInt(), l.at(1).toInt()));
+    CCircuit circuit(depart, 0, leCircuit->text());
 
-    connect(wCircuit, SIGNAL(mousePress(int,int)), this, SLOT(onTBmousePress(int,int)));
-}
-
-void CMainWindow::onTBmousePress(int x, int y) {
-
+    wCircuit->setCircuit(&circuit);
+    wCircuit->calculMarkers(depart, leDistance->text().toDouble(), leAngleDepart->text().toDouble());
 }

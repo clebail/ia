@@ -1,5 +1,6 @@
 #include <QtDebug>
 #include <math.h>
+#include "commun.h"
 #include "CVoiture.h"
 
 CVoiture::CVoiture(void) : nVitesse(NB_CAPTEUR+1), nAngle(NB_CAPTEUR+1) {
@@ -70,16 +71,6 @@ void CVoiture::move(void) {
 	currentAngle += getAngle();
 	currentAngle = normAngle(currentAngle);
 
-    /*if(fabs(currentAngle - newAngle) > DIFF_MAX) {
-		if(newAngle < currentAngle) {
-			currentAngle -= DIFF_MAX;
-		}else {
-			currentAngle += DIFF_MAX;
-		}
-	}else {
-		currentAngle = newAngle;
-	}*/
-	
     vitesse = getVitesse();
 	if(vitesse < 1) {
 		score = 0;
@@ -110,8 +101,9 @@ double CVoiture::realMove(double vitesse, double angle) {
 	return sqrt(dx*dx + dy*dy);
 }
 
-void CVoiture::setPosition(QPoint position) {
+void CVoiture::setStartInfo(QPoint position, double angle) {
     this->position = position;
+    currentAngle = angle;
     score = 0;
     calculPosRoue();
 }

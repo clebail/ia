@@ -31,7 +31,8 @@ SOURCES += \
     CGenetic.cpp \
     CVoiture.cpp \
     CCapteur.cpp \
-    CNeurone.cpp
+    CNeurone.cpp \
+    CMarker.cpp
 
 HEADERS += \
         CMainWindow.h \
@@ -40,7 +41,9 @@ HEADERS += \
     CGenetic.h \
     CVoiture.h \
     CCapteur.h \
-    CNeurone.h
+    CNeurone.h \
+    CMarker.h \
+    commun.h
 
 FORMS += \
         CMainWindow.ui

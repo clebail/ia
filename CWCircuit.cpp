@@ -1,11 +1,12 @@
 #include <QPainter>
 #include <QMouseEvent>
 #include <QtDebug>
+#include <math.h>
+#include "commun.h"
 #include "CWCircuit.h"
 
 CWCircuit::CWCircuit(QWidget *parent) : QWidget(parent) {
     circuit = 0;
-    path = 0;
 }
 
 void CWCircuit::setCircuit(CCircuit *circuit) {
@@ -13,11 +14,45 @@ void CWCircuit::setCircuit(CCircuit *circuit) {
     repaint();
 }
 
-void CWCircuit::drawTestCircuit(void) {
-    path = new QPainterPath(QPointF(50, 50));
+void CWCircuit::calculMarkers(const QPoint& depart, double distance, double angleDepart) {
+    QPoint curPoint;
+    bool fini = false;
+    double step = 0.01;
 
-    path->cubicTo(QPointF(350, 0), QPointF(150, 500), QPointF(250, 50));
-    path->cubicTo(QPointF(500, 150), QPointF(0, 350), QPointF(450, 50));
+    markers.clear();
+
+    curPoint = depart;
+    while(!fini) {
+        double angle = angleDepart;
+
+        while(fabs(angle - angleDepart) < PI) {
+            QPoint p(cos(angle) * distance + curPoint.x(), sin(angle) * distance + curPoint.y());
+
+            //qDebug() << p << this->circuit->getImage().pixel(p);
+
+            if(this->circuit->getImage().pixel(p) > 0xFFDDDDDD) {
+                double dx = abs(p.x() - curPoint.x());
+                double dy = abs(p.y() - curPoint.y());
+
+                markers.append(p);
+
+                angleDepart = PI2 - qMin(acos(dx / distance), asin(dy / distance));
+
+                qDebug() << p << angleDepart;
+
+                curPoint = p;
+
+                break;
+            }
+
+            angle += step;
+        }
+
+        fini = markers.size() == 100;
+    }
+
+    markers.append(depart);
+
     repaint();
 }
 
@@ -29,25 +64,29 @@ void CWCircuit::paintEvent(QPaintEvent *) {
     painter.drawRect(rect());
 
     if(circuit != 0) {
-       painter.drawImage(QPoint(0, 0), circuit->getImage());
+        int i;
+
+        painter.drawImage(QPoint(0, 0), circuit->getImage());
+
+        for(i=0;i<markers.size();i++) {
+            painter.setPen(QPen(Qt::red));
+            painter.setBrush(QBrush(Qt::red));
+
+            painter.drawEllipse(markers.at(i), 3, 3);
+        }
     }
 
-    if(path != 0) {
-        QPen pen = QPen(QColor(170, 170, 170));
-        QBrush brush = QBrush(QColor(120, 120, 120));
-        //pen.setWidth(40);
-        painter.setPen(pen);
-        painter.setBrush(brush);
-
-        painter.drawPath(*path);
-    }
-    
     emit drawVoitures(&painter);
 }
 
-void CWCircuit::mousePressEvent(QMouseEvent * event) {
-    if(path != 0) {
-        qDebug() << event->pos() << path->contains(event->pos());
+double CWCircuit::normAngle(double angle) {
+    while(angle < 0) {
+        angle += PI;
     }
-    emit mousePress(event->x(), event->y());
+    while(angle > 2 * PI) {
+        angle -= PI;
+    }
+
+    return angle;
 }
+

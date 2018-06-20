@@ -3,8 +3,9 @@
 CCircuit::CCircuit(void) {
 }
 
-CCircuit::CCircuit(QPoint depart, QString imgResource) {
+CCircuit::CCircuit(QPoint depart, double angle, QString imgResource) {
     this->depart = depart;
+    this->angle = angle;
     
     image = QImage(imgResource);
 }
@@ -15,6 +16,14 @@ const QPoint& CCircuit::getDepart(void) {
 
 const QImage& CCircuit::getImage(void) {
     return image;
+}
+
+double CCircuit::getAngle(void) {
+    return angle;
+}
+
+void CCircuit::setMarkers(const QList<CMarker>& markers) {
+    this->markers = markers;
 }
 
 int CCircuit::normCoordonnees(int i) {

@@ -11,8 +11,6 @@
 #define HEIGHT                  11
 #define HYPO                    10
 #define ANGLE                   ((double)0.507)
-#define PI                      ((double)3.14159265)
-#define PI2                     (PI/2)
 #define NB_ROUE                 4
 
 class CVoiture {
@@ -24,7 +22,7 @@ public:
     void setInputs(double *inputs);
     void move(void);
 	double realMove(double vitesse, double angle);
-    void setPosition(QPoint position);
+    void setStartInfo(QPoint position, double angle);
     const QPoint& getPosition(void);
     double getCurrentAngle(void);
     QPoint * getPosRoue(void);
