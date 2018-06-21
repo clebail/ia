@@ -5,6 +5,7 @@
 #include "CCapteur.h"
 #include "CCircuit.h"
 #include "CNeurone.h"
+#include "CMarker.h"
 
 #define NB_CAPTEUR              8
 #define WIDTH                   19
@@ -22,7 +23,7 @@ public:
     void setInputs(double *inputs);
     void move(void);
 	double realMove(double vitesse, double angle);
-    void setStartInfo(QPoint position, double angle);
+    void setStartInfo(QPoint position, double angle, const QList<CMarker> &markers);
     const QPoint& getPosition(void);
     double getCurrentAngle(void);
     QPoint * getPosRoue(void);
@@ -39,6 +40,8 @@ private:
     bool alive;
     CNeurone nVitesse;
     CNeurone nAngle;
+    int currentMarkerIdx;
+    QList<CMarker> markers;
     
     double getVitesse(void);
     double getAngle(void);

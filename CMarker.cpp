@@ -5,22 +5,22 @@ CMarker::CMarker(const QPoint& p, pDepasse depasse) {
     this->depasse = depasse;
 }
 
-bool CMarker::isDepasse(const QPoint& p) {
+bool CMarker::isDepasse(const QPoint& p) const {
    return (this->*depasse)(p);
 }
 
-bool CMarker::depasseHaut(const QPoint& p) {
-    return false;
+bool CMarker::depasseHaut(const QPoint& p) const {
+    return p.y() < this->p.y();
 }
 
-bool CMarker::depasseDroite(const QPoint& p) {
-    return false;
+bool CMarker::depasseDroite(const QPoint& p) const {
+    return p.x() > this->p.x();
 }
 
-bool CMarker::depasseBas(const QPoint& p) {
-    return false;
+bool CMarker::depasseBas(const QPoint& p) const {
+    return p.y() > this->p.y();
 }
 
-bool CMarker::depasseGauche(const QPoint& p) {
-    return false;
+bool CMarker::depasseGauche(const QPoint& p) const {
+    return p.x() < this->p.x();
 }

@@ -26,6 +26,10 @@ void CCircuit::setMarkers(const QList<CMarker>& markers) {
     this->markers = markers;
 }
 
+const QList<CMarker>& CCircuit::getMarkers(void) {
+    return markers;
+}
+
 int CCircuit::normCoordonnees(int i) {
     if(i >= 500) {
         i = 500;

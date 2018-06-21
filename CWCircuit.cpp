@@ -25,20 +25,17 @@ void CWCircuit::calculMarkers(const QPoint& depart, double distance, double angl
     while(!fini) {
         double angle = angleDepart;
 
-        while(fabs(angle - angleDepart) < PI) {
+        while(fabs(angle - angleDepart) < 2 * PI) {
             QPoint p(cos(angle) * distance + curPoint.x(), sin(angle) * distance + curPoint.y());
 
-            //qDebug() << p << this->circuit->getImage().pixel(p);
-
-            if(this->circuit->getImage().pixel(p) > 0xFFDDDDDD) {
-                double dx = abs(p.x() - curPoint.x());
-                double dy = abs(p.y() - curPoint.y());
+           if(this->circuit->getImage().pixel(p) > 0xFFDDDDDD) {
+                double dx = p.x() - curPoint.x();
+                double dy = p.y() - curPoint.y();
+                double ay = asin(dy / distance);
 
                 markers.append(p);
 
-                angleDepart = PI2 - qMin(acos(dx / distance), asin(dy / distance));
-
-                qDebug() << p << angleDepart;
+                angleDepart = acos(dx / distance) * (ay < 0 ? -1 : 1) - PI2;
 
                 curPoint = p;
 
@@ -48,10 +45,37 @@ void CWCircuit::calculMarkers(const QPoint& depart, double distance, double angl
             angle += step;
         }
 
-        fini = markers.size() == 100;
+        fini = abs(curPoint.x() - depart.x()) < distance/2 && abs(curPoint.y() - depart.y()) < distance/2;
     }
+    markers.takeLast();
 
     markers.append(depart);
+
+    QPoint prev = markers.last();
+
+    for(int i = 0;i<markers.size();i++) {
+        int dx = abs(prev.x() - markers.at(i).x());
+        int dy = abs(prev.y() - markers.at(i).y());
+        QString sens;
+
+        if(dx >= dy) {
+            if(prev.x() > markers.at(i).x()) {
+                sens = "Gauche";
+            }else {
+                sens = "Droite";
+            }
+        }else {
+            if(prev.y() > markers.at(i).y()) {
+                sens = "Haut";
+            } else {
+                sens = "Bas";
+            }
+        }
+
+        qStdOut() << "CMarker(QPoint(" << markers.at(i).x() << ", " << markers.at(i).y() << "), &CMarker::depasse" << sens <<");\r\n";
+
+        prev = markers.at(i);
+    }
 
     repaint();
 }
@@ -79,14 +103,9 @@ void CWCircuit::paintEvent(QPaintEvent *) {
     emit drawVoitures(&painter);
 }
 
-double CWCircuit::normAngle(double angle) {
-    while(angle < 0) {
-        angle += PI;
-    }
-    while(angle > 2 * PI) {
-        angle -= PI;
-    }
+QTextStream& CWCircuit::qStdOut(void) {
+    static QTextStream ts(stdout);
 
-    return angle;
+    return ts;
 }
 

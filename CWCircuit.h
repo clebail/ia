@@ -2,6 +2,7 @@
 #define CWCIRCUIT_H
 
 #include <QWidget>
+#include <QTextStream>
 #include "CCircuit.h"
 
 class CWCircuit : public QWidget {
@@ -16,7 +17,7 @@ private:
     CCircuit *circuit;
     QList<QPoint> markers;
 
-    double normAngle(double angle);
+    QTextStream& qStdOut(void);
 signals:
     void drawVoitures(QPainter *painter);
 };

@@ -5,14 +5,14 @@
 
 class CMarker {
 public:
-    typedef bool (CMarker::*pDepasse)(const QPoint& p);
+    typedef bool (CMarker::*pDepasse)(const QPoint& p) const;
 
     CMarker(const QPoint& p, pDepasse depasse);
-    bool isDepasse(const QPoint& p);
-    bool depasseHaut(const QPoint& p);
-    bool depasseDroite(const QPoint& p);
-    bool depasseBas(const QPoint& p);
-    bool depasseGauche(const QPoint& p);
+    bool isDepasse(const QPoint& p) const;
+    bool depasseHaut(const QPoint& p) const;
+    bool depasseDroite(const QPoint& p) const;
+    bool depasseBas(const QPoint& p) const;
+    bool depasseGauche(const QPoint& p) const;
 private:
     QPoint p;
     pDepasse depasse;

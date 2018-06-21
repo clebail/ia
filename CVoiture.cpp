@@ -67,7 +67,7 @@ void CVoiture::setInputs(double *inputs) {
 
 void CVoiture::move(void) {
     double vitesse;
-	
+
 	currentAngle += getAngle();
 	currentAngle = normAngle(currentAngle);
 
@@ -78,7 +78,16 @@ void CVoiture::move(void) {
 		return;
 	}
 	
-	score += realMove(vitesse, currentAngle);
+    realMove(vitesse, currentAngle);
+
+    if(markers.at(currentMarkerIdx).isDepasse(position)) {
+        score = (++currentMarkerIdx) * 100 / markers.size();
+
+        if(score == 100) {
+            score = 1000;
+            alive = false;
+        }
+    }
 }
 
 double CVoiture::realMove(double vitesse, double angle) {
@@ -101,10 +110,13 @@ double CVoiture::realMove(double vitesse, double angle) {
 	return sqrt(dx*dx + dy*dy);
 }
 
-void CVoiture::setStartInfo(QPoint position, double angle) {
+void CVoiture::setStartInfo(QPoint position, double angle, const QList<CMarker>& markers) {
     this->position = position;
+    this->markers = markers;
     currentAngle = angle;
     score = 0;
+    currentMarkerIdx = 0;
+
     calculPosRoue();
 }
 

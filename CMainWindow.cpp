@@ -32,7 +32,7 @@ void CMainWindow::on_pbTest_clicked(bool) {
 }
 
 void CMainWindow::on_pbTestVoiture_clicked(bool) {
-    testVoiture.setStartInfo(QPoint(250, 250), 0);
+    testVoiture.setStartInfo(QPoint(250, 250), 0, QList<CMarker>());
 	
 	connect(wCircuit, SIGNAL(drawVoitures(QPainter *)), this, SLOT(onTVdrawVoitures(QPainter *)));
 	
