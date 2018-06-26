@@ -24,3 +24,7 @@ bool CMarker::depasseBas(const QPoint& p) const {
 bool CMarker::depasseGauche(const QPoint& p) const {
     return p.x() < this->p.x();
 }
+
+const QPoint& CMarker::getPosition(void) const {
+	return p;
+}

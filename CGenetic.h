@@ -8,7 +8,7 @@
 #include "CWCircuit.h"
 
 #define TAILLE_POPULATION					200
-#define NOMBRE_GENERATION					100000
+#define NOMBRE_GENERATION					200000
 #define NB_CIRCUIT                          4
 
 class CGenetic : public QThread {
@@ -27,6 +27,7 @@ private:
     void croiseIndividus(int i1, int i2, int ir, int seuilVitesse, int seuilAngle);
     double calculDistance(QPoint p, QPoint oppose, double angle);
     void setCircuit(int numCircuit);
+	bool isDehors(const QPoint& p);
 public:
     CGenetic(CWCircuit *wCircuit);
     ~CGenetic(void);

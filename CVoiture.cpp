@@ -1,4 +1,5 @@
 #include <QtDebug>
+#include <iostream>
 #include <math.h>
 #include "commun.h"
 #include "CVoiture.h"
@@ -80,6 +81,8 @@ void CVoiture::move(void) {
 	
     realMove(vitesse, currentAngle);
 
+	//qDebug() << currentAngle << currentMarkerIdx << markers.at(currentMarkerIdx).getPosition() << position << markers.at(currentMarkerIdx).isDepasse(position);
+	
     if(markers.at(currentMarkerIdx).isDepasse(position)) {
         score = (++currentMarkerIdx) * 100 / markers.size();
 
@@ -88,6 +91,8 @@ void CVoiture::move(void) {
             alive = false;
         }
     }
+    
+    //std::cout << "Score : " << QString::number(score).toStdString() << std::endl;
 }
 
 double CVoiture::realMove(double vitesse, double angle) {
@@ -144,11 +149,11 @@ void CVoiture::from(CVoiture *v1, CVoiture *v2, int seuilVitesse, int seuilAngle
     nVitesse.from(v1->nVitesse, v2->nVitesse, seuilVitesse);
     nAngle.from(v1->nAngle, v2->nVitesse, seuilAngle);
 
-    if(rand() % 10 < 4) {
+    if(rand() % 10 < 5) {
         nVitesse.mute(rand() % nVitesse.getNbGene());
     }
 
-    if(rand() % 10 < 8) {
+    if(rand() % 10 < 5) {
         nAngle.mute(rand() % nAngle.getNbGene());
     }
     

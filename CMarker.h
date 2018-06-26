@@ -13,6 +13,7 @@ public:
     bool depasseDroite(const QPoint& p) const;
     bool depasseBas(const QPoint& p) const;
     bool depasseGauche(const QPoint& p) const;
+	const QPoint& getPosition(void) const;
 private:
     QPoint p;
     pDepasse depasse;

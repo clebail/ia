@@ -10,51 +10,87 @@
 CGenetic::CGenetic(CWCircuit *wCircuit) {
     QList<CMarker> mks1, mks2, mks3, mks4;
 
-    mks1 << CMarker(QPoint(127, 429), &CMarker::depasseDroite);
-    mks1 << CMarker(QPoint(146, 430), &CMarker::depasseDroite);
-    mks1 << CMarker(QPoint(165, 430), &CMarker::depasseDroite);
-    mks1 << CMarker(QPoint(184, 431), &CMarker::depasseDroite);
-    mks1 << CMarker(QPoint(203, 432), &CMarker::depasseDroite);
-    mks1 << CMarker(QPoint(222, 433), &CMarker::depasseDroite);
-    mks1 << CMarker(QPoint(241, 434), &CMarker::depasseDroite);
-    mks1 << CMarker(QPoint(260, 436), &CMarker::depasseDroite);
-    mks1 << CMarker(QPoint(279, 437), &CMarker::depasseDroite);
-    mks1 << CMarker(QPoint(298, 439), &CMarker::depasseDroite);
-    mks1 << CMarker(QPoint(317, 441), &CMarker::depasseDroite);
-    mks1 << CMarker(QPoint(336, 443), &CMarker::depasseDroite);
-    mks1 << CMarker(QPoint(355, 445), &CMarker::depasseDroite);
-    mks1 << CMarker(QPoint(374, 448), &CMarker::depasseDroite);
-    mks1 << CMarker(QPoint(393, 452), &CMarker::depasseDroite);
-    mks1 << CMarker(QPoint(412, 456), &CMarker::depasseDroite);
-    mks1 << CMarker(QPoint(431, 459), &CMarker::depasseDroite);
-    mks1 << CMarker(QPoint(449, 452), &CMarker::depasseDroite);
-    mks1 << CMarker(QPoint(455, 432), &CMarker::depasseHaut);
-    mks1 << CMarker(QPoint(454, 412), &CMarker::depasseHaut);
-    mks1 << CMarker(QPoint(452, 392), &CMarker::depasseHaut);
-    mks1 << CMarker(QPoint(447, 372), &CMarker::depasseHaut);
-    mks1 << CMarker(QPoint(443, 352), &CMarker::depasseHaut);
-    mks1 << CMarker(QPoint(437, 332), &CMarker::depasseHaut);
-    mks1 << CMarker(QPoint(431, 312), &CMarker::depasseHaut);
-    mks1 << CMarker(QPoint(426, 292), &CMarker::depasseHaut);
-    mks1 << CMarker(QPoint(420, 272), &CMarker::depasseHaut);
-    mks1 << CMarker(QPoint(414, 252), &CMarker::depasseHaut);
-    mks1 << CMarker(QPoint(410, 232), &CMarker::depasseHaut);
-    mks1 << CMarker(QPoint(409, 212), &CMarker::depasseHaut);
-    mks1 << CMarker(QPoint(411, 192), &CMarker::depasseHaut);
-    mks1 << CMarker(QPoint(420, 174), &CMarker::depasseHaut);
-    mks1 << CMarker(QPoint(433, 158), &CMarker::depasseHaut);
-    mks1 << CMarker(QPoint(446, 142), &CMarker::depasseHaut);
-    mks1 << CMarker(QPoint(457, 125), &CMarker::depasseHaut);
-    mks1 << CMarker(QPoint(463, 105), &CMarker::depasseHaut);
-    mks1 << CMarker(QPoint(463, 85), &CMarker::depasseHaut);
-    mks1 << CMarker(QPoint(458, 65), &CMarker::depasseHaut);
-    mks1 << CMarker(QPoint(447, 47), &CMarker::depasseHaut);
-    mks1 << CMarker(QPoint(429, 36), &CMarker::depasseGauche);
-    mks1 << CMarker(QPoint(409, 31), &CMarker::depasseGauche);
-    mks1 << CMarker(QPoint(389, 28), &CMarker::depasseGauche);
-    mks1 << CMarker(QPoint(369, 26), &CMarker::depasseGauche);
-    mks1 << CMarker(QPoint(349, 25), &CMarker::depasseGauche);
-    mks1 << CMarker(QPoint(311, 24), &CMarker::depasseGauche);
+    mks1 << CMarker(QPoint(330, 23), &CMarker::depasseDroite);
+	mks1 << CMarker(QPoint(349, 24), &CMarker::depasseDroite);
+	mks1 << CMarker(QPoint(368, 25), &CMarker::depasseDroite);
+	mks1 << CMarker(QPoint(387, 27), &CMarker::depasseDroite);
+	mks1 << CMarker(QPoint(406, 29), &CMarker::depasseDroite);
+	mks1 << CMarker(QPoint(425, 33), &CMarker::depasseDroite);
+	mks1 << CMarker(QPoint(442, 41), &CMarker::depasseDroite);
+	mks1 << CMarker(QPoint(455, 55), &CMarker::depasseBas);
+	mks1 << CMarker(QPoint(462, 73), &CMarker::depasseBas);
+	mks1 << CMarker(QPoint(464, 92), &CMarker::depasseBas);
+	mks1 << CMarker(QPoint(463, 111), &CMarker::depasseBas);
+	mks1 << CMarker(QPoint(456, 130), &CMarker::depasseBas);
+	mks1 << CMarker(QPoint(445, 146), &CMarker::depasseBas);
+	mks1 << CMarker(QPoint(432, 161), &CMarker::depasseBas);
+	mks1 << CMarker(QPoint(419, 176), &CMarker::depasseBas);
+	mks1 << CMarker(QPoint(412, 194), &CMarker::depasseBas);
+	mks1 << CMarker(QPoint(409, 213), &CMarker::depasseBas);
+	mks1 << CMarker(QPoint(411, 232), &CMarker::depasseBas);
+	mks1 << CMarker(QPoint(415, 251), &CMarker::depasseBas);
+	mks1 << CMarker(QPoint(420, 270), &CMarker::depasseBas);
+	mks1 << CMarker(QPoint(426, 289), &CMarker::depasseBas);
+	mks1 << CMarker(QPoint(431, 308), &CMarker::depasseBas);
+	mks1 << CMarker(QPoint(437, 327), &CMarker::depasseBas);
+	mks1 << CMarker(QPoint(442, 346), &CMarker::depasseBas);
+	mks1 << CMarker(QPoint(447, 365), &CMarker::depasseBas);
+	mks1 << CMarker(QPoint(451, 384), &CMarker::depasseBas);
+	mks1 << CMarker(QPoint(454, 403), &CMarker::depasseBas);
+	mks1 << CMarker(QPoint(456, 422), &CMarker::depasseBas);
+	mks1 << CMarker(QPoint(455, 441), &CMarker::depasseBas);
+	mks1 << CMarker(QPoint(444, 457), &CMarker::depasseBas);
+	mks1 << CMarker(QPoint(424, 459), &CMarker::depasseGauche);
+	mks1 << CMarker(QPoint(404, 456), &CMarker::depasseGauche);
+	mks1 << CMarker(QPoint(384, 451), &CMarker::depasseGauche);
+	mks1 << CMarker(QPoint(364, 448), &CMarker::depasseGauche);
+	mks1 << CMarker(QPoint(344, 445), &CMarker::depasseGauche);
+	mks1 << CMarker(QPoint(324, 442), &CMarker::depasseGauche);
+	mks1 << CMarker(QPoint(304, 440), &CMarker::depasseGauche);
+	mks1 << CMarker(QPoint(284, 438), &CMarker::depasseGauche);
+	mks1 << CMarker(QPoint(264, 437), &CMarker::depasseGauche);
+	mks1 << CMarker(QPoint(244, 435), &CMarker::depasseGauche);
+	mks1 << CMarker(QPoint(224, 434), &CMarker::depasseGauche);
+	mks1 << CMarker(QPoint(204, 433), &CMarker::depasseGauche);
+	mks1 << CMarker(QPoint(184, 432), &CMarker::depasseGauche);
+	mks1 << CMarker(QPoint(164, 431), &CMarker::depasseGauche);
+	mks1 << CMarker(QPoint(144, 430), &CMarker::depasseGauche);
+	mks1 << CMarker(QPoint(124, 430), &CMarker::depasseGauche);
+	mks1 << CMarker(QPoint(104, 429), &CMarker::depasseGauche);
+	mks1 << CMarker(QPoint(84, 428), &CMarker::depasseGauche);
+	mks1 << CMarker(QPoint(64, 423), &CMarker::depasseGauche);
+	mks1 << CMarker(QPoint(47, 412), &CMarker::depasseGauche);
+	mks1 << CMarker(QPoint(36, 395), &CMarker::depasseHaut);
+	mks1 << CMarker(QPoint(30, 375), &CMarker::depasseHaut);
+	mks1 << CMarker(QPoint(28, 355), &CMarker::depasseHaut);
+	mks1 << CMarker(QPoint(32, 335), &CMarker::depasseHaut);
+	mks1 << CMarker(QPoint(37, 315), &CMarker::depasseHaut);
+	mks1 << CMarker(QPoint(40, 295), &CMarker::depasseHaut);
+	mks1 << CMarker(QPoint(40, 275), &CMarker::depasseHaut);
+	mks1 << CMarker(QPoint(37, 255), &CMarker::depasseHaut);
+	mks1 << CMarker(QPoint(34, 235), &CMarker::depasseHaut);
+	mks1 << CMarker(QPoint(32, 215), &CMarker::depasseHaut);
+	mks1 << CMarker(QPoint(31, 195), &CMarker::depasseHaut);
+	mks1 << CMarker(QPoint(33, 175), &CMarker::depasseHaut);
+	mks1 << CMarker(QPoint(35, 155), &CMarker::depasseHaut);
+	mks1 << CMarker(QPoint(36, 135), &CMarker::depasseHaut);
+	mks1 << CMarker(QPoint(35, 115), &CMarker::depasseHaut);
+	mks1 << CMarker(QPoint(38, 95), &CMarker::depasseHaut);
+	mks1 << CMarker(QPoint(47, 77), &CMarker::depasseHaut);
+	mks1 << CMarker(QPoint(60, 61), &CMarker::depasseHaut);
+	mks1 << CMarker(QPoint(76, 49), &CMarker::depasseDroite);
+	mks1 << CMarker(QPoint(94, 41), &CMarker::depasseDroite);
+	mks1 << CMarker(QPoint(113, 36), &CMarker::depasseDroite);
+	mks1 << CMarker(QPoint(132, 34), &CMarker::depasseDroite);
+	mks1 << CMarker(QPoint(151, 34), &CMarker::depasseDroite);
+	mks1 << CMarker(QPoint(170, 33), &CMarker::depasseDroite);
+	mks1 << CMarker(QPoint(189, 32), &CMarker::depasseDroite);
+	mks1 << CMarker(QPoint(208, 30), &CMarker::depasseDroite);
+	mks1 << CMarker(QPoint(227, 28), &CMarker::depasseDroite);
+	mks1 << CMarker(QPoint(246, 27), &CMarker::depasseDroite);
+	mks1 << CMarker(QPoint(265, 25), &CMarker::depasseDroite);
+	mks1 << CMarker(QPoint(284, 24), &CMarker::depasseDroite);
+	mks1 << CMarker(QPoint(311, 24), &CMarker::depasseDroite);
 
     mks2 << CMarker(QPoint(338, 47), &CMarker::depasseGauche);
     mks2 << CMarker(QPoint(318, 48), &CMarker::depasseGauche);
@@ -332,15 +368,17 @@ CGenetic::CGenetic(CWCircuit *wCircuit) {
 
     populationInited = false;
 
-    circuits[0] = CCircuit(QPoint(311, 24), 0, ":/circuits/circuit1.png");
-    circuits[1] = CCircuit(QPoint(358, 44), 0, ":/circuits/circuit2.png");
-    circuits[2] = CCircuit(QPoint(130, 152), PI2, ":/circuits/circuit3.png");
-    circuits[3] = CCircuit(QPoint(123, 452), PI, ":/circuits/circuit4.png");
+    circuits[0] = CCircuit(QPoint(311, 24), PI, ":/circuits/circuit1.png");
+    circuits[1] = CCircuit(QPoint(358, 44), PI, ":/circuits/circuit2.png");
+    circuits[2] = CCircuit(QPoint(130, 152), 3*PI2, ":/circuits/circuit3.png");
+    circuits[3] = CCircuit(QPoint(123, 452), 0, ":/circuits/circuit4.png");
 
     circuits[0].setMarkers(mks1);
     circuits[1].setMarkers(mks2);
     circuits[2].setMarkers(mks3);
     circuits[3].setMarkers(mks4);
+	
+	currentCircuit = 0;
 
     connect(this->wCircuit, SIGNAL(drawVoitures(QPainter*)), this, SLOT(onWCircuitDrawVoitures(QPainter*)));
 }
@@ -404,24 +442,24 @@ double CGenetic::calculDistance(QPoint p, QPoint oppose, double angle) {
     
     if((angle > PI2 - 0.01 && angle < PI2 + 0.01) || (angle > 3 * PI2 - 0.01 && angle < 3 * PI2 + 0.01)) {
         int sens = oppose.y() > p.y() ? -1 : 1;
-        bool fini = y < 0 || y > 500 || circuits[currentCircuit].getImage().pixel(x, y) == 0xFF000000;
+        bool fini = isDehors(QPoint(x, y)); //y < 0 || y >= 500 || circuits[currentCircuit].getImage().pixel(x, y) == 0xFF000000;
         
         while(!fini) {
             y += sens;
 
-            fini = y < 0 || y > 500 || circuits[currentCircuit].getImage().pixel(x, y) == 0xFF000000;
+            fini = isDehors(QPoint(x, y)); //y < 0 || y > 500 || circuits[currentCircuit].getImage().pixel(x, y) == 0xFF000000;
         }
     } else {
         double a = tan(angle);
         double b = y - a * x;
         int sens = oppose.x() > p.x() ? -1 : 1;
-        bool fini = x < 0 || x > 500 || y < 0 || y > 500 || circuits[currentCircuit].getImage().pixel(x, y) == 0xFF000000;
+        bool fini = isDehors(QPoint(x, y)); //x < 0 || x > 500 || y < 0 || y > 500 || circuits[currentCircuit].getImage().pixel(x, y) == 0xFF000000;
         
         while(!fini) {
             x += sens;
             y = a * x + b;
 
-            fini = x < 0 || x > 500 || y < 0 || y > 500 || circuits[currentCircuit].getImage().pixel(x, y) == 0xFF000000;
+            fini = isDehors(QPoint(x, y)); //x < 0 || x > 500 || y < 0 || y > 500 || circuits[currentCircuit].getImage().pixel(x, y) == 0xFF000000;
         }
     }
 
@@ -447,8 +485,19 @@ void CGenetic::setCircuit(int numCircuit) {
     emit circuitChange(&circuits[numCircuit]);
 }
 
+bool CGenetic::isDehors(const QPoint& p) {
+	QImage img = circuits[currentCircuit].getImage();
+	
+	if(p.x() < 0 || p.y() < 0 || p.x() >= img.width() || p.y() >= img.height()) {
+		return true;
+	}
+	
+	return img.pixel(p) == 0xFF000000;
+}
+
 void CGenetic::run(void) {
     int i = 0;
+	int nb = 0;
 	
 	srand(time(NULL));
 		
@@ -459,9 +508,16 @@ void CGenetic::run(void) {
     do {
         calculScores();
         triPopulation();
+		
+		qDebug() << "Meilleur score " << population[0]->getScore();
+		
         croisePopuplation();
 
-        setCircuit((currentCircuit + 1) % NB_CIRCUIT);
+		if(++nb == 100) {
+			currentCircuit = (currentCircuit + 1) % NB_CIRCUIT;
+			nb=0;
+		}
+        setCircuit(currentCircuit);
     }while(++i < NOMBRE_GENERATION);
 	
     emit calculOk(population[0]);
@@ -505,10 +561,10 @@ void CGenetic::calculScores(void) {
 
                 population[i]->move();
 
-                nbDehors += circuits[currentCircuit].getImage().pixel(posRoue[0]) == 0xFF000000 ? 1 : 0;
-                nbDehors += circuits[currentCircuit].getImage().pixel(posRoue[1]) == 0xFF000000 ? 1 : 0;
-                nbDehors += circuits[currentCircuit].getImage().pixel(posRoue[2]) == 0xFF000000 ? 1 : 0;
-                nbDehors += circuits[currentCircuit].getImage().pixel(posRoue[3]) == 0xFF000000 ? 1 : 0;
+                nbDehors += isDehors(posRoue[0]) ? 1 : 0;
+                nbDehors += isDehors(posRoue[1]) ? 1 : 0;
+                nbDehors += isDehors(posRoue[2]) ? 1 : 0;
+                nbDehors += isDehors(posRoue[3]) ? 1 : 0;
 
                 population[i]->setAlive(nbDehors < 2);
                 nbAlive -= nbDehors < 2 ? 0 : 1;
