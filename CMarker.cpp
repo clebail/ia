@@ -1,12 +1,17 @@
 #include "CMarker.h"
 
-CMarker::CMarker(const QPoint& p, pDepasse depasse) {
+CMarker::CMarker(const QPoint& p, pDepasse depasse, pDepasse depasseInv) {
     this->p = p;
     this->depasse = depasse;
+    this->depasseInv = depasseInv;
 }
 
 bool CMarker::isDepasse(const QPoint& p) const {
    return (this->*depasse)(p);
+}
+
+bool CMarker::isDepasseInv(const QPoint& p) const {
+    return (this->*depasseInv)(p);
 }
 
 bool CMarker::depasseHaut(const QPoint& p) const {

@@ -90,6 +90,8 @@ void CVoiture::move(void) {
             score = 1000;
             alive = false;
         }
+    }else if(currentMarkerIdx > 0 && markers.at(currentMarkerIdx-1).isDepasseInv(position)) {
+        score = (--currentMarkerIdx) * 100 / markers.size();
     }
     
     //std::cout << "Score : " << QString::number(score).toStdString() << std::endl;

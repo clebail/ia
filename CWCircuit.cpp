@@ -56,23 +56,27 @@ void CWCircuit::calculMarkers(const QPoint& depart, double distance, double angl
     for(int i = 0;i<markers.size();i++) {
         int dx = abs(prev.x() - markers.at(i).x());
         int dy = abs(prev.y() - markers.at(i).y());
-        QString sens;
+        QString sens, sensInv;
 
         if(dx >= dy) {
             if(prev.x() > markers.at(i).x()) {
                 sens = "Gauche";
+                sensInv = "Droite";
             }else {
                 sens = "Droite";
+                sensInv = "Gauche";
             }
         }else {
             if(prev.y() > markers.at(i).y()) {
                 sens = "Haut";
+                sensInv = "Bas";
             } else {
                 sens = "Bas";
+                sensInv = "Haut";
             }
         }
 
-        qStdOut() << "CMarker(QPoint(" << markers.at(i).x() << ", " << markers.at(i).y() << "), &CMarker::depasse" << sens <<");\r\n";
+        qStdOut() << "CMarker(QPoint(" << markers.at(i).x() << ", " << markers.at(i).y() << "), &CMarker::depasse" << sens <<", &CMarker::depasse" << sensInv <<");\r\n";
 
         prev = markers.at(i);
     }
