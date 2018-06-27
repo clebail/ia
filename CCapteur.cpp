@@ -2,7 +2,7 @@
 #include "CCapteur.h"
 
 void CCapteur::init(void) {
-    value = ((double)((rand() % 10) - 5)) / 10.0;
+    value = ((double)((rand() % 50) - 25)) / 50.0;
 }
 
 double CCapteur::getValue(void) {

@@ -70,7 +70,7 @@ void CVoiture::move(void) {
     double vitesse;
 
 	currentAngle += getAngle();
-	currentAngle = normAngle(currentAngle);
+	//currentAngle = normAngle(currentAngle);
 
     vitesse = getVitesse();
 	if(vitesse < 1) {
@@ -91,7 +91,8 @@ void CVoiture::move(void) {
             alive = false;
         }
     }else if(currentMarkerIdx > 0 && markers.at(currentMarkerIdx-1).isDepasseInv(position)) {
-        score = (--currentMarkerIdx) * 100 / markers.size();
+        score = 0;
+		alive = false;
     }
     
     //std::cout << "Score : " << QString::number(score).toStdString() << std::endl;
@@ -163,11 +164,11 @@ void CVoiture::from(CVoiture *v1, CVoiture *v2, int seuilVitesse, int seuilAngle
 }
 
 double CVoiture::getVitesse(void) {
-    return nVitesse.eval(100) * 20;
+    return nVitesse.eval(100) * 10;
 }
 
 double CVoiture::getAngle(void) {
-    double angle = nAngle.eval(100) * PI / 2 - (PI / 4);
+    double angle = nAngle.eval(100) * PI - PI2;
 
     return angle;
 }

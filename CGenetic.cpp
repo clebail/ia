@@ -515,7 +515,7 @@ void CGenetic::run(void) {
 		
         croisePopuplation();
 
-		if(++nb == 100) {
+		if(++nb == 10) {
 			currentCircuit = (currentCircuit + 1) % NB_CIRCUIT;
 			nb=0;
 		}
@@ -562,14 +562,17 @@ void CGenetic::calculScores(void) {
                 population[i]->setInputs(inputs);
 
                 population[i]->move();
+				if(population[i]->isAlive()) {
+					nbDehors += isDehors(posRoue[0]) ? 1 : 0;
+					nbDehors += isDehors(posRoue[1]) ? 1 : 0;
+					nbDehors += isDehors(posRoue[2]) ? 1 : 0;
+					nbDehors += isDehors(posRoue[3]) ? 1 : 0;
 
-                nbDehors += isDehors(posRoue[0]) ? 1 : 0;
-                nbDehors += isDehors(posRoue[1]) ? 1 : 0;
-                nbDehors += isDehors(posRoue[2]) ? 1 : 0;
-                nbDehors += isDehors(posRoue[3]) ? 1 : 0;
-
-                population[i]->setAlive(nbDehors < 2);
-                nbAlive -= nbDehors < 2 ? 0 : 1;
+					population[i]->setAlive(nbDehors < 2);
+					nbAlive -= nbDehors < 2 ? 0 : 1;
+				} else {
+					nbAlive--;
+				}
             }
         }
 
