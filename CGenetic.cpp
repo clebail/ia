@@ -1,5 +1,6 @@
 #include <QtDebug>
 #include <QEventLoop>
+#include <QTime>
 #include <iostream>
 #include <stdlib.h>
 #include <time.h>
@@ -444,29 +445,26 @@ double CGenetic::calculDistance(QPoint p, QPoint oppose, double angle) {
     
     if((angle > PI2 - 0.01 && angle < PI2 + 0.01) || (angle > 3 * PI2 - 0.01 && angle < 3 * PI2 + 0.01)) {
         int sens = oppose.y() > p.y() ? -1 : 1;
-        bool fini = isDehors(QPoint(x, y)); //y < 0 || y >= 500 || circuits[currentCircuit].getImage().pixel(x, y) == 0xFF000000;
+        bool fini = isDehors(QPoint(x, y));
         
         while(!fini) {
             y += sens;
 
-            fini = isDehors(QPoint(x, y)); //y < 0 || y > 500 || circuits[currentCircuit].getImage().pixel(x, y) == 0xFF000000;
+            fini = isDehors(QPoint(x, y));
         }
     } else {
         double a = tan(angle);
         double b = y - a * x;
         int sens = oppose.x() > p.x() ? -1 : 1;
-        bool fini = isDehors(QPoint(x, y)); //x < 0 || x > 500 || y < 0 || y > 500 || circuits[currentCircuit].getImage().pixel(x, y) == 0xFF000000;
+        bool fini = isDehors(QPoint(x, y));
         
         while(!fini) {
             x += sens;
             y = a * x + b;
 
-            fini = isDehors(QPoint(x, y)); //x < 0 || x > 500 || y < 0 || y > 500 || circuits[currentCircuit].getImage().pixel(x, y) == 0xFF000000;
+            fini = isDehors(QPoint(x, y));
         }
     }
-
-    x = CCircuit::normCoordonnees(x);
-    y = CCircuit::normCoordonnees(y);
 
     dx = abs(p.x() - x);
     dy = abs(p.y() - y);
@@ -540,9 +538,11 @@ void CGenetic::drawPopulation(QPainter *painter) {
 void CGenetic::calculScores(void) {
     int i;
     int nbAlive = TAILLE_POPULATION;
-    int nbIter = 0;
+    QTime time;
+    int timeElapsed = 0;
     
-    while(nbAlive != 0 && nbIter < 400) {
+    time.start();
+    while(nbAlive != 0 && timeElapsed < MAX_TIME) {
         for(i=0;i<TAILLE_POPULATION;i++) {
             if(population[i]->isAlive()) {
                 double angle = population[i]->getCurrentAngle();
@@ -561,8 +561,7 @@ void CGenetic::calculScores(void) {
 
                 population[i]->setInputs(inputs);
 
-                population[i]->move();
-				if(population[i]->isAlive()) {
+                if(population[i]->move(timeElapsed)) {
 					nbDehors += isDehors(posRoue[0]) ? 1 : 0;
 					nbDehors += isDehors(posRoue[1]) ? 1 : 0;
 					nbDehors += isDehors(posRoue[2]) ? 1 : 0;
@@ -579,7 +578,7 @@ void CGenetic::calculScores(void) {
         emit repaintRequested();
         msleep(1000 / 24);
 
-        nbIter++;
+        timeElapsed = time.elapsed();
     }
 }
 

@@ -21,7 +21,7 @@ public:
     int getScore(void);
     void draw(QPainter *painter);
     void setInputs(double *inputs);
-    void move(void);
+    bool move(int timeElapsed);
 	double realMove(double vitesse, double angle);
     void setStartInfo(QPoint position, double angle, const QList<CMarker> &markers);
     const QPoint& getPosition(void);
@@ -46,7 +46,6 @@ private:
     double getVitesse(void);
     double getAngle(void);
     void calculPosRoue(void);
-    double calculDistance(QPoint p, QPoint oppose, double angle, QPainter *painter, QColor color);
     double normAngle(double angle);
 };
 

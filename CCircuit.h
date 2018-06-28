@@ -16,8 +16,6 @@ public:
     double getAngle(void);
     void setMarkers(const QList<CMarker>& markers);
     const QList<CMarker>& getMarkers(void);
-    static int normCoordonnees(int i);
-
 private:
     QPoint depart;
     double angle;

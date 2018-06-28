@@ -1,7 +1,6 @@
 #include "CCircuit.h"
 
-CCircuit::CCircuit(void) {
-}
+CCircuit::CCircuit(void) {}
 
 CCircuit::CCircuit(QPoint depart, double angle, QString imgResource) {
     this->depart = depart;
@@ -28,17 +27,5 @@ void CCircuit::setMarkers(const QList<CMarker>& markers) {
 
 const QList<CMarker>& CCircuit::getMarkers(void) {
     return markers;
-}
-
-int CCircuit::normCoordonnees(int i) {
-    if(i >= 500) {
-        i = 500;
-    }
-
-    if(i < 0) {
-        i = 0;
-    }
-
-    return i;
 }
 

@@ -35,30 +35,17 @@ void CVoiture::draw(QPainter *painter) {
     painter->setBrush(QBrush(Qt::yellow));
     painter->drawEllipse(posRoue[0].x(), posRoue[0].y(), 3, 3);
 
-    /*calculDistance(posRoue[0], posRoue[2], currentAngle, painter, Qt::yellow);
-    calculDistance(posRoue[0], posRoue[1], PI / 2 + currentAngle, painter, Qt::yellow);
-    calculDistance(posRoue[0], posRoue[3], PI / 4 + currentAngle, painter, Qt::yellow);*/
+    painter->setPen(QPen(Qt::yellow));
+    painter->setBrush(QBrush(Qt::yellow));
+    painter->drawEllipse(posRoue[1].x(), posRoue[1].y(), 3, 3);
 
     painter->setPen(QPen(Qt::red));
     painter->setBrush(QBrush(Qt::red));
-    painter->drawEllipse(posRoue[1].x(), posRoue[1].y(), 3, 3);
-
-    /*calculDistance(posRoue[1], posRoue[3], currentAngle, painter, Qt::red);
-    calculDistance(posRoue[1], posRoue[0], 3 * PI / 2 + currentAngle, painter, Qt::red);
-    calculDistance(posRoue[1], posRoue[2], 7 * PI / 4 + currentAngle, painter, Qt::red);*/
-    
-
-    painter->setPen(QPen(Qt::green));
-    painter->setBrush(QBrush(Qt::green));
     painter->drawEllipse(posRoue[2].x(), posRoue[2].y(), 3, 3);
 
-    //calculDistance(posRoue[2], posRoue[3], PI / 2 + currentAngle, painter, Qt::green);
-
-    painter->setPen(QPen(Qt::cyan));
-    painter->setBrush(QBrush(Qt::cyan));
+    painter->setPen(QPen(Qt::red));
+    painter->setBrush(QBrush(Qt::red));
     painter->drawEllipse(posRoue[3].x(), posRoue[3].y(), 3, 3);
-
-    //calculDistance(posRoue[3], posRoue[2], 3 * PI / 2 + currentAngle, painter, Qt::cyan);
 }
 
 void CVoiture::setInputs(double *inputs) {
@@ -66,36 +53,38 @@ void CVoiture::setInputs(double *inputs) {
     nAngle.setInputs(inputs);
 }
 
-void CVoiture::move(void) {
+bool CVoiture::move(int timeElapsed) {
     double vitesse;
 
 	currentAngle += getAngle();
-	//currentAngle = normAngle(currentAngle);
 
     vitesse = getVitesse();
 	if(vitesse < 1) {
 		score = 0;
 		alive = false;
-		return;
+
+        return false;
 	}
 	
     realMove(vitesse, currentAngle);
 
-	//qDebug() << currentAngle << currentMarkerIdx << markers.at(currentMarkerIdx).getPosition() << position << markers.at(currentMarkerIdx).isDepasse(position);
-	
     if(markers.at(currentMarkerIdx).isDepasse(position)) {
         score = (++currentMarkerIdx) * 100 / markers.size();
 
         if(score == 100) {
-            score = 1000;
+            score += (MAX_TIME - timeElapsed);
             alive = false;
+
+            return false;
         }
     }else if(currentMarkerIdx > 0 && markers.at(currentMarkerIdx-1).isDepasseInv(position)) {
         score = 0;
 		alive = false;
+
+        return false;
     }
     
-    //std::cout << "Score : " << QString::number(score).toStdString() << std::endl;
+    return true;
 }
 
 double CVoiture::realMove(double vitesse, double angle) {
@@ -110,8 +99,8 @@ double CVoiture::realMove(double vitesse, double angle) {
 	position.rx() += dx;
     position.ry() += dy;
 
-    position.setX(CCircuit::normCoordonnees(position.x()));
-    position.setY(CCircuit::normCoordonnees(position.y()));
+    position.setX(position.x());
+    position.setY(position.y());
 	
 	calculPosRoue();
 	
@@ -181,45 +170,10 @@ void CVoiture::calculPosRoue(void) {
     double yP = sin(aP) * HYPO;
     double yM = sin(aM) * HYPO;
 
-    posRoue[0] = QPoint(CCircuit::normCoordonnees(position.x() - xP), CCircuit::normCoordonnees(position.y() - yP));
-    posRoue[1] = QPoint(CCircuit::normCoordonnees(position.x() - xM), CCircuit::normCoordonnees(position.y() - yM));
-    posRoue[2] = QPoint(CCircuit::normCoordonnees(position.x() + xM), CCircuit::normCoordonnees(position.y() + yM));
-    posRoue[3] = QPoint(CCircuit::normCoordonnees(position.x() + xP), CCircuit::normCoordonnees(position.y() + yP));
-}
-
-double CVoiture::calculDistance(QPoint p, QPoint oppose, double angle, QPainter *painter, QColor color) {
-    bool fini = false;
-    int x = p.x();
-    int y = p.y();
-    
-    painter->setPen(QPen(color));
-
-    angle = normAngle(angle);
-    
-    if((angle > PI2 - 0.01 && angle < PI2 + 0.01) || (angle > 3 * PI2 - 0.01 && angle < 3 * PI2 + 0.01)) {
-        int sens = oppose.y() > p.y() ? -1 : 1;
-        
-        while(!fini) {
-            painter->drawPoint(QPoint(x, y));
-
-            y += sens;
-            fini = y <= 0 || y >= 500;
-        }
-    } else {
-        double a = tan(angle);
-        double b = y - a * x;
-        int sens = oppose.x() > p.x() ? -1 : 1;
-        
-        while(!fini) {
-            painter->drawPoint(QPoint(x, y));
-
-            x += sens;
-            y = a * x + b;
-            fini = y <= 0 || y >= 500 || x <= 0 || x >= 500;
-        }
-    }
-
-    return 0;
+    posRoue[0] = QPoint(position.x() - xP, position.y() - yP);
+    posRoue[1] = QPoint(position.x() - xM, position.y() - yM);
+    posRoue[2] = QPoint(position.x() + xM, position.y() + yM);
+    posRoue[3] = QPoint(position.x() + xP, position.y() + yP);
 }
 
 double CVoiture::normAngle(double angle) {
