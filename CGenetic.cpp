@@ -389,10 +389,10 @@ CGenetic::CGenetic(CWCircuit *wCircuit) {
 CGenetic::~CGenetic(void) {
 }
 
-void CGenetic::initPopulation(void) {
+void CGenetic::initPopulation(int from, int to) {
 	int i;
 
-    for(i=0;i<TAILLE_POPULATION;i++) {
+    for(i=from;i<=to;i++) {
 		population[i] = new CVoiture();
 		population[i]->init();
 	}
@@ -423,14 +423,19 @@ void CGenetic::croisePopuplation(void) {
 	max = TAILLE_POPULATION / 2;
 	
 	while(i < max) {
-        int seuilVitesse = (rand() % (NB_CAPTEUR - 1)) + 1;
-        int seuilAngle = (rand() % (NB_CAPTEUR - 1)) + 1;
-		
-        croiseIndividus(i-1, i, ir, seuilVitesse, seuilAngle);
-        croiseIndividus(i, i-1, ir-1, seuilVitesse, seuilAngle);
-		
-        i+=2;
-		ir-=2;
+        if(population[i-1]->getScore() > 0 && population[i]->getScore()) {
+            int seuilVitesse = (rand() % (NB_CAPTEUR - 1)) + 1;
+            int seuilAngle = (rand() % (NB_CAPTEUR - 1)) + 1;
+
+            croiseIndividus(i-1, i, ir, seuilVitesse, seuilAngle);
+            croiseIndividus(i, i-1, ir-1, seuilVitesse, seuilAngle);
+
+            i+=2;
+            ir-=2;
+        } else {
+            initPopulation(i - (population[i-1]->getScore() <= 0 ? 1 : 0), max - 1);
+            i = max;
+        }
 	}
 }
 

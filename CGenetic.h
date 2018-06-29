@@ -21,7 +21,7 @@ private:
     int nbAlive;
     bool populationInited;
 	
-	void initPopulation(void);
+    void initPopulation(int from = 0, int to = TAILLE_POPULATION - 1);
 	void triPopulation(void);
     void croisePopuplation(void);
     void croiseIndividus(int i1, int i2, int ir, int seuilVitesse, int seuilAngle);
