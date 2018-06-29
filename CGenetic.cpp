@@ -8,7 +8,7 @@
 #include "commun.h"
 #include "CGenetic.h"
 
-CGenetic::CGenetic(CWCircuit *wCircuit) {
+CGenetic::CGenetic(CWCircuit *wCircuit, const CSetup &setup) {
     QList<CMarker> mks1, mks2, mks3, mks4;
 
     mks1 << CMarker(QPoint(330, 23), &CMarker::depasseDroite, &CMarker::depasseGauche);
@@ -368,6 +368,7 @@ CGenetic::CGenetic(CWCircuit *wCircuit) {
     mks4 << CMarker(QPoint(123, 452), &CMarker::depasseGauche, &CMarker::depasseDroite);
 
     this->wCircuit = wCircuit;
+    this->setup = setup;
 
     populationInited = false;
 
@@ -518,7 +519,7 @@ void CGenetic::run(void) {
 		
         croisePopuplation();
 
-		if(++nb == 10) {
+        if(++nb == setup.getNbCircuit()) {
 			currentCircuit = (currentCircuit + 1) % NB_CIRCUIT;
 			nb=0;
 		}

@@ -4,7 +4,7 @@
 CMainWindow::CMainWindow(QWidget *parent) : QMainWindow(parent) {
     setupUi(this);
 
-    genetic = new CGenetic(wCircuit);
+    genetic = new CGenetic(wCircuit, CSetup());
 
     connect(genetic, SIGNAL(calculOk(CVoiture*)), this, SLOT(onGeneticCalculOk(CVoiture*)));
     connect(genetic, SIGNAL(circuitChange(CCircuit*)), this, SLOT(onGeneticCircuitChange(CCircuit*)));

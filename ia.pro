@@ -32,7 +32,8 @@ SOURCES += \
     CVoiture.cpp \
     CCapteur.cpp \
     CNeurone.cpp \
-    CMarker.cpp
+    CMarker.cpp \
+    CSetup.cpp
 
 HEADERS += \
         CMainWindow.h \
@@ -43,7 +44,8 @@ HEADERS += \
     CCapteur.h \
     CNeurone.h \
     CMarker.h \
-    commun.h
+    commun.h \
+    CSetup.h
 
 FORMS += \
         CMainWindow.ui

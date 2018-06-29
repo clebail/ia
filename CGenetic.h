@@ -6,6 +6,7 @@
 #include "CCircuit.h"
 #include "CVoiture.h"
 #include "CWCircuit.h"
+#include "CSetup.h"
 
 #define TAILLE_POPULATION					200
 #define NOMBRE_GENERATION					200000
@@ -20,6 +21,7 @@ private:
     int currentCircuit;
     int nbAlive;
     bool populationInited;
+    CSetup setup;
 	
     void initPopulation(int from = 0, int to = TAILLE_POPULATION - 1);
 	void triPopulation(void);
@@ -29,7 +31,7 @@ private:
     void setCircuit(int numCircuit);
 	bool isDehors(const QPoint& p);
 public:
-    CGenetic(CWCircuit *wCircuit);
+    CGenetic(CWCircuit *wCircuit, const CSetup& setup);
     ~CGenetic(void);
     void run(void);
     void calculScores(void);
