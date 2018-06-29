@@ -546,7 +546,7 @@ void CGenetic::calculScores(void) {
         for(i=0;i<TAILLE_POPULATION;i++) {
             if(population[i]->isAlive()) {
                 double angle = population[i]->getCurrentAngle();
-                double inputs[NB_CAPTEUR];
+                double inputs[NB_CAPTEUR+2];
                 QPoint *posRoue = population[i]->getPosRoue();
                 int nbDehors = 0;
 
@@ -558,6 +558,9 @@ void CGenetic::calculScores(void) {
                 inputs[5] = calculDistance(posRoue[1], posRoue[2], angle + 7 * PI / 4);
                 inputs[6] = calculDistance(posRoue[2], posRoue[3], angle + PI2);
                 inputs[7] = calculDistance(posRoue[3], posRoue[2], angle + 3 * PI2);
+
+                inputs[8] = angle;
+                inputs[9] = population[i]->getCurrentVitesse();
 
                 population[i]->setInputs(inputs);
 

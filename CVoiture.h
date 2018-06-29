@@ -26,6 +26,7 @@ public:
     void setStartInfo(QPoint position, double angle, const QList<CMarker> &markers);
     const QPoint& getPosition(void);
     double getCurrentAngle(void);
+    double getCurrentVitesse(void);
     QPoint * getPosRoue(void);
     void setAlive(bool alive);
     bool isAlive(void);
@@ -37,6 +38,7 @@ private:
     QPoint posRoue[NB_ROUE];
     int score;
     double currentAngle;
+    double currentVitesse;
     bool alive;
     CNeurone nVitesse;
     CNeurone nAngle;

@@ -4,9 +4,10 @@
 #include "commun.h"
 #include "CVoiture.h"
 
-CVoiture::CVoiture(void) : nVitesse(NB_CAPTEUR+1), nAngle(NB_CAPTEUR+1) {
+CVoiture::CVoiture(void) : nVitesse(NB_CAPTEUR+3), nAngle(NB_CAPTEUR+3) {
     score = 0;
     currentAngle = 0;
+    currentVitesse = 0;
 }
 
 void CVoiture::init(void) {
@@ -54,34 +55,41 @@ void CVoiture::setInputs(double *inputs) {
 }
 
 bool CVoiture::move(int timeElapsed) {
-    double vitesse;
+    currentAngle += getAngle();
 
-	currentAngle += getAngle();
-
-    vitesse = getVitesse();
-	if(vitesse < 1) {
+    currentVitesse = getVitesse();
+    if(currentVitesse < 1) {
 		score = 0;
 		alive = false;
 
         return false;
 	}
 	
-    realMove(vitesse, currentAngle);
+    realMove(currentVitesse, currentAngle);
 
     if(markers.at(currentMarkerIdx).isDepasse(position)) {
         score = (++currentMarkerIdx) * 100 / markers.size();
 
         if(score == 100) {
-            score += (MAX_TIME - timeElapsed);
+            score += (MAX_TIME - timeElapsed) / 1000;
             alive = false;
 
             return false;
         }
-    }else if(currentMarkerIdx > 0 && markers.at(currentMarkerIdx-1).isDepasseInv(position)) {
-        score = 0;
-		alive = false;
+    }else if(currentMarkerIdx > 0) {
+        if(markers.at(currentMarkerIdx - 1).isDepasseInv(position)) {
+            score = 0;
+            alive = false;
 
-        return false;
+            return false;
+        }
+    }else if(currentMarkerIdx == 0) {
+        if(markers.at(markers.size() - 1).isDepasseInv(position)) {
+            score = 0;
+            alive = false;
+
+            return false;
+        }
     }
     
     return true;
@@ -123,6 +131,10 @@ const QPoint& CVoiture::getPosition(void) {
 
 double CVoiture::getCurrentAngle(void) {
     return currentAngle;
+}
+
+double CVoiture::getCurrentVitesse(void) {
+    return currentVitesse;
 }
 
 QPoint * CVoiture::getPosRoue(void) {
