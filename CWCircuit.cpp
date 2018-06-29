@@ -84,6 +84,13 @@ void CWCircuit::calculMarkers(const QPoint& depart, double distance, double angl
     repaint();
 }
 
+void CWCircuit::createImage(QString fileName) {
+    QPixmap pixmap(size());
+    render(&pixmap);
+
+    pixmap.save(fileName, "JPG");
+}
+
 void CWCircuit::paintEvent(QPaintEvent *) {
     QPainter painter(this);
 

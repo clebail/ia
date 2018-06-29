@@ -11,6 +11,7 @@ public:
     explicit CWCircuit(QWidget *parent = 0);
     void setCircuit(CCircuit *circuit);
     void calculMarkers(const QPoint &depart, double distance, double angleDepart);
+    void createImage(QString fileName);
 protected:
     virtual void paintEvent(QPaintEvent *);
 private:

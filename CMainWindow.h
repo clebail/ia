@@ -13,10 +13,13 @@ public:
 private:
     CGenetic *genetic;
 	CVoiture testVoiture;
+    CSetup setup;
+    int imgIdx;
 private slots:
     void onGeneticCalculOk(CVoiture *best);
     void onGeneticCircuitChange(CCircuit *circuit);
     void onGeneticRepaintRequested(void);
+    void onGeneticTerminated(void);
     void on_pbTest_clicked(bool checked = false);
 	void on_pbTestVoiture_clicked(bool checked = false);
 	void onTVdrawVoitures(QPainter *painter);
