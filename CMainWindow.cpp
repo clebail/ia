@@ -16,6 +16,12 @@ void CMainWindow::onGeneticCircuitChange(CCircuit *circuit) {
 }
 
 void CMainWindow::onGeneticRepaintRequested(void) {
+	int elapsed = mainTime.elapsed() / 1000;
+	QString time = "%1:%2:%3";
+	
+	time = time.arg(elapsed / 3600, 2, 10, QChar('0')).arg(elapsed / 60, 2, 10, QChar('0')).arg(elapsed % 60, 2, 10, QChar('0'));
+	
+	wCircuit->setElapsedTime(time);
     wCircuit->repaint();
     wCircuit->createImage("images/img_"+QString("%1").arg(imgIdx, 6, 10, QChar('0'))+".jpg");
 
@@ -43,6 +49,7 @@ void CMainWindow::on_pbTest_clicked(bool) {
     connect(genetic, SIGNAL(repaintRequested()), this, SLOT(onGeneticRepaintRequested()));
     connect(genetic, SIGNAL(terminated()), this, SLOT(onGeneticTerminated()));
 
+	mainTime.start();
     genetic->start();
 }
 
@@ -66,7 +73,7 @@ void CMainWindow::CMainWindow::onTVdrawVoitures(QPainter *painter) {
 void CMainWindow::on_pbCalculMarkers_clicked(bool) {
     QStringList l = leDepart->text().split(",");
     QPoint depart(QPoint(l.at(0).toInt(), l.at(1).toInt()));
-    CCircuit circuit(depart, 0, leCircuit->text());
+    CCircuit circuit(depart, 0, leCircuit->text(), QPoint(96, 220));
 
     wCircuit->setCircuit(&circuit);
     wCircuit->calculMarkers(depart, leDistance->text().toDouble(), leAngleDepart->text().toDouble());

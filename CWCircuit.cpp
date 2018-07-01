@@ -7,6 +7,7 @@
 
 CWCircuit::CWCircuit(QWidget *parent) : QWidget(parent) {
     circuit = 0;
+	elapsedTime = "00:00:00";
 }
 
 void CWCircuit::setCircuit(CCircuit *circuit) {
@@ -91,9 +92,16 @@ void CWCircuit::createImage(QString fileName) {
     pixmap.save(fileName, "JPG");
 }
 
+void CWCircuit::setElapsedTime(QString elapsedTime) {
+	this->elapsedTime = elapsedTime;
+}
+
 void CWCircuit::paintEvent(QPaintEvent *) {
     QPainter painter(this);
-
+	QFont font;
+	
+	font.setPixelSize(34);
+	
     painter.setPen(QPen(Qt::black));
     painter.setBrush(QBrush(Qt::black));
     painter.drawRect(rect());
@@ -109,6 +117,10 @@ void CWCircuit::paintEvent(QPaintEvent *) {
 
             painter.drawEllipse(markers.at(i), 3, 3);
         }
+        
+        painter.setPen(QPen(Qt::white));
+		painter.setFont(font);
+		painter.drawText(circuit->getPosTime(), elapsedTime);
     }
 
     emit drawVoitures(&painter);

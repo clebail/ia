@@ -4,7 +4,7 @@
 #include "commun.h"
 #include "CVoiture.h"
 
-CVoiture::CVoiture(void) : nVitesse(NB_CAPTEUR+3), nAngle(NB_CAPTEUR+3) {
+CVoiture::CVoiture(void) : nVitesse(NB_CAPTEUR+1), nAngle(NB_CAPTEUR+1) {
     score = 0;
     currentAngle = 0;
     currentVitesse = 0;
@@ -78,7 +78,6 @@ bool CVoiture::move(int timeElapsed) {
         }
     }else if(currentMarkerIdx > 0) {
         if(markers.at(currentMarkerIdx - 1).isDepasseInv(position)) {
-            score = 0;
             alive = false;
 
             return false;
@@ -119,7 +118,7 @@ void CVoiture::setStartInfo(QPoint position, double angle, const QList<CMarker>&
     this->position = position;
     this->markers = markers;
     currentAngle = angle;
-    score = 0;
+    score /= 2;
     currentMarkerIdx = 0;
 
     calculPosRoue();
@@ -165,11 +164,11 @@ void CVoiture::from(CVoiture *v1, CVoiture *v2, int seuilVitesse, int seuilAngle
 }
 
 double CVoiture::getVitesse(void) {
-    return nVitesse.eval(100) * 10;
+    return nVitesse.eval(100) * 20;
 }
 
 double CVoiture::getAngle(void) {
-    double angle = nAngle.eval(100) * PI - PI2;
+    double angle = nAngle.eval(100) * 3 * PI2 - 3 * PI / 4;
 
     return angle;
 }

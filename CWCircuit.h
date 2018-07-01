@@ -12,11 +12,13 @@ public:
     void setCircuit(CCircuit *circuit);
     void calculMarkers(const QPoint &depart, double distance, double angleDepart);
     void createImage(QString fileName);
+	void setElapsedTime(QString elapsedTime);
 protected:
     virtual void paintEvent(QPaintEvent *);
 private:
     CCircuit *circuit;
     QList<QPoint> markers;
+	QString elapsedTime;
 
     QTextStream& qStdOut(void);
 signals:

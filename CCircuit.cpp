@@ -2,9 +2,10 @@
 
 CCircuit::CCircuit(void) {}
 
-CCircuit::CCircuit(QPoint depart, double angle, QString imgResource) {
+CCircuit::CCircuit(QPoint depart, double angle, QString imgResource, QPoint posTime) {
     this->depart = depart;
     this->angle = angle;
+	this->posTime = posTime;
     
     image = QImage(imgResource);
 }
@@ -27,5 +28,27 @@ void CCircuit::setMarkers(const QList<CMarker>& markers) {
 
 const QList<CMarker>& CCircuit::getMarkers(void) {
     return markers;
+}
+
+void CCircuit::normCoordonnees(int& x, int& y) {
+	if(x < 0) {
+		x = 0;
+	}
+	
+	if(x >= image.width()) {
+		x = image.width() - 1;
+	}
+	
+	if(y < 0) {
+		y = 0;
+	}
+	
+	if(y >= image.height()) {
+		y = image.height() - 1;
+	}
+}
+
+const QPoint& CCircuit::getPosTime(void) {
+	return posTime;
 }
 

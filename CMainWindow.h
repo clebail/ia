@@ -2,6 +2,7 @@
 #define CMAINWINDOW_H
 
 #include <QMainWindow>
+#include <QTime>
 #include "ui_CMainWindow.h"
 #include "CGenetic.h"
 
@@ -15,6 +16,7 @@ private:
 	CVoiture testVoiture;
     CSetup setup;
     int imgIdx;
+	QTime mainTime;
 private slots:
     void onGeneticCalculOk(CVoiture *best);
     void onGeneticCircuitChange(CCircuit *circuit);
