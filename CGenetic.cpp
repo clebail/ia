@@ -9,24 +9,26 @@
 #include "CGenetic.h"
 #include "circuit1.cpp"
 #include "circuit2.cpp"
+#include "circuit3.cpp"
+#include "circuit4.cpp"
 
 CGenetic::CGenetic(CWCircuit *wCircuit, const CSetup &setup) {
     QList<CMarker> mks1, mks2, mks3, mks4;
 
     initCicuit1(mks1);
     initCicuit2(mks2);
-    initCicuit1(mks3);
-    initCicuit2(mks4);
+    initCicuit3(mks3);
+    initCicuit4(mks4);
 
     this->wCircuit = wCircuit;
     this->setup = setup;
 
     populationInited = false;
 
-    circuits[0] = CCircuit(QPoint(311, 24), 0, ":/circuits/circuit1.png", QPoint(96, 220));
-    circuits[1] = CCircuit(QPoint(358, 44), PI, ":/circuits/circuit2.png", QPoint(121, 286));
-    circuits[2] = CCircuit(QPoint(130, 152), 3*PI2, ":/circuits/circuit3.png", QPoint(125, 354));
-    circuits[3] = CCircuit(QPoint(123, 452), PI, ":/circuits/circuit4.png", QPoint(149, 382));
+    circuits[0] = CCircuit(QPoint(592, 552), 0, ":/circuits/circuit1.png", QPoint(285, 285));
+    circuits[1] = CCircuit(QPoint(647, 46), 0, ":/circuits/circuit2.png", QPoint(302, 309));
+    circuits[2] = CCircuit(QPoint(652, 372), 0, ":/circuits/circuit3.png", QPoint(457, 217));
+    circuits[3] = CCircuit(QPoint(118, 535), 0, ":/circuits/circuit4.png", QPoint(209, 203));
 
     circuits[0].setMarkers(mks1);
     circuits[1].setMarkers(mks2);
@@ -176,7 +178,7 @@ void CGenetic::run(void) {
 			currentCircuit = rand() % NB_CIRCUIT;//(currentCircuit + 1) % NB_CIRCUIT;
 			nb=0;
 		}
-        setCircuit(currentCircuit);
+        setCircuit(1/*currentCircuit*/);
     }while(++i < NOMBRE_GENERATION);
 	
     emit calculOk(population[0]);

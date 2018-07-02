@@ -73,7 +73,7 @@ void CMainWindow::CMainWindow::onTVdrawVoitures(QPainter *painter) {
 void CMainWindow::on_pbCalculMarkers_clicked(bool) {
     QStringList l = leDepart->text().split(",");
     QPoint depart(QPoint(l.at(0).toInt(), l.at(1).toInt()));
-    CCircuit circuit(depart, 0, ":circuit/circuit"+QString::number(sbNumCircuit->value())+".png", QPoint(96, 220));
+    CCircuit circuit(depart, 0, ":circuits/circuit"+QString::number(sbNumCircuit->value())+".png", QPoint(96, 220));
 
     wCircuit->setCircuit(&circuit);
     wCircuit->calculMarkers(depart, leDistance->text().toDouble(), leAngleDepart->text().toDouble(), sbNumCircuit->value());
