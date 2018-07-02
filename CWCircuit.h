@@ -10,7 +10,7 @@ class CWCircuit : public QWidget {
 public:
     explicit CWCircuit(QWidget *parent = 0);
     void setCircuit(CCircuit *circuit);
-    void calculMarkers(const QPoint &depart, double distance, double angleDepart);
+    void calculMarkers(const QPoint &depart, double distance, double angleDepart, int numCircuit);
     void createImage(QString fileName);
 	void setElapsedTime(QString elapsedTime);
 protected:

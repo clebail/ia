@@ -15,7 +15,7 @@ void CWCircuit::setCircuit(CCircuit *circuit) {
     repaint();
 }
 
-void CWCircuit::calculMarkers(const QPoint& depart, double distance, double angleDepart) {
+void CWCircuit::calculMarkers(const QPoint& depart, double distance, double angleDepart, int numCircuit) {
     QPoint curPoint;
     bool fini = false;
     double step = 0.01;
@@ -54,6 +54,11 @@ void CWCircuit::calculMarkers(const QPoint& depart, double distance, double angl
 
     QPoint prev = markers.last();
 
+    qStdOut() << "#include <QList>\r\n";
+    qStdOut() << "#include \"CMarker.h\"\r\n\r\n";
+    qStdOut() << "QList<CMarker> mks" << "1" << ";\r\n\r\n";
+    qStdOut() << "void initCicuit" << numCircuit << "(QList<CMarker>& mks) {\r\n";
+
     for(int i = 0;i<markers.size();i++) {
         int dx = abs(prev.x() - markers.at(i).x());
         int dy = abs(prev.y() - markers.at(i).y());
@@ -77,10 +82,12 @@ void CWCircuit::calculMarkers(const QPoint& depart, double distance, double angl
             }
         }
 
-        qStdOut() << "CMarker(QPoint(" << markers.at(i).x() << ", " << markers.at(i).y() << "), &CMarker::depasse" << sens <<", &CMarker::depasse" << sensInv <<");\r\n";
+        qStdOut() << "\tmks << CMarker(QPoint(" << markers.at(i).x() << ", " << markers.at(i).y() << "), &CMarker::depasse" << sens <<", &CMarker::depasse" << sensInv <<");\r\n";
 
         prev = markers.at(i);
     }
+
+    qStdOut() << "}\r\n";
 
     repaint();
 }

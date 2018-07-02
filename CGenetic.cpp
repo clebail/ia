@@ -7,91 +7,12 @@
 #include <math.h>
 #include "commun.h"
 #include "CGenetic.h"
+#include "circuit1.cpp"
 
 CGenetic::CGenetic(CWCircuit *wCircuit, const CSetup &setup) {
     QList<CMarker> mks1, mks2, mks3, mks4;
 
-	mks1 << CMarker(QPoint(291, 24), &CMarker::depasseGauche, &CMarker::depasseDroite);
-	mks1 << CMarker(QPoint(271, 25), &CMarker::depasseGauche, &CMarker::depasseDroite);
-	mks1 << CMarker(QPoint(251, 27), &CMarker::depasseGauche, &CMarker::depasseDroite);
-	mks1 << CMarker(QPoint(231, 29), &CMarker::depasseGauche, &CMarker::depasseDroite);
-	mks1 << CMarker(QPoint(211, 31), &CMarker::depasseGauche, &CMarker::depasseDroite);
-	mks1 << CMarker(QPoint(191, 32), &CMarker::depasseGauche, &CMarker::depasseDroite);
-	mks1 << CMarker(QPoint(171, 33), &CMarker::depasseGauche, &CMarker::depasseDroite);
-	mks1 << CMarker(QPoint(151, 34), &CMarker::depasseGauche, &CMarker::depasseDroite);
-	mks1 << CMarker(QPoint(131, 35), &CMarker::depasseGauche, &CMarker::depasseDroite);
-	mks1 << CMarker(QPoint(111, 37), &CMarker::depasseGauche, &CMarker::depasseDroite);
-	mks1 << CMarker(QPoint(91, 42), &CMarker::depasseGauche, &CMarker::depasseDroite);
-	mks1 << CMarker(QPoint(73, 52), &CMarker::depasseGauche, &CMarker::depasseDroite);
-	mks1 << CMarker(QPoint(58, 65), &CMarker::depasseGauche, &CMarker::depasseDroite);
-	mks1 << CMarker(QPoint(45, 80), &CMarker::depasseBas, &CMarker::depasseHaut);
-	mks1 << CMarker(QPoint(38, 98), &CMarker::depasseBas, &CMarker::depasseHaut);
-	mks1 << CMarker(QPoint(36, 117), &CMarker::depasseBas, &CMarker::depasseHaut);
-	mks1 << CMarker(QPoint(37, 136), &CMarker::depasseBas, &CMarker::depasseHaut);
-	mks1 << CMarker(QPoint(36, 155), &CMarker::depasseBas, &CMarker::depasseHaut);
-	mks1 << CMarker(QPoint(34, 174), &CMarker::depasseBas, &CMarker::depasseHaut);
-	mks1 << CMarker(QPoint(32, 193), &CMarker::depasseBas, &CMarker::depasseHaut);
-	mks1 << CMarker(QPoint(32, 212), &CMarker::depasseBas, &CMarker::depasseHaut);
-	mks1 << CMarker(QPoint(34, 231), &CMarker::depasseBas, &CMarker::depasseHaut);
-	mks1 << CMarker(QPoint(37, 250), &CMarker::depasseBas, &CMarker::depasseHaut);
-	mks1 << CMarker(QPoint(40, 269), &CMarker::depasseBas, &CMarker::depasseHaut);
-	mks1 << CMarker(QPoint(41, 288), &CMarker::depasseBas, &CMarker::depasseHaut);
-	mks1 << CMarker(QPoint(39, 307), &CMarker::depasseBas, &CMarker::depasseHaut);
-	mks1 << CMarker(QPoint(35, 326), &CMarker::depasseBas, &CMarker::depasseHaut);
-	mks1 << CMarker(QPoint(31, 345), &CMarker::depasseBas, &CMarker::depasseHaut);
-	mks1 << CMarker(QPoint(29, 364), &CMarker::depasseBas, &CMarker::depasseHaut);
-	mks1 << CMarker(QPoint(33, 383), &CMarker::depasseBas, &CMarker::depasseHaut);
-	mks1 << CMarker(QPoint(41, 401), &CMarker::depasseBas, &CMarker::depasseHaut);
-	mks1 << CMarker(QPoint(53, 416), &CMarker::depasseBas, &CMarker::depasseHaut);
-	mks1 << CMarker(QPoint(70, 425), &CMarker::depasseDroite, &CMarker::depasseGauche);
-	mks1 << CMarker(QPoint(89, 428), &CMarker::depasseDroite, &CMarker::depasseGauche);
-	mks1 << CMarker(QPoint(108, 429), &CMarker::depasseDroite, &CMarker::depasseGauche);
-	mks1 << CMarker(QPoint(127, 429), &CMarker::depasseDroite, &CMarker::depasseGauche);
-	mks1 << CMarker(QPoint(146, 430), &CMarker::depasseDroite, &CMarker::depasseGauche);
-	mks1 << CMarker(QPoint(165, 430), &CMarker::depasseDroite, &CMarker::depasseGauche);
-	mks1 << CMarker(QPoint(184, 431), &CMarker::depasseDroite, &CMarker::depasseGauche);
-	mks1 << CMarker(QPoint(203, 432), &CMarker::depasseDroite, &CMarker::depasseGauche);
-	mks1 << CMarker(QPoint(222, 433), &CMarker::depasseDroite, &CMarker::depasseGauche);
-	mks1 << CMarker(QPoint(241, 434), &CMarker::depasseDroite, &CMarker::depasseGauche);
-	mks1 << CMarker(QPoint(260, 436), &CMarker::depasseDroite, &CMarker::depasseGauche);
-	mks1 << CMarker(QPoint(279, 437), &CMarker::depasseDroite, &CMarker::depasseGauche);
-	mks1 << CMarker(QPoint(298, 439), &CMarker::depasseDroite, &CMarker::depasseGauche);
-	mks1 << CMarker(QPoint(317, 441), &CMarker::depasseDroite, &CMarker::depasseGauche);
-	mks1 << CMarker(QPoint(336, 443), &CMarker::depasseDroite, &CMarker::depasseGauche);
-	mks1 << CMarker(QPoint(355, 445), &CMarker::depasseDroite, &CMarker::depasseGauche);
-	mks1 << CMarker(QPoint(374, 448), &CMarker::depasseDroite, &CMarker::depasseGauche);
-	mks1 << CMarker(QPoint(393, 452), &CMarker::depasseDroite, &CMarker::depasseGauche);
-	mks1 << CMarker(QPoint(412, 456), &CMarker::depasseDroite, &CMarker::depasseGauche);
-	mks1 << CMarker(QPoint(431, 459), &CMarker::depasseDroite, &CMarker::depasseGauche);
-	mks1 << CMarker(QPoint(449, 452), &CMarker::depasseDroite, &CMarker::depasseGauche);
-	mks1 << CMarker(QPoint(455, 432), &CMarker::depasseHaut, &CMarker::depasseBas);
-	mks1 << CMarker(QPoint(454, 412), &CMarker::depasseHaut, &CMarker::depasseBas);
-	mks1 << CMarker(QPoint(452, 392), &CMarker::depasseHaut, &CMarker::depasseBas);
-	mks1 << CMarker(QPoint(447, 372), &CMarker::depasseHaut, &CMarker::depasseBas);
-	mks1 << CMarker(QPoint(443, 352), &CMarker::depasseHaut, &CMarker::depasseBas);
-	mks1 << CMarker(QPoint(437, 332), &CMarker::depasseHaut, &CMarker::depasseBas);
-	mks1 << CMarker(QPoint(431, 312), &CMarker::depasseHaut, &CMarker::depasseBas);
-	mks1 << CMarker(QPoint(426, 292), &CMarker::depasseHaut, &CMarker::depasseBas);
-	mks1 << CMarker(QPoint(420, 272), &CMarker::depasseHaut, &CMarker::depasseBas);
-	mks1 << CMarker(QPoint(414, 252), &CMarker::depasseHaut, &CMarker::depasseBas);
-	mks1 << CMarker(QPoint(410, 232), &CMarker::depasseHaut, &CMarker::depasseBas);
-	mks1 << CMarker(QPoint(409, 212), &CMarker::depasseHaut, &CMarker::depasseBas);
-	mks1 << CMarker(QPoint(411, 192), &CMarker::depasseHaut, &CMarker::depasseBas);
-	mks1 << CMarker(QPoint(420, 174), &CMarker::depasseHaut, &CMarker::depasseBas);
-	mks1 << CMarker(QPoint(433, 158), &CMarker::depasseHaut, &CMarker::depasseBas);
-	mks1 << CMarker(QPoint(446, 142), &CMarker::depasseHaut, &CMarker::depasseBas);
-	mks1 << CMarker(QPoint(457, 125), &CMarker::depasseHaut, &CMarker::depasseBas);
-	mks1 << CMarker(QPoint(463, 105), &CMarker::depasseHaut, &CMarker::depasseBas);
-	mks1 << CMarker(QPoint(463, 85), &CMarker::depasseHaut, &CMarker::depasseBas);
-	mks1 << CMarker(QPoint(458, 65), &CMarker::depasseHaut, &CMarker::depasseBas);
-	mks1 << CMarker(QPoint(447, 47), &CMarker::depasseHaut, &CMarker::depasseBas);
-	mks1 << CMarker(QPoint(429, 36), &CMarker::depasseGauche, &CMarker::depasseDroite);
-	mks1 << CMarker(QPoint(409, 31), &CMarker::depasseGauche, &CMarker::depasseDroite);
-	mks1 << CMarker(QPoint(389, 28), &CMarker::depasseGauche, &CMarker::depasseDroite);
-	mks1 << CMarker(QPoint(369, 26), &CMarker::depasseGauche, &CMarker::depasseDroite);
-	mks1 << CMarker(QPoint(349, 25), &CMarker::depasseGauche, &CMarker::depasseDroite);
-	mks1 << CMarker(QPoint(329, 24), &CMarker::depasseGauche, &CMarker::depasseDroite);
-	mks1 << CMarker(QPoint(311, 24), &CMarker::depasseGauche, &CMarker::depasseDroite);
+    initCicuit1(mks1);
 
     mks2 << CMarker(QPoint(377, 42), &CMarker::depasseDroite, &CMarker::depasseGauche);
     mks2 << CMarker(QPoint(396, 39), &CMarker::depasseDroite, &CMarker::depasseGauche);
