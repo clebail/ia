@@ -11,14 +11,16 @@
 #include "circuit2.cpp"
 #include "circuit3.cpp"
 #include "circuit4.cpp"
+#include "circuit5.cpp"
 
 CGenetic::CGenetic(CWCircuit *wCircuit, const CSetup &setup) {
-    QList<CMarker> mks1, mks2, mks3, mks4;
+    QList<CMarker> mks1, mks2, mks3, mks4, mks5;
 
     initCicuit1(mks1);
     initCicuit2(mks2);
     initCicuit3(mks3);
     initCicuit4(mks4);
+    initCicuit5(mks5);
 
     this->wCircuit = wCircuit;
     this->setup = setup;
@@ -29,11 +31,13 @@ CGenetic::CGenetic(CWCircuit *wCircuit, const CSetup &setup) {
     circuits[1] = CCircuit(QPoint(615, 35), 0, ":/circuits/circuit2.png", QPoint(133, 436));
     circuits[2] = CCircuit(QPoint(652, 372), 0, ":/circuits/circuit3.png", QPoint(457, 217));
     circuits[3] = CCircuit(QPoint(118, 535), 0, ":/circuits/circuit4.png", QPoint(209, 203));
+    circuits[4] = CCircuit(QPoint(631, 402), 0, ":/circuits/circuit5.png", QPoint(152, 138));
 
     circuits[0].setMarkers(mks1);
     circuits[1].setMarkers(mks2);
     circuits[2].setMarkers(mks3);
     circuits[3].setMarkers(mks4);
+    circuits[4].setMarkers(mks5);
 	
 	currentCircuit = 0;
 
@@ -170,7 +174,7 @@ void CGenetic::run(void) {
         calculScores();
         triPopulation();
 		
-        qDebug() << "Meilleur score " << population[0]->getScore() << "Num circuit " << currentCircuit;
+        qDebug() << "Num circuit" << currentCircuit << "Meilleur score" << population[0]->getScore();
 		
         croisePopuplation();
 
