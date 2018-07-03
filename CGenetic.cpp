@@ -179,7 +179,7 @@ void CGenetic::run(void) {
         croisePopuplation();
 
         if(++nb == setup.getNbCircuit()) {
-			currentCircuit = rand() % NB_CIRCUIT;//(currentCircuit + 1) % NB_CIRCUIT;
+			currentCircuit = /*rand() % NB_CIRCUIT;//*/(currentCircuit + 1) % NB_CIRCUIT;
 			nb=0;
 		}
         setCircuit(currentCircuit);

@@ -118,7 +118,7 @@ void CVoiture::setStartInfo(QPoint position, double angle, const QList<CMarker>&
     this->position = position;
     this->markers = markers;
     currentAngle = angle;
-    score /= 2;
+    score = 0;
     currentMarkerIdx = 0;
 
     calculPosRoue();
@@ -152,11 +152,11 @@ void CVoiture::from(CVoiture *v1, CVoiture *v2, int seuilVitesse, int seuilAngle
     nVitesse.from(v1->nVitesse, v2->nVitesse, seuilVitesse);
     nAngle.from(v1->nAngle, v2->nVitesse, seuilAngle);
 
-    if(rand() % 10 < 5) {
+    if(rand() % 10 < 8) {
         nVitesse.mute(rand() % nVitesse.getNbGene());
     }
 
-    if(rand() % 10 < 5) {
+    if(rand() % 10 < 8) {
         nAngle.mute(rand() % nAngle.getNbGene());
     }
     
