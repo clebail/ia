@@ -26,7 +26,7 @@ CGenetic::CGenetic(CWCircuit *wCircuit, const CSetup &setup) {
     populationInited = false;
 
     circuits[0] = CCircuit(QPoint(592, 552), 0, ":/circuits/circuit1.png", QPoint(285, 285));
-    circuits[1] = CCircuit(QPoint(615, 35), 0, ":/circuits/circuit2.png", QPoint(302, 309));
+    circuits[1] = CCircuit(QPoint(615, 35), 0, ":/circuits/circuit2.png", QPoint(133, 436));
     circuits[2] = CCircuit(QPoint(652, 372), 0, ":/circuits/circuit3.png", QPoint(457, 217));
     circuits[3] = CCircuit(QPoint(118, 535), 0, ":/circuits/circuit4.png", QPoint(209, 203));
 
