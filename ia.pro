@@ -33,7 +33,10 @@ SOURCES += \
     CCapteur.cpp \
     CNeurone.cpp \
     CMarker.cpp \
-    CSetup.cpp
+    CSetup.cpp \
+    CVehicule.cpp \
+    CTestVoitureAngle.cpp \
+    CTestVoiturePilote.cpp
 
 HEADERS += \
         CMainWindow.h \
@@ -45,7 +48,10 @@ HEADERS += \
     CNeurone.h \
     CMarker.h \
     commun.h \
-    CSetup.h
+    CSetup.h \
+    CVehicule.h \
+    CTestVoitureAngle.h \
+    CTestVoiturePilote.h
 
 FORMS += \
         CMainWindow.ui

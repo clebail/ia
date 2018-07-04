@@ -51,7 +51,7 @@
             <number>0</number>
            </property>
            <property name="topMargin">
-            <number>6</number>
+            <number>0</number>
            </property>
            <property name="rightMargin">
             <number>0</number>
@@ -151,7 +151,7 @@
       </widget>
       <widget class="QWidget" name="Test">
        <attribute name="title">
-        <string>Page</string>
+        <string>Test angle</string>
        </attribute>
        <layout class="QHBoxLayout" name="horizontalLayout_6">
         <item>
@@ -183,9 +183,16 @@
                </widget>
               </item>
               <item>
-               <widget class="QPushButton" name="pbCalculMarkers">
+               <widget class="QLabel" name="label">
                 <property name="text">
-                 <string>Calcul des markers</string>
+                 <string>Angle voiture</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLineEdit" name="leAngle">
+                <property name="text">
+                 <string>3.14</string>
                 </property>
                </widget>
               </item>
@@ -206,21 +213,68 @@
             </widget>
            </item>
            <item>
-            <widget class="QWidget" name="widget_2" native="true">
-             <layout class="QHBoxLayout" name="horizontalLayout_2">
+            <spacer name="verticalSpacer_3">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="Markers">
+       <attribute name="title">
+        <string>Markers</string>
+       </attribute>
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
+        <item>
+         <widget class="QWidget" name="widget_2" native="true">
+          <layout class="QVBoxLayout" name="verticalLayout_4">
+           <property name="spacing">
+            <number>0</number>
+           </property>
+           <property name="leftMargin">
+            <number>0</number>
+           </property>
+           <property name="topMargin">
+            <number>0</number>
+           </property>
+           <property name="rightMargin">
+            <number>0</number>
+           </property>
+           <property name="bottomMargin">
+            <number>0</number>
+           </property>
+           <item>
+            <widget class="QWidget" name="widget_8" native="true">
+             <layout class="QHBoxLayout" name="horizontalLayout_8">
               <item>
-               <widget class="QLabel" name="label">
+               <widget class="QPushButton" name="pbCalculMarkers">
                 <property name="text">
-                 <string>Angle voiture</string>
+                 <string>Calcul des markers</string>
                 </property>
                </widget>
               </item>
               <item>
-               <widget class="QLineEdit" name="leAngle">
-                <property name="text">
-                 <string>3.14</string>
+               <spacer name="horizontalSpacer_5">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
                 </property>
-               </widget>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>40</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
               </item>
              </layout>
             </widget>
@@ -305,8 +359,34 @@
                 </property>
                </widget>
               </item>
+              <item>
+               <spacer name="horizontalSpacer_4">
+                <property name="orientation">
+                 <enum>Qt::Horizontal</enum>
+                </property>
+                <property name="sizeHint" stdset="0">
+                 <size>
+                  <width>40</width>
+                  <height>20</height>
+                 </size>
+                </property>
+               </spacer>
+              </item>
              </layout>
             </widget>
+           </item>
+           <item>
+            <spacer name="verticalSpacer_2">
+             <property name="orientation">
+              <enum>Qt::Vertical</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>20</width>
+               <height>40</height>
+              </size>
+             </property>
+            </spacer>
            </item>
           </layout>
          </widget>

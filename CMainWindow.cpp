@@ -1,11 +1,35 @@
 #include <QtDebug>
+#include <QKeyEvent>
 #include "CMainWindow.h"
 
 CMainWindow::CMainWindow(QWidget *parent) : QMainWindow(parent) {
     setupUi(this);
+
+    testVoiture = 0;
 }
 
 CMainWindow::~CMainWindow(void) {
+}
+
+bool CMainWindow::eventFilter(QObject *obj, QEvent *event) {
+    if(event->type() == QEvent::KeyPress) {
+        QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
+
+        switch(keyEvent->key()) {
+        case Qt::Key_Plus:
+            break;
+        case Qt::Key_Right:
+            break;
+        case Qt::Key_Minus:
+            break;
+        case Qt::Key_Left:
+            break;
+        default:
+            break;
+        }
+    }
+
+    return QObject::eventFilter(obj, event);
 }
 
 void CMainWindow::onGeneticCalculOk(CVoiture *best) {
@@ -54,20 +78,25 @@ void CMainWindow::on_pbTest_clicked(bool) {
 }
 
 void CMainWindow::on_pbTestVoiture_clicked(bool) {
-    testVoiture.setStartInfo(QPoint(250, 250), 0, QList<CMarker>());
-	
-	connect(wCircuit, SIGNAL(drawVoitures(QPainter *)), this, SLOT(onTVdrawVoitures(QPainter *)));
+    testVoiture = new CTestVoitureAngle(QPoint(400, 300), leAngle->text().toDouble());
+
+    connect(wCircuit, SIGNAL(drawVoitures(QPainter *)), this, SLOT(onTVdrawVoitures(QPainter *)));
 	
 	for(int i=0;i<50;i++) {
-		testVoiture.realMove(2, leAngle->text().toDouble());
-		wCircuit->repaint();
+        testVoiture->move(0);
+        wCircuit->repaint();
 	}
 	
 	disconnect(wCircuit, SIGNAL(drawVoitures(QPainter *)), this, SLOT(onTVdrawVoitures(QPainter *)));
+
+    delete testVoiture;
+    testVoiture = 0;
 }
 
 void CMainWindow::CMainWindow::onTVdrawVoitures(QPainter *painter) {
-	testVoiture.draw(painter);
+    if(testVoiture != 0) {
+        testVoiture->draw(painter);
+    }
 }
 
 void CMainWindow::on_pbCalculMarkers_clicked(bool) {

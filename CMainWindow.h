@@ -5,15 +5,18 @@
 #include <QTime>
 #include "ui_CMainWindow.h"
 #include "CGenetic.h"
+#include "CTestVoitureAngle.h"
 
 class CMainWindow : public QMainWindow, private Ui::CMainWindow {
     Q_OBJECT
 public:
     explicit CMainWindow(QWidget *parent = 0);
     ~CMainWindow(void);
+protected:
+    bool eventFilter(QObject *obj, QEvent *event);
 private:
     CGenetic *genetic;
-	CVoiture testVoiture;
+    CTestVoitureAngle *testVoiture;
     CSetup setup;
     int imgIdx;
 	QTime mainTime;

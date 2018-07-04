@@ -1,0 +1,6 @@
+qrc_*.*
+moc_*.*
+ui_*.*
+*.o
+ia
+Makefile
