@@ -6,26 +6,34 @@ CMainWindow::CMainWindow(QWidget *parent) : QMainWindow(parent) {
     setupUi(this);
 
     testVoiture = 0;
+    testVoiturePilote = 0;
+    testPiloteTimer = 0;
 }
 
 CMainWindow::~CMainWindow(void) {
 }
 
 bool CMainWindow::eventFilter(QObject *obj, QEvent *event) {
-    if(event->type() == QEvent::KeyPress) {
-        QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
+    if(testVoiturePilote != 0) {
+        if(event->type() == QEvent::KeyPress) {
+            QKeyEvent *keyEvent = static_cast<QKeyEvent *>(event);
 
-        switch(keyEvent->key()) {
-        case Qt::Key_Plus:
-            break;
-        case Qt::Key_Right:
-            break;
-        case Qt::Key_Minus:
-            break;
-        case Qt::Key_Left:
-            break;
-        default:
-            break;
+            switch(keyEvent->key()) {
+            case Qt::Key_Plus:
+                testVoiturePilote->incVitesse(1.0);
+                break;
+            case Qt::Key_Right:
+                testVoiturePilote->incAngle(-PI/4);
+                break;
+            case Qt::Key_Minus:
+                testVoiturePilote->incVitesse(-1.0);
+                break;
+            case Qt::Key_Left:
+                testVoiturePilote->incAngle(PI/4);
+                break;
+            default:
+                break;
+            }
         }
     }
 
@@ -33,6 +41,7 @@ bool CMainWindow::eventFilter(QObject *obj, QEvent *event) {
 }
 
 void CMainWindow::onGeneticCalculOk(CVoiture *best) {
+    qDebug() << best->getScore();
 }
 
 void CMainWindow::onGeneticCircuitChange(CCircuit *circuit) {
@@ -46,7 +55,7 @@ void CMainWindow::onGeneticRepaintRequested(void) {
 	time = time.arg(elapsed / 3600, 2, 10, QChar('0')).arg(elapsed / 60, 2, 10, QChar('0')).arg(elapsed % 60, 2, 10, QChar('0'));
 	
 	wCircuit->setElapsedTime(time);
-    wCircuit->repaint();
+    wCircuit->update();
     wCircuit->createImage("images/img_"+QString("%1").arg(imgIdx, 6, 10, QChar('0'))+".jpg");
 
     imgIdx++;
@@ -84,7 +93,7 @@ void CMainWindow::on_pbTestVoiture_clicked(bool) {
 	
 	for(int i=0;i<50;i++) {
         testVoiture->move(0);
-        wCircuit->repaint();
+        wCircuit->update();
 	}
 	
 	disconnect(wCircuit, SIGNAL(drawVoitures(QPainter *)), this, SLOT(onTVdrawVoitures(QPainter *)));
@@ -102,8 +111,49 @@ void CMainWindow::CMainWindow::onTVdrawVoitures(QPainter *painter) {
 void CMainWindow::on_pbCalculMarkers_clicked(bool) {
     QStringList l = leDepart->text().split(",");
     QPoint depart(QPoint(l.at(0).toInt(), l.at(1).toInt()));
-    CCircuit circuit(depart, 0, ":circuits/circuit"+QString::number(sbNumCircuit->value())+".png", QPoint(96, 220));
+    CCircuit circuit(depart, 0, ":circuits/circuit"+QString::number(sbNumCircuit->value())+".png");
 
     wCircuit->setCircuit(&circuit);
     wCircuit->calculMarkers(depart, leDistance->text().toDouble(), leAngleDepart->text().toDouble(), sbNumCircuit->value());
+}
+
+void CMainWindow::on_pbTestPilote_clicked(bool) {
+    if(testVoiturePilote == 0) {
+        QStringList l = leDepartPilote->text().split(",");
+        QPoint depart(QPoint(l.at(0).toInt(), l.at(1).toInt()));
+        CCircuit circuit(depart, 0, ":circuits/circuit"+QString::number(sbNumCircuitPilote->value())+".png");
+
+        wCircuit->setCircuit(&circuit);
+
+        testVoiturePilote = new CTestVoiturePilote(depart, leAngleDepartPilote->text().toDouble());
+
+        connect(wCircuit, SIGNAL(drawVoitures(QPainter *)), this, SLOT(onTVPdrawVoitures(QPainter *)));
+
+        installEventFilter(this);
+
+        testPiloteTimer = new QTimer(this);
+        connect(testPiloteTimer, SIGNAL(timeout()), this, SLOT(onTestTimerPiloteTimeout()));
+        testPiloteTimer->setInterval(1000 / 24);
+        testPiloteTimer->start();
+    } else {
+        disconnect(wCircuit, SIGNAL(drawVoitures(QPainter *)), this, SLOT(onTVPdrawVoitures(QPainter *)));
+
+        removeEventFilter(this);
+
+        delete testVoiturePilote;
+        delete testPiloteTimer;
+
+        testVoiturePilote = 0;
+    }
+}
+
+void CMainWindow::onTVPdrawVoitures(QPainter *painter) {
+    if(testVoiturePilote != 0) {
+        testVoiturePilote->draw(painter);
+    }
+}
+
+void CMainWindow::onTestTimerPiloteTimeout(void) {
+    testVoiturePilote->move(0);
+    wCircuit->update();
 }

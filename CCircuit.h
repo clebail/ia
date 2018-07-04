@@ -10,7 +10,7 @@
 class CCircuit {
 public:
     CCircuit(void);
-    CCircuit(QPoint depart, double angle, QString imgResource, QPoint posTime);
+    CCircuit(QPoint depart, double angle, QString imgResource, QPoint posTime = QPoint());
     const QPoint& getDepart(void);
     const QImage& getImage(void);
     double getAngle(void);

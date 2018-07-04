@@ -3,9 +3,11 @@
 
 #include <QMainWindow>
 #include <QTime>
+#include <QTimer>
 #include "ui_CMainWindow.h"
 #include "CGenetic.h"
 #include "CTestVoitureAngle.h"
+#include "CTestVoiturePilote.h"
 
 class CMainWindow : public QMainWindow, private Ui::CMainWindow {
     Q_OBJECT
@@ -17,9 +19,11 @@ protected:
 private:
     CGenetic *genetic;
     CTestVoitureAngle *testVoiture;
+    CTestVoiturePilote * testVoiturePilote;
     CSetup setup;
     int imgIdx;
 	QTime mainTime;
+    QTimer *testPiloteTimer;
 private slots:
     void onGeneticCalculOk(CVoiture *best);
     void onGeneticCircuitChange(CCircuit *circuit);
@@ -29,6 +33,9 @@ private slots:
 	void on_pbTestVoiture_clicked(bool checked = false);
 	void onTVdrawVoitures(QPainter *painter);
     void on_pbCalculMarkers_clicked(bool checked = false);
+    void on_pbTestPilote_clicked(bool checked = false);
+    void onTVPdrawVoitures(QPainter *painter);
+    void onTestTimerPiloteTimeout(void);
 };
 
 #endif // CMAINWINDOW_H
