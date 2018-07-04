@@ -4,19 +4,23 @@
 #include "commun.h"
 #include "CVoiture.h"
 
-CVoiture::CVoiture(void) : CVehicule(), nVitesse(NB_CAPTEUR+1), nAngle(NB_CAPTEUR+1) {
+CVoiture::CVoiture(void) : CVehicule() {
     score = 0;
     currentAngle = 0;
     currentVitesse = 0;
+
+    nVitesse = new CNeurone(NB_CAPTEUR+1);
+    nAngle = new CNeurone(NB_CAPTEUR+1);
 }
 
 CVoiture::~CVoiture(void) {
-
+    delete nVitesse;
+    delete nAngle;
 }
 
 void CVoiture::init(void) {
-    nVitesse.init();
-    nAngle.init();
+    nVitesse->init();
+    nAngle->init();
 }
 
 int CVoiture::getScore(void) {
@@ -24,8 +28,8 @@ int CVoiture::getScore(void) {
 }
 
 void CVoiture::setInputs(double *inputs) {
-    nVitesse.setInputs(inputs);
-    nAngle.setInputs(inputs);
+    nVitesse->setInputs(inputs);
+    nAngle->setInputs(inputs);
 }
 
 void CVoiture::setStartInfo(QPoint position, double angle, const QList<CMarker>& markers) {
@@ -47,15 +51,15 @@ bool CVoiture::isAlive(void) {
 }
 
 void CVoiture::from(CVoiture *v1, CVoiture *v2, int seuilVitesse, int seuilAngle) {
-    nVitesse.from(v1->nVitesse, v2->nVitesse, seuilVitesse);
-    nAngle.from(v1->nAngle, v2->nVitesse, seuilAngle);
+    nVitesse->from(*v1->nVitesse, *v2->nVitesse, seuilVitesse);
+    nAngle->from(*v1->nAngle, *v2->nVitesse, seuilAngle);
 
     if(rand() % 10 < 8) {
-        nVitesse.mute(rand() % nVitesse.getNbGene());
+        nVitesse->mute(rand() % nVitesse->getNbGene());
     }
 
     if(rand() % 10 < 8) {
-        nAngle.mute(rand() % nAngle.getNbGene());
+        nAngle->mute(rand() % nAngle->getNbGene());
     }
     
     score = 0;
@@ -92,11 +96,11 @@ bool CVoiture::move(int timeElapsed) {
 }
 
 double CVoiture::getVitesse(void) {
-    return nVitesse.eval(100) * 20;
+    return nVitesse->eval(100) * 20;
 }
 
 double CVoiture::getAngle(void) {
-    double angle = nAngle.eval(100) * 3 * PI2 - 3 * PI / 4;
+    double angle = nAngle->eval(100) * 3 * PI2 - 3 * PI / 4;
 
     return angle;
 }

@@ -30,8 +30,8 @@ protected:
 private:
     int score;
     bool alive;
-    CNeurone nVitesse;
-    CNeurone nAngle;
+    CNeurone *nVitesse;
+    CNeurone *nAngle;
     int currentMarkerIdx;
     QList<CMarker> markers;
     
