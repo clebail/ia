@@ -27,11 +27,11 @@ CGenetic::CGenetic(CWCircuit *wCircuit, const CSetup &setup) {
 
     populationInited = false;
 
-    circuits[0] = CCircuit(QPoint(592, 552), 0, ":/circuits/circuit1.png", QPoint(285, 285));
-    circuits[1] = CCircuit(QPoint(615, 35), 0, ":/circuits/circuit2.png", QPoint(133, 436));
-    circuits[2] = CCircuit(QPoint(652, 372), 0, ":/circuits/circuit3.png", QPoint(457, 217));
-    circuits[3] = CCircuit(QPoint(118, 535), 0, ":/circuits/circuit4.png", QPoint(209, 203));
-    circuits[4] = CCircuit(QPoint(631, 402), 0, ":/circuits/circuit5.png", QPoint(152, 138));
+    circuits[0] = CCircuit(QPoint(592, 552), PI, ":/circuits/circuit1.png", QPoint(285, 285));
+    circuits[1] = CCircuit(QPoint(615, 35), PI, ":/circuits/circuit2.png", QPoint(133, 436));
+    circuits[2] = CCircuit(QPoint(652, 372), PI, ":/circuits/circuit3.png", QPoint(457, 217));
+    circuits[3] = CCircuit(QPoint(118, 535), PI, ":/circuits/circuit4.png", QPoint(209, 203));
+    circuits[4] = CCircuit(QPoint(631, 402), PI, ":/circuits/circuit5.png", QPoint(152, 138));
 
     circuits[0].setMarkers(mks1);
     circuits[1].setMarkers(mks2);
@@ -101,31 +101,31 @@ void CGenetic::croiseIndividus(int i1, int i2, int ir, int seuilVitesse, int seu
     population[ir]->from(population[i1], population[i2], seuilVitesse, seuilAngle);
 }
 
-double CGenetic::calculDistance(QPoint p, QPoint oppose, double angle) {
+double CGenetic::calculDistance(QPointF p, QPointF oppose, double angle) {
     int x = p.x();
     int y = p.y();
     int dx, dy;
     
     if((angle > PI2 - 0.01 && angle < PI2 + 0.01) || (angle > 3 * PI2 - 0.01 && angle < 3 * PI2 + 0.01)) {
         int sens = oppose.y() > p.y() ? -1 : 1;
-        bool fini = isDehors(QPoint(x, y));
+        bool fini = isDehors(QPointF(x, y));
         
         while(!fini) {
             y += sens;
 
-            fini = isDehors(QPoint(x, y));
+            fini = isDehors(QPointF(x, y));
         }
     } else {
         double a = tan(angle);
         double b = y - a * x;
         int sens = oppose.x() > p.x() ? -1 : 1;
-        bool fini = isDehors(QPoint(x, y));
+        bool fini = isDehors(QPointF(x, y));
         
         while(!fini) {
             x += sens;
             y = a * x + b;
 
-            fini = isDehors(QPoint(x, y));
+            fini = isDehors(QPointF(x, y));
         }
     }
     
@@ -150,14 +150,14 @@ void CGenetic::setCircuit(int numCircuit) {
     emit circuitChange(&circuits[numCircuit]);
 }
 
-bool CGenetic::isDehors(const QPoint& p) {
+bool CGenetic::isDehors(const QPointF& p) {
 	QImage img = circuits[currentCircuit].getImage();
 	
 	if(p.x() < 0 || p.y() < 0 || p.x() >= img.width() || p.y() >= img.height()) {
 		return true;
 	}
 	
-	return img.pixel(p) == 0xFF000000;
+	return img.pixel(p.toPoint()) == 0xFF000000;
 }
 
 void CGenetic::run(void) {
@@ -212,7 +212,7 @@ void CGenetic::calculScores(void) {
             if(population[i]->isAlive()) {
                 double angle = population[i]->getCurrentAngle();
                 double inputs[NB_CAPTEUR];
-                QPoint *posRoue = population[i]->getPosRoue();
+                QPointF *posRoue = population[i]->getPosRoue();
                 int nbDehors = 0;
 
                 inputs[0] = calculDistance(posRoue[0], posRoue[2], angle);

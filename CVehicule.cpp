@@ -43,21 +43,18 @@ bool CVehicule::move(int) {
     currentAngle += getAngle();
     currentVitesse = getVitesse();
 
-    dx = fabs(cos(currentAngle) * currentVitesse) * sensX;
-    dy = fabs(sin(currentAngle) * currentVitesse) * sensY;
+	dx = cos(currentAngle) * currentVitesse;
+    dy = sin(currentAngle) * currentVitesse;
 
     position.rx() += dx;
     position.ry() += dy;
-
-    position.setX(position.x());
-    position.setY(position.y());
 
     calculPosRoue();
 
     return true;
 }
 
-const QPoint& CVehicule::getPosition(void) {
+const QPointF& CVehicule::getPosition(void) {
     return position;
 }
 
@@ -69,7 +66,7 @@ double CVehicule::getCurrentVitesse(void) {
     return currentVitesse;
 }
 
-QPoint * CVehicule::getPosRoue(void) {
+QPointF * CVehicule::getPosRoue(void) {
     return posRoue;
 }
 
@@ -81,8 +78,8 @@ void CVehicule::calculPosRoue(void) {
     double yP = sin(aP) * HYPO;
     double yM = sin(aM) * HYPO;
 
-    posRoue[0] = QPoint(position.x() - xP, position.y() - yP);
-    posRoue[1] = QPoint(position.x() - xM, position.y() - yM);
-    posRoue[2] = QPoint(position.x() + xM, position.y() + yM);
-    posRoue[3] = QPoint(position.x() + xP, position.y() + yP);
+    posRoue[3] = QPointF(position.x() - xP, position.y() - yP);
+    posRoue[2] = QPointF(position.x() - xM, position.y() - yM);
+    posRoue[1] = QPointF(position.x() + xM, position.y() + yM);
+    posRoue[0] = QPointF(position.x() + xP, position.y() + yP);
 }

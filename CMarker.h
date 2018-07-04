@@ -1,22 +1,22 @@
 #ifndef CMARKER_H
 #define CMARKER_H
 
-#include <QPoint>
+#include <QPointF>
 
 class CMarker {
 public:
-    typedef bool (CMarker::*pDepasse)(const QPoint& p) const;
+    typedef bool (CMarker::*pDepasse)(const QPointF& p) const;
 
-    CMarker(const QPoint& p, pDepasse depasse, pDepasse depasseInv);
-    bool isDepasse(const QPoint& p) const;
-    bool isDepasseInv(const QPoint& p) const;
-    bool depasseHaut(const QPoint& p) const;
-    bool depasseDroite(const QPoint& p) const;
-    bool depasseBas(const QPoint& p) const;
-    bool depasseGauche(const QPoint& p) const;
-	const QPoint& getPosition(void) const;
+    CMarker(const QPointF& p, pDepasse depasse, pDepasse depasseInv);
+    bool isDepasse(const QPointF& p) const;
+    bool isDepasseInv(const QPointF& p) const;
+    bool depasseHaut(const QPointF& p) const;
+    bool depasseDroite(const QPointF& p) const;
+    bool depasseBas(const QPointF& p) const;
+    bool depasseGauche(const QPointF& p) const;
+	const QPointF& getPosition(void) const;
 private:
-    QPoint p;
+    QPointF p;
     pDepasse depasse;
     pDepasse depasseInv;
 };

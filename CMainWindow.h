@@ -20,6 +20,7 @@ private:
     CGenetic *genetic;
     CTestVoitureAngle *testVoiture;
     CTestVoiturePilote * testVoiturePilote;
+	CCircuit *circuitPilote;
     CSetup setup;
     int imgIdx;
 	QTime mainTime;

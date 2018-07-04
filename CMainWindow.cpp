@@ -22,14 +22,14 @@ bool CMainWindow::eventFilter(QObject *obj, QEvent *event) {
             case Qt::Key_Plus:
                 testVoiturePilote->incVitesse(1.0);
                 break;
-            case Qt::Key_Right:
-                testVoiturePilote->incAngle(-PI/4);
+            case Qt::Key_D:
+                testVoiturePilote->incAngle(-PI/8);
                 break;
             case Qt::Key_Minus:
                 testVoiturePilote->incVitesse(-1.0);
                 break;
-            case Qt::Key_Left:
-                testVoiturePilote->incAngle(PI/4);
+            case Qt::Key_G:
+                testVoiturePilote->incAngle(PI/8);
                 break;
             default:
                 break;
@@ -93,7 +93,7 @@ void CMainWindow::on_pbTestVoiture_clicked(bool) {
 	
 	for(int i=0;i<50;i++) {
         testVoiture->move(0);
-        wCircuit->update();
+        wCircuit->repaint();
 	}
 	
 	disconnect(wCircuit, SIGNAL(drawVoitures(QPainter *)), this, SLOT(onTVdrawVoitures(QPainter *)));
@@ -119,11 +119,11 @@ void CMainWindow::on_pbCalculMarkers_clicked(bool) {
 
 void CMainWindow::on_pbTestPilote_clicked(bool) {
     if(testVoiturePilote == 0) {
-        QStringList l = leDepartPilote->text().split(",");
-        QPoint depart(QPoint(l.at(0).toInt(), l.at(1).toInt()));
-        CCircuit circuit(depart, 0, ":circuits/circuit"+QString::number(sbNumCircuitPilote->value())+".png");
+		QStringList l = leDepartPilote->text().split(",");
+		QPoint depart(QPoint(l.at(0).toInt(), l.at(1).toInt()));
+		circuitPilote = new CCircuit(depart, 0, ":circuits/circuit"+QString::number(sbNumCircuitPilote->value())+".png");
 
-        wCircuit->setCircuit(&circuit);
+        wCircuit->setCircuit(circuitPilote);
 
         testVoiturePilote = new CTestVoiturePilote(depart, leAngleDepartPilote->text().toDouble());
 
@@ -132,8 +132,11 @@ void CMainWindow::on_pbTestPilote_clicked(bool) {
         installEventFilter(this);
 
         testPiloteTimer = new QTimer(this);
+
         connect(testPiloteTimer, SIGNAL(timeout()), this, SLOT(onTestTimerPiloteTimeout()));
+
         testPiloteTimer->setInterval(1000 / 24);
+
         testPiloteTimer->start();
     } else {
         disconnect(wCircuit, SIGNAL(drawVoitures(QPainter *)), this, SLOT(onTVPdrawVoitures(QPainter *)));
@@ -142,18 +145,21 @@ void CMainWindow::on_pbTestPilote_clicked(bool) {
 
         delete testVoiturePilote;
         delete testPiloteTimer;
+		delete circuitPilote;
 
         testVoiturePilote = 0;
     }
 }
 
 void CMainWindow::onTVPdrawVoitures(QPainter *painter) {
-    if(testVoiturePilote != 0) {
-        testVoiturePilote->draw(painter);
-    }
+	if(testVoiturePilote != 0) {
+		testVoiturePilote->draw(painter);
+	}
 }
 
 void CMainWindow::onTestTimerPiloteTimeout(void) {
-    testVoiturePilote->move(0);
-    wCircuit->update();
+	if(testVoiturePilote != 0) {
+		testVoiturePilote->move(0);
+		wCircuit->update();
+	}
 }

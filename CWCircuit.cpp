@@ -124,7 +124,7 @@ void CWCircuit::paintEvent(QPaintEvent *) {
             painter.drawEllipse(markers.at(i), 3, 3);
         }
         
-        if(circuit->getPosTime().isNull()) {
+        if(!circuit->getPosTime().isNull()) {
             painter.setPen(QPen(Qt::white));
             painter.setFont(font);
             painter.drawText(circuit->getPosTime(), elapsedTime);

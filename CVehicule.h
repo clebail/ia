@@ -15,13 +15,13 @@ public:
     virtual ~CVehicule(void);
     void draw(QPainter *painter);
     virtual bool move(int timeElapsed);
-    const QPoint& getPosition(void);
+    const QPointF& getPosition(void);
     double getCurrentAngle(void);
     double getCurrentVitesse(void);
-    QPoint * getPosRoue(void);
+    QPointF * getPosRoue(void);
 protected:
-    QPoint position;
-    QPoint posRoue[NB_ROUE];
+    QPointF position;
+    QPointF posRoue[NB_ROUE];
     double currentAngle;
     double currentVitesse;
 
