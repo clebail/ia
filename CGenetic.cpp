@@ -12,15 +12,17 @@
 #include "circuit3.cpp"
 #include "circuit4.cpp"
 #include "circuit5.cpp"
+#include "circuit6.cpp"
 
 CGenetic::CGenetic(CWCircuit *wCircuit, const CSetup &setup) {
-    QList<CMarker> mks1, mks2, mks3, mks4, mks5;
+    QList<CMarker> mks1, mks2, mks3, mks4, mks5, mks6;
 
     initCicuit1(mks1);
     initCicuit2(mks2);
     initCicuit3(mks3);
     initCicuit4(mks4);
     initCicuit5(mks5);
+    initCicuit6(mks6);
 
     this->wCircuit = wCircuit;
     this->setup = setup;
@@ -32,12 +34,14 @@ CGenetic::CGenetic(CWCircuit *wCircuit, const CSetup &setup) {
     circuits[2] = CCircuit(QPoint(652, 372), PI, ":/circuits/circuit3.png", QPoint(457, 217));
     circuits[3] = CCircuit(QPoint(118, 535), PI, ":/circuits/circuit4.png", QPoint(209, 203));
     circuits[4] = CCircuit(QPoint(631, 402), PI, ":/circuits/circuit5.png", QPoint(152, 138));
+    circuits[5] = CCircuit(QPoint(539, 543), PI, ":/circuits/circuit6.png", QPoint(527, 279));
 
     circuits[0].setMarkers(mks1);
     circuits[1].setMarkers(mks2);
     circuits[2].setMarkers(mks3);
     circuits[3].setMarkers(mks4);
     circuits[4].setMarkers(mks5);
+    circuits[5].setMarkers(mks6);
 	
 	currentCircuit = 0;
 
