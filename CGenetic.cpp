@@ -174,15 +174,16 @@ void CGenetic::run(void) {
         calculScores();
         triPopulation();
 		
-        qDebug() << "Num circuit" << currentCircuit << "Meilleur score" << population[0]->getScore();
+        qDebug() << "Num circuit" << currentCircuit << "Meilleur score" << population[0]->getScore() << "Nombre de gagnant" << circuits[currentCircuit].getNbGagne();
 		
         croisePopuplation();
 
         if(++nb == setup.getNbCircuit()) {
-			currentCircuit = /*rand() % NB_CIRCUIT;//*/(currentCircuit + 1) % NB_CIRCUIT;
+            currentCircuit = (currentCircuit + 1) % NB_CIRCUIT;
 			nb=0;
 		}
         setCircuit(currentCircuit);
+        circuits[currentCircuit].setNbGagne(0);
     }while(++i < NOMBRE_GENERATION);
 	
     emit calculOk(population[0]);
@@ -205,6 +206,7 @@ void CGenetic::calculScores(void) {
     int nbAlive = TAILLE_POPULATION;
     QTime time;
     int timeElapsed = 0;
+    int nbGagne=0;
     
     time.start();
     while(nbAlive != 0 && timeElapsed < MAX_TIME) {
@@ -214,6 +216,7 @@ void CGenetic::calculScores(void) {
                 double inputs[NB_CAPTEUR];
                 QPointF *posRoue = population[i]->getPosRoue();
                 int nbDehors = 0;
+                bool gagne;
 
                 inputs[0] = calculDistance(posRoue[0], posRoue[2], angle);
                 inputs[1] = calculDistance(posRoue[0], posRoue[1], angle + PI2);
@@ -224,12 +227,9 @@ void CGenetic::calculScores(void) {
                 inputs[6] = calculDistance(posRoue[2], posRoue[3], angle + PI2);
                 inputs[7] = calculDistance(posRoue[3], posRoue[2], angle + 3 * PI2);
 
-                //inputs[8] = angle;
-                //inputs[9] = population[i]->getCurrentVitesse();
-
                 population[i]->setInputs(inputs);
 
-                if(population[i]->move(timeElapsed)) {
+                if(population[i]->move(timeElapsed, gagne)) {
 					nbDehors += isDehors(posRoue[0]) ? 1 : 0;
 					nbDehors += isDehors(posRoue[1]) ? 1 : 0;
 					nbDehors += isDehors(posRoue[2]) ? 1 : 0;
@@ -240,8 +240,12 @@ void CGenetic::calculScores(void) {
 				} else {
 					nbAlive--;
 				}
+
+                nbGagne += gagne ? 1 : 0;
             }
         }
+
+        circuits[currentCircuit].setNbGagne(nbGagne);
 
         emit repaintRequested();
         msleep(1000 / 24);

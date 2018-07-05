@@ -13,7 +13,7 @@ void CVehicule::draw(QPainter *painter) {
     painter->rotate(currentAngle * 180 / PI);
 
     painter->setPen(QPen(Qt::blue));
-    painter->setBrush(QBrush(Qt::blue));
+    painter->setBrush(getBrush());
     painter->drawRect(rect);
 
     painter->restore();
@@ -35,10 +35,8 @@ void CVehicule::draw(QPainter *painter) {
     painter->drawEllipse(posRoue[3].x(), posRoue[3].y(), 3, 3);
 }
 
-bool CVehicule::move(int) {
+bool CVehicule::move(int, bool &) {
     double dx, dy;
-    int sensX = posRoue[0].x() < posRoue[3].x() ? -1 : 1;
-    int sensY = posRoue[0].y() < posRoue[3].y() ? -1 : 1;
 
     currentAngle += getAngle();
     currentVitesse = getVitesse();
@@ -82,4 +80,8 @@ void CVehicule::calculPosRoue(void) {
     posRoue[2] = QPointF(position.x() - xM, position.y() - yM);
     posRoue[1] = QPointF(position.x() + xM, position.y() + yM);
     posRoue[0] = QPointF(position.x() + xP, position.y() + yP);
+}
+
+QBrush CVehicule::getBrush(void) {
+    return QBrush(Qt::blue);
 }

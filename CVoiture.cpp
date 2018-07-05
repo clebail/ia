@@ -4,8 +4,10 @@
 #include "commun.h"
 #include "CVoiture.h"
 
+#define MAX_SCORE       160
+
 CVoiture::CVoiture(void) : CVehicule() {
-    score = 0;
+    score = oldScore = 0;
     currentAngle = 0;
     currentVitesse = 0;
 
@@ -36,6 +38,7 @@ void CVoiture::setStartInfo(QPoint position, double angle, const QList<CMarker>&
     this->position = position;
     this->markers = markers;
     currentAngle = angle;
+    oldScore = score;
     score = 0;
     currentMarkerIdx = 0;
 
@@ -65,8 +68,10 @@ void CVoiture::from(CVoiture *v1, CVoiture *v2, int seuilVitesse, int seuilAngle
     score = 0;
 }
 
-bool CVoiture::move(int timeElapsed) {
-    CVehicule::move(timeElapsed);
+bool CVoiture::move(int timeElapsed, bool &gagne) {
+    gagne = false;
+
+    CVehicule::move(timeElapsed, gagne);
 
     if(markers.at(currentMarkerIdx).isDepasse(position)) {
         score = (++currentMarkerIdx) * 100 / markers.size();
@@ -74,6 +79,7 @@ bool CVoiture::move(int timeElapsed) {
         if(score == 100) {
             score += (MAX_TIME - timeElapsed) / 1000;
             alive = false;
+            gagne = true;
 
             return false;
         }
@@ -103,6 +109,14 @@ double CVoiture::getAngle(void) {
     double angle = nAngle->eval(100) * 3 * PI2 - 3 * PI / 4;
 
     return angle;
+}
+
+QBrush CVoiture::getBrush(void) {
+    int r = oldScore * 50 / MAX_SCORE;
+    int v = oldScore * 100 / MAX_SCORE;
+    int b = 255 - MAX_SCORE + oldScore;
+
+    return QBrush(QColor(r, v, b));
 }
 
 double CVoiture::normAngle(double angle) {

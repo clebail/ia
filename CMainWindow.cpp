@@ -92,7 +92,9 @@ void CMainWindow::on_pbTestVoiture_clicked(bool) {
     connect(wCircuit, SIGNAL(drawVoitures(QPainter *)), this, SLOT(onTVdrawVoitures(QPainter *)));
 	
 	for(int i=0;i<50;i++) {
-        testVoiture->move(0);
+        bool b;
+
+        testVoiture->move(0, b);
         wCircuit->repaint();
 	}
 	
@@ -159,7 +161,9 @@ void CMainWindow::onTVPdrawVoitures(QPainter *painter) {
 
 void CMainWindow::onTestTimerPiloteTimeout(void) {
 	if(testVoiturePilote != 0) {
-		testVoiturePilote->move(0);
+        bool b;
+
+        testVoiturePilote->move(0, b);
 		wCircuit->update();
 	}
 }

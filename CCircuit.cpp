@@ -1,11 +1,15 @@
 #include "CCircuit.h"
 
-CCircuit::CCircuit(void) {}
+CCircuit::CCircuit(void) {
+    nbGagne = 0;
+}
 
 CCircuit::CCircuit(QPoint depart, double angle, QString imgResource, QPoint posTime) {
     this->depart = depart;
     this->angle = angle;
 	this->posTime = posTime;
+
+    nbGagne = 0;
     
     image = QImage(imgResource);
 }
@@ -50,5 +54,13 @@ void CCircuit::normCoordonnees(int& x, int& y) {
 
 const QPoint& CCircuit::getPosTime(void) {
 	return posTime;
+}
+
+void CCircuit::setNbGagne(int nbGagne) {
+    this->nbGagne = nbGagne;
+}
+
+int CCircuit::getNbGagne(void) {
+    return nbGagne;
 }
 

@@ -18,11 +18,14 @@ public:
     const QList<CMarker>& getMarkers(void);
 	void normCoordonnees(int& x, int& y);
 	const QPoint& getPosTime(void);
+    void setNbGagne(int nbGagne);
+    int getNbGagne(void);
 private:
     QPoint depart, posTime;
     double angle;
     QImage image;
     QList<CMarker> markers;
+    int nbGagne;
 };
 
 #endif // CCIRCUIT_H

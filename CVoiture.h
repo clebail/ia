@@ -21,14 +21,15 @@ public:
     void setAlive(bool alive);
     bool isAlive(void);
     void from(CVoiture *v1, CVoiture *v2, int seuilVitesse, int seuilAngle);
-    bool move(int timeElapsed);
+    bool move(int timeElapsed, bool& gagne);
 protected:
     CCapteur * getGene(int idx);
 
     double getVitesse(void);
     double getAngle(void);
+    QBrush getBrush(void);
 private:
-    int score;
+    int score, oldScore;
     bool alive;
     CNeurone *nVitesse;
     CNeurone *nAngle;
