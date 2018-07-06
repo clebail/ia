@@ -180,7 +180,7 @@ void CGenetic::run(void) {
 		
         fini = calculVainqueurs();
 
-        qDebug() << "Num circuit" << currentCircuit << "Meilleur score" << population[0]->getScore() << "Nombre de gagnant" << circuits[currentCircuit].getNbGagne();
+        qDebug() << "Num circuit" << currentCircuit << "Meilleur score" << population[0]->getScore() << "Nombre de gagnant" << circuits[currentCircuit].getNbGagne() << "total vainqueurs" << vainqueurs.size();
 		
         if(!fini) {
             croisePopuplation();
@@ -193,10 +193,10 @@ void CGenetic::run(void) {
             circuits[currentCircuit].setNbGagne(0);
         }
 
-        fini |= (++i < NOMBRE_GENERATION);
+        fini |= (++i >= NOMBRE_GENERATION);
     }while(!fini);
 	
-    emit calculOk(vainqueurs);
+    emit calculOk();
 }
 
 void CGenetic::drawPopulation(QPainter *painter) {
@@ -209,6 +209,10 @@ void CGenetic::drawPopulation(QPainter *painter) {
             }
         }
     }
+}
+
+const QList<CVoiture *>& CGenetic::getVainqueurs(void) {
+	return vainqueurs;
 }
 
 void CGenetic::calculScores(void) {

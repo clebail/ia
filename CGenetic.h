@@ -35,8 +35,9 @@ public:
     void run(void);
     void calculScores(void);
     void drawPopulation(QPainter *painter);
+	const QList<CVoiture *>& getVainqueurs(void);
 signals:
-    void calculOk(const QList<CVoiture *>& voitures);
+    void calculOk(void);
     void circuitChange(CCircuit *circuit);
     void repaintRequested(void);
 private slots:
