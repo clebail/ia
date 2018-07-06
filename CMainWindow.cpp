@@ -127,7 +127,7 @@ void CMainWindow::on_pbTestPilote_clicked(bool) {
 
         wCircuit->setCircuit(circuitPilote);
 
-        testVoiturePilote = new CTestVoiturePilote(depart, leAngleDepartPilote->text().toDouble());
+        testVoiturePilote = new CTestVoiturePilote(circuitPilote, depart, leAngleDepartPilote->text().toDouble());
 
         connect(wCircuit, SIGNAL(drawVoitures(QPainter *)), this, SLOT(onTVPdrawVoitures(QPainter *)));
 

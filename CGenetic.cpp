@@ -7,6 +7,7 @@
 #include <math.h>
 #include "commun.h"
 #include "CGenetic.h"
+#include "CDistanceHelper.h"
 #include "circuit1.cpp"
 #include "circuit2.cpp"
 #include "circuit3.cpp"
@@ -129,42 +130,6 @@ void CGenetic::croiseIndividus(int i1, int i2, int ir, int seuilVitesse, int seu
     population[ir]->from(population[i1], population[i2], seuilVitesse, seuilAngle);
 }
 
-double CGenetic::calculDistance(QPointF p, QPointF oppose, double angle) {
-    int x = p.x();
-    int y = p.y();
-    int dx, dy;
-    
-    if((angle > PI2 - 0.01 && angle < PI2 + 0.01) || (angle > 3 * PI2 - 0.01 && angle < 3 * PI2 + 0.01)) {
-        int sens = oppose.y() > p.y() ? -1 : 1;
-        bool fini = isDehors(QPointF(x, y));
-        
-        while(!fini) {
-            y += sens;
-
-            fini = isDehors(QPointF(x, y));
-        }
-    } else {
-        double a = tan(angle);
-        double b = y - a * x;
-        int sens = oppose.x() > p.x() ? -1 : 1;
-        bool fini = isDehors(QPointF(x, y));
-        
-        while(!fini) {
-            x += sens;
-            y = a * x + b;
-
-            fini = isDehors(QPointF(x, y));
-        }
-    }
-    
-    circuits[currentCircuit].normCoordonnees(x, y);
-
-    dx = abs(p.x() - x);
-    dy = abs(p.y() - y);
-
-    return sqrt(dx * dx + dy * dy);
-}
-
 void CGenetic::setCircuit(int numCircuit) {
     int i;
 
@@ -176,20 +141,6 @@ void CGenetic::setCircuit(int numCircuit) {
     }
 
     emit circuitChange(&circuits[numCircuit]);
-}
-
-bool CGenetic::isDehors(const QPointF& p) {
-	QImage img = circuits[currentCircuit].getImage();
-    QPoint pe;
-	
-	if(p.x() < 0 || p.y() < 0 || p.x() >= img.width() || p.y() >= img.height()) {
-		return true;
-	}
-	
-    pe = p.toPoint();
-    circuits[currentCircuit].normCoordonnees(pe);
-
-    return img.pixel(pe) == 0xFF000000;
 }
 
 void CGenetic::run(void) {
@@ -247,25 +198,26 @@ void CGenetic::calculScores(void) {
                 double angle = population[i]->getCurrentAngle();
                 double inputs[NB_CAPTEUR];
                 QPointF *posRoue = population[i]->getPosRoue();
+                QPointF result;
                 int nbDehors = 0;
                 bool gagne;
 
-                inputs[0] = calculDistance(posRoue[0], posRoue[2], angle);
-                inputs[1] = calculDistance(posRoue[0], posRoue[1], angle + PI2);
-                inputs[2] = calculDistance(posRoue[0], posRoue[3], angle + PI / 4);
-                inputs[3] = calculDistance(posRoue[1], posRoue[3], angle);
-                inputs[4] = calculDistance(posRoue[1], posRoue[0], angle + 3 * PI2);
-                inputs[5] = calculDistance(posRoue[1], posRoue[2], angle + 7 * PI / 4);
-                inputs[6] = calculDistance(posRoue[2], posRoue[3], angle + PI2);
-                inputs[7] = calculDistance(posRoue[3], posRoue[2], angle + 3 * PI2);
+                inputs[0] = CDistanceHelper::calculDistance(&circuits[currentCircuit], posRoue[0], posRoue[2], result, angle);
+                inputs[1] = CDistanceHelper::calculDistance(&circuits[currentCircuit], posRoue[0], posRoue[1], result, angle + PI2);
+                inputs[2] = CDistanceHelper::calculDistance(&circuits[currentCircuit], posRoue[0], posRoue[3], result, angle + PI / 4);
+                inputs[3] = CDistanceHelper::calculDistance(&circuits[currentCircuit], posRoue[1], posRoue[3], result, angle);
+                inputs[4] = CDistanceHelper::calculDistance(&circuits[currentCircuit], posRoue[1], posRoue[0], result, angle + 3 * PI2);
+                inputs[5] = CDistanceHelper::calculDistance(&circuits[currentCircuit], posRoue[1], posRoue[2], result, angle + 7 * PI / 4);
+                inputs[6] = CDistanceHelper::calculDistance(&circuits[currentCircuit], posRoue[2], posRoue[3], result, angle + PI2);
+                inputs[7] = CDistanceHelper::calculDistance(&circuits[currentCircuit], posRoue[3], posRoue[2], result, angle + 3 * PI2);
 
                 population[i]->setInputs(inputs);
 
                 if(population[i]->move(timeElapsed, gagne)) {
-					nbDehors += isDehors(posRoue[0]) ? 1 : 0;
-					nbDehors += isDehors(posRoue[1]) ? 1 : 0;
-					nbDehors += isDehors(posRoue[2]) ? 1 : 0;
-					nbDehors += isDehors(posRoue[3]) ? 1 : 0;
+                    nbDehors += CDistanceHelper::isDehors(&circuits[currentCircuit], posRoue[0]) ? 1 : 0;
+                    nbDehors += CDistanceHelper::isDehors(&circuits[currentCircuit], posRoue[1]) ? 1 : 0;
+                    nbDehors += CDistanceHelper::isDehors(&circuits[currentCircuit], posRoue[2]) ? 1 : 0;
+                    nbDehors += CDistanceHelper::isDehors(&circuits[currentCircuit], posRoue[3]) ? 1 : 0;
 
 					population[i]->setAlive(nbDehors < 2);
 					nbAlive -= nbDehors < 2 ? 0 : 1;

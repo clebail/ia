@@ -36,7 +36,8 @@ SOURCES += \
     CSetup.cpp \
     CVehicule.cpp \
     CTestVoitureAngle.cpp \
-    CTestVoiturePilote.cpp
+    CTestVoiturePilote.cpp \
+    CDistanceHelper.cpp
 
 HEADERS += \
         CMainWindow.h \
@@ -51,7 +52,8 @@ HEADERS += \
     CSetup.h \
     CVehicule.h \
     CTestVoitureAngle.h \
-    CTestVoiturePilote.h
+    CTestVoiturePilote.h \
+    CDistanceHelper.h
 
 FORMS += \
         CMainWindow.ui

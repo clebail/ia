@@ -13,7 +13,7 @@
 class CVehicule {
 public:
     virtual ~CVehicule(void);
-    void draw(QPainter *painter);
+    virtual void draw(QPainter *painter);
     virtual bool move(int timeElapsed, bool& gagne);
     const QPointF& getPosition(void);
     double getCurrentAngle(void);
