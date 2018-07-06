@@ -26,7 +26,7 @@ private:
 	QTime mainTime;
     QTimer *testPiloteTimer;
 private slots:
-    void onGeneticCalculOk(CVoiture *best);
+    void onGeneticCalculOk(const QList<CVoiture *>& voitures);
     void onGeneticCircuitChange(CCircuit *circuit);
     void onGeneticRepaintRequested(void);
     void onGeneticTerminated(void);

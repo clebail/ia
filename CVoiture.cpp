@@ -1,6 +1,7 @@
 #include <QtDebug>
 #include <iostream>
 #include <math.h>
+#include <string.h>
 #include "commun.h"
 #include "CVoiture.h"
 
@@ -13,6 +14,8 @@ CVoiture::CVoiture(void) : CVehicule() {
 
     nVitesse = new CNeurone(NB_CAPTEUR+1);
     nAngle = new CNeurone(NB_CAPTEUR+1);
+
+    memset(&victoires, 0, NB_CIRCUIT * sizeof(bool));
 }
 
 CVoiture::~CVoiture(void) {
@@ -99,6 +102,14 @@ bool CVoiture::move(int timeElapsed, bool &gagne) {
     }
 
     return true;
+}
+
+void CVoiture::setVictoire(int numCircuit, bool victoire) {
+    victoires[numCircuit] = victoire;
+}
+
+bool CVoiture::isVainqueur(int numCircuit) {
+    return victoires[numCircuit];
 }
 
 double CVoiture::getVitesse(void) {

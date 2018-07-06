@@ -40,8 +40,8 @@ bool CMainWindow::eventFilter(QObject *obj, QEvent *event) {
     return QObject::eventFilter(obj, event);
 }
 
-void CMainWindow::onGeneticCalculOk(CVoiture *best) {
-    qDebug() << best->getScore();
+void CMainWindow::onGeneticCalculOk(const QList<CVoiture *>& voitures) {
+    qDebug() << voitures.size();
 }
 
 void CMainWindow::onGeneticCircuitChange(CCircuit *circuit) {
@@ -74,10 +74,11 @@ void CMainWindow::on_pbTest_clicked(bool) {
 
     setup.setNbCircuit(sbCircuit->value());
     setup.setCreateImages(cbCreateImage->isChecked());
+    setup.setNbVainqueur(spVainqueur->value());
 
     genetic = new CGenetic(wCircuit, setup);
 
-    connect(genetic, SIGNAL(calculOk(CVoiture*)), this, SLOT(onGeneticCalculOk(CVoiture*)));
+    connect(genetic, SIGNAL(calculOk(const QList<CVoiture *>&)), this, SLOT(onGeneticCalculOk(const QList<CVoiture *>&)));
     connect(genetic, SIGNAL(circuitChange(CCircuit*)), this, SLOT(onGeneticCircuitChange(CCircuit*)));
     connect(genetic, SIGNAL(repaintRequested()), this, SLOT(onGeneticRepaintRequested()));
     connect(genetic, SIGNAL(terminated()), this, SLOT(onGeneticTerminated()));

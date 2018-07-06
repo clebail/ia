@@ -22,6 +22,8 @@ public:
     bool isAlive(void);
     void from(CVoiture *v1, CVoiture *v2, int seuilVitesse, int seuilAngle);
     bool move(int timeElapsed, bool& gagne);
+    void setVictoire(int numCircuit, bool victoire);
+    bool isVainqueur(int numCircuit);
 protected:
     CCapteur * getGene(int idx);
 
@@ -35,6 +37,7 @@ private:
     CNeurone *nAngle;
     int currentMarkerIdx;
     QList<CMarker> markers;
+    bool victoires[NB_CIRCUIT];
 };
 
 #endif // CVOITURE_H

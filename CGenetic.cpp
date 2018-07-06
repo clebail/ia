@@ -143,9 +143,30 @@ void CGenetic::setCircuit(int numCircuit) {
     emit circuitChange(&circuits[numCircuit]);
 }
 
+bool CGenetic::calculVainqueurs(void) {
+    int i;
+
+    vainqueurs.clear();
+    for(i=0;i<TAILLE_POPULATION;i++) {
+        int j;
+        bool allOk = true;
+
+        for(j=0;j<NB_CIRCUIT;j++) {
+            allOk &= population[i]->isVainqueur(j);
+        }
+
+        if(allOk) {
+            vainqueurs.append(population[i]);
+        }
+    }
+
+    return vainqueurs.size() >= setup.getNbVainqueur();
+}
+
 void CGenetic::run(void) {
     int i = 0;
 	int nb = 0;
+    bool fini;
 	
 	srand(time(NULL));
 		
@@ -157,19 +178,25 @@ void CGenetic::run(void) {
         calculScores();
         triPopulation();
 		
+        fini = calculVainqueurs();
+
         qDebug() << "Num circuit" << currentCircuit << "Meilleur score" << population[0]->getScore() << "Nombre de gagnant" << circuits[currentCircuit].getNbGagne();
 		
-        croisePopuplation();
+        if(!fini) {
+            croisePopuplation();
 
-        if(++nb == setup.getNbCircuit()) {
-            currentCircuit = (currentCircuit + 1) % NB_CIRCUIT;
-			nb=0;
-		}
-        setCircuit(currentCircuit);
-        circuits[currentCircuit].setNbGagne(0);
-    }while(++i < NOMBRE_GENERATION);
+            if(++nb == setup.getNbCircuit()) {
+                currentCircuit = (currentCircuit + 1) % NB_CIRCUIT;
+                nb=0;
+            }
+            setCircuit(currentCircuit);
+            circuits[currentCircuit].setNbGagne(0);
+        }
+
+        fini |= (++i < NOMBRE_GENERATION);
+    }while(!fini);
 	
-    emit calculOk(population[0]);
+    emit calculOk(vainqueurs);
 }
 
 void CGenetic::drawPopulation(QPainter *painter) {
@@ -226,6 +253,7 @@ void CGenetic::calculScores(void) {
 				}
 
                 nbGagne += gagne ? 1 : 0;
+                population[i]->setVictoire(currentCircuit, gagne);
             }
         }
 
