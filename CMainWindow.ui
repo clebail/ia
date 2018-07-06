@@ -333,6 +333,16 @@
                </widget>
               </item>
               <item>
+               <widget class="QCheckBox" name="cbCapteurs">
+                <property name="text">
+                 <string>Afficher les capteurs</string>
+                </property>
+                <property name="checked">
+                 <bool>true</bool>
+                </property>
+               </widget>
+              </item>
+              <item>
                <spacer name="horizontalSpacer_7">
                 <property name="orientation">
                  <enum>Qt::Horizontal</enum>
