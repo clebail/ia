@@ -5,10 +5,37 @@
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    id="svg4"
    height="600"
    width="800"
-   version="1.1">
+   version="1.1"
+   sodipodi:docname="circuit4.svg"
+   inkscape:export-filename="/home/corentin/perso/neurones/circuits/circuit4.png"
+   inkscape:export-xdpi="95"
+   inkscape:export-ydpi="95"
+   inkscape:version="0.92.3 (2405546, 2018-03-11)">
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1252"
+     inkscape:window-height="896"
+     id="namedview8"
+     showgrid="false"
+     inkscape:zoom="6.2933333"
+     inkscape:cx="134.58669"
+     inkscape:cy="64.822483"
+     inkscape:window-x="415"
+     inkscape:window-y="38"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg4" />
   <metadata
      id="metadata10">
     <rdf:RDF>
@@ -17,7 +44,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -36,4 +63,10 @@
      id="path940-6"
      d="m 422.91667,38.359252 c 19.32529,-1.647506 39.10031,4.944167 52.43307,19.775013 13.33276,14.830845 20.22398,37.901472 26.81572,59.324645 6.59174,21.42317 12.88362,41.19764 26.96643,55.58014 14.08282,14.38249 35.84706,23.3267 66.70982,11.13171 30.86276,-12.195 70.218,-45.28918 98.83131,-52.77927 28.61332,-7.49009 46.29098,10.78681 56.47807,31.31047 10.18709,20.52365 12.88368,43.29489 4.94418,62.77036 -7.9395,19.47547 -26.51581,35.65483 -54.68016,51.08557 -28.16435,15.43073 -65.91599,30.11192 -93.63149,42.69613 -27.7155,12.58421 -45.39133,23.06987 -54.0817,35.5051 -8.69037,12.43522 -8.39081,26.81421 2.24689,47.64064 10.6377,20.82644 31.60879,48.08885 33.25721,72.80724 1.64842,24.7184 -16.02718,46.8878 -42.24711,53.78051 -26.21992,6.89271 -60.97023,-1.49529 -86.29006,-37.60206 -25.31982,-36.10677 -41.1989,-99.92273 -56.62932,-139.02297 -15.43041,-39.10025 -30.41073,-53.48135 -47.18992,-50.18589 -16.77919,3.29546 -35.3535,24.26646 -61.57227,59.32455 -26.21877,35.0581 -60.07366,84.19263 -86.29045,118.34955 -26.21678,34.15692 -44.79331,53.3327 -66.81565,59.32573 C 120.14889,545.16945 94.681677,537.97871 77.302769,522.8471 59.923862,507.71549 50.63582,484.64521 71.908702,445.99465 93.181584,407.3441 145.01779,353.11085 154.15584,313.56138 163.2939,274.01192 129.73628,249.14334 100.97233,221.57785 72.208381,194.01236 48.238954,163.75095 36.254145,139.48121 24.269336,115.21146 24.269336,96.934474 30.903041,83.668879 37.536745,70.403283 51.236445,61.879024 84.94121,68.320436 c 33.70476,6.441412 87.6413,27.71638 121.50528,36.885124 33.86397,9.16873 48.23296,6.1115 66.80857,-0.92932 18.5756,-7.04081 41.64836,-18.127719 57.82791,-26.217537 16.17956,-8.089818 25.46783,-13.183388 39.55004,-20.673913 14.08222,-7.490526 32.95837,-17.378033 52.28366,-19.025538 z"
      style="fill:none;stroke:#ffffff;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+  <path
+     style="fill:none;fill-rule:evenodd;stroke:#ff0000;stroke-width:4.95537758;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:4.95537758,4.95537758;stroke-dashoffset:2.47768879;stroke-opacity:1"
+     d="m 120.58914,520.79015 -5.0554,39.64539"
+     id="path815"
+     inkscape:connector-type="polyline"
+     inkscape:connector-curvature="0" />
 </svg>
