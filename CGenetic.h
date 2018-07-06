@@ -27,9 +27,7 @@ private:
 	void triPopulation(void);
     void croisePopuplation(void);
     void croiseIndividus(int i1, int i2, int ir, int seuilVitesse, int seuilAngle);
-    //double calculDistance(QPointF p, QPointF oppose, double angle);
     void setCircuit(int numCircuit);
-    //bool isDehors(const QPointF& p);
 public:
     CGenetic(CWCircuit *wCircuit, const CSetup& setup);
     ~CGenetic(void);

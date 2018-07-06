@@ -7,6 +7,8 @@ double CDistanceHelper::calculDistance(CCircuit *circuit, QPointF p, QPointF opp
     int y = p.y();
     int dx, dy;
 
+    angle = CDistanceHelper::normAngle(angle);
+
     if((angle > PI2 - 0.01 && angle < PI2 + 0.01) || (angle > 3 * PI2 - 0.01 && angle < 3 * PI2 + 0.01)) {
         int sens = oppose.y() > p.y() ? -1 : 1;
         bool fini = CDistanceHelper::isDehors(circuit, QPointF(x, y));
@@ -52,4 +54,15 @@ bool CDistanceHelper::isDehors(CCircuit *circuit, const QPointF& p) {
     circuit->normCoordonnees(pe);
 
     return img.pixel(pe) == 0xFF000000;
+}
+
+double CDistanceHelper::normAngle(double angle) {
+    while(angle < 0) {
+        angle += PI;
+    }
+    while(angle > 2 * PI) {
+        angle -= PI;
+    }
+
+    return angle;
 }

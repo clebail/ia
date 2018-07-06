@@ -118,14 +118,3 @@ QBrush CVoiture::getBrush(void) {
 
     return QBrush(QColor(r, v, b));
 }
-
-double CVoiture::normAngle(double angle) {
-    while(angle < 0) {
-        angle += PI;
-    }
-    while(angle > 2 * PI) {
-        angle -= PI;
-    }
-
-    return angle;
-}

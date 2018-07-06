@@ -35,8 +35,6 @@ private:
     CNeurone *nAngle;
     int currentMarkerIdx;
     QList<CMarker> markers;
-    
-    double normAngle(double angle);
 };
 
 #endif // CVOITURE_H
