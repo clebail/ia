@@ -13,16 +13,28 @@
 #include "circuit4.cpp"
 #include "circuit5.cpp"
 #include "circuit6.cpp"
+#include "circuit7.cpp"
+#include "circuit8.cpp"
+#include "circuit9.cpp"
+#include "circuit10.cpp"
+#include "circuit11.cpp"
+#include "circuit12.cpp"
 
 CGenetic::CGenetic(CWCircuit *wCircuit, const CSetup &setup) {
-    QList<CMarker> mks1, mks2, mks3, mks4, mks5, mks6;
+    QList<CMarker> mks0, mks1, mks2, mks3, mks4, mks5, mks6, mks7, mks8, mks9, mks10, mks11;
 
-    initCicuit1(mks1);
-    initCicuit2(mks2);
-    initCicuit3(mks3);
-    initCicuit4(mks4);
-    initCicuit5(mks5);
-    initCicuit6(mks6);
+    initCircuit1(mks0);
+    initCircuit2(mks1);
+    initCircuit3(mks2);
+    initCircuit4(mks3);
+    initCircuit5(mks4);
+    initCircuit6(mks5);
+    initCircuit7(mks6);
+    initCircuit8(mks7);
+    initCircuit9(mks8);
+    initCircuit10(mks9);
+    initCircuit11(mks10);
+    initCircuit12(mks11);
 
     this->wCircuit = wCircuit;
     this->setup = setup;
@@ -35,13 +47,25 @@ CGenetic::CGenetic(CWCircuit *wCircuit, const CSetup &setup) {
     circuits[3] = CCircuit(QPoint(118, 535), PI, ":/circuits/circuit4.png", QPoint(209, 203));
     circuits[4] = CCircuit(QPoint(631, 402), PI, ":/circuits/circuit5.png", QPoint(152, 138));
     circuits[5] = CCircuit(QPoint(539, 543), PI, ":/circuits/circuit6.png", QPoint(527, 279));
+    circuits[6] = CCircuit(QPoint(592, 552), 0, ":/circuits/circuit1.png", QPoint(285, 285));
+    circuits[7] = CCircuit(QPoint(615, 35), 0, ":/circuits/circuit2.png", QPoint(133, 436));
+    circuits[8] = CCircuit(QPoint(652, 372), 0, ":/circuits/circuit3.png", QPoint(457, 217));
+    circuits[9] = CCircuit(QPoint(118, 535), 0, ":/circuits/circuit4.png", QPoint(209, 203));
+    circuits[10] = CCircuit(QPoint(631, 402), 0, ":/circuits/circuit5.png", QPoint(152, 138));
+    circuits[11] = CCircuit(QPoint(539, 543), 0, ":/circuits/circuit6.png", QPoint(527, 279));
 
-    circuits[0].setMarkers(mks1);
-    circuits[1].setMarkers(mks2);
-    circuits[2].setMarkers(mks3);
-    circuits[3].setMarkers(mks4);
-    circuits[4].setMarkers(mks5);
-    circuits[5].setMarkers(mks6);
+    circuits[0].setMarkers(mks0);
+    circuits[1].setMarkers(mks1);
+    circuits[2].setMarkers(mks2);
+    circuits[3].setMarkers(mks3);
+    circuits[4].setMarkers(mks4);
+    circuits[5].setMarkers(mks5);
+    circuits[6].setMarkers(mks6);
+    circuits[7].setMarkers(mks7);
+    circuits[8].setMarkers(mks8);
+    circuits[9].setMarkers(mks9);
+    circuits[10].setMarkers(mks10);
+    circuits[11].setMarkers(mks11);
 	
 	currentCircuit = 0;
 
@@ -156,12 +180,16 @@ void CGenetic::setCircuit(int numCircuit) {
 
 bool CGenetic::isDehors(const QPointF& p) {
 	QImage img = circuits[currentCircuit].getImage();
+    QPoint pe;
 	
 	if(p.x() < 0 || p.y() < 0 || p.x() >= img.width() || p.y() >= img.height()) {
 		return true;
 	}
 	
-	return img.pixel(p.toPoint()) == 0xFF000000;
+    pe = p.toPoint();
+    circuits[currentCircuit].normCoordonnees(pe);
+
+    return img.pixel(pe) == 0xFF000000;
 }
 
 void CGenetic::run(void) {

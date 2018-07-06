@@ -56,7 +56,7 @@ void CWCircuit::calculMarkers(const QPoint& depart, double distance, double angl
 
     qStdOut() << "#include <QList>\r\n";
     qStdOut() << "#include \"CMarker.h\"\r\n\r\n";
-    qStdOut() << "void initCicuit" << numCircuit << "(QList<CMarker>& mks) {\r\n";
+    qStdOut() << "void initCircuit" << numCircuit << "(QList<CMarker>& mks) {\r\n";
 
     for(int i = 0;i<markers.size();i++) {
         int dx = abs(prev.x() - markers.at(i).x());

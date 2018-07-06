@@ -1,7 +1,7 @@
 #include <QList>
 #include "CMarker.h"
 
-void initCicuit4(QList<CMarker>& mks) {
+void initCircuit4(QList<CMarker>& mks) {
 	mks << CMarker(QPoint(98, 531), &CMarker::depasseGauche, &CMarker::depasseDroite);
 	mks << CMarker(QPoint(80, 521), &CMarker::depasseGauche, &CMarker::depasseDroite);
 	mks << CMarker(QPoint(66, 506), &CMarker::depasseHaut, &CMarker::depasseBas);

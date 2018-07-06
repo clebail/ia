@@ -16,6 +16,7 @@ public:
     double getAngle(void);
     void setMarkers(const QList<CMarker>& markers);
     const QList<CMarker>& getMarkers(void);
+    void normCoordonnees(QPoint& p);
 	void normCoordonnees(int& x, int& y);
 	const QPoint& getPosTime(void);
     void setNbGagne(int nbGagne);

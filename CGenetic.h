@@ -10,7 +10,7 @@
 
 #define TAILLE_POPULATION					200
 #define NOMBRE_GENERATION					200000
-#define NB_CIRCUIT                          6
+#define NB_CIRCUIT                          12
 
 class CGenetic : public QThread {
     Q_OBJECT

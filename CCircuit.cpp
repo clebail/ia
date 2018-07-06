@@ -34,6 +34,10 @@ const QList<CMarker>& CCircuit::getMarkers(void) {
     return markers;
 }
 
+void CCircuit::normCoordonnees(QPoint& p) {
+    normCoordonnees(p.rx(), p.ry());
+}
+
 void CCircuit::normCoordonnees(int& x, int& y) {
 	if(x < 0) {
 		x = 0;
