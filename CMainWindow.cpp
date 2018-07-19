@@ -8,6 +8,9 @@ CMainWindow::CMainWindow(QWidget *parent) : QMainWindow(parent) {
     testVoiture = 0;
     testVoiturePilote = 0;
     testPiloteTimer = 0;
+
+    spVainqueur->setMaximum(TAILLE_POPULATION);
+    spVainqueur->setValue(TAILLE_POPULATION / 4);
 }
 
 CMainWindow::~CMainWindow(void) {

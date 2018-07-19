@@ -9,6 +9,7 @@
 #define NB_ROUE                 4
 #define HYPO                    10
 #define ANGLE                   ((double)0.507)
+#define ALPHA                   50
 
 class CVehicule {
 public:
@@ -24,6 +25,7 @@ protected:
     QPointF posRoue[NB_ROUE];
     double currentAngle;
     double currentVitesse;
+    int alpha;
 
     virtual double getVitesse(void) = 0;
     virtual double getAngle(void) = 0;

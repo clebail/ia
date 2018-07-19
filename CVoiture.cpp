@@ -5,7 +5,7 @@
 #include "commun.h"
 #include "CVoiture.h"
 
-#define MAX_SCORE       160
+#define MAX_SCORE       800
 
 CVoiture::CVoiture(void) : CVehicule() {
     score = oldScore = 0;
@@ -14,6 +14,7 @@ CVoiture::CVoiture(void) : CVehicule() {
 
     nVitesse = new CNeurone(NB_CAPTEUR+1);
     nAngle = new CNeurone(NB_CAPTEUR+1);
+    champion = false;
 
     memset(&victoires, 0, NB_CIRCUIT * sizeof(bool));
 }
@@ -44,12 +45,14 @@ void CVoiture::setStartInfo(QPoint position, double angle, const QList<CMarker>&
     oldScore = score;
     score = 0;
     currentMarkerIdx = 0;
+    alpha = 255;
 
     calculPosRoue();
 }
 
 void CVoiture::setAlive(bool alive) {
     this->alive = alive;
+    alpha = alive ? 255 : ALPHA;
 }
 
 bool CVoiture::isAlive(void) {
@@ -69,43 +72,60 @@ void CVoiture::from(CVoiture *v1, CVoiture *v2, int seuilVitesse, int seuilAngle
     }
     
     score = 0;
+    alpha = 255;
+    champion = false;
+    memset(&victoires, 0, NB_CIRCUIT * sizeof(bool));
 }
 
 bool CVoiture::move(int timeElapsed, bool &gagne) {
     gagne = false;
+    int offset = champion ? 2000 : oldScore / 5;
 
     CVehicule::move(timeElapsed, gagne);
 
-    if(markers.at(currentMarkerIdx).isDepasse(position)) {
-        score = (++currentMarkerIdx) * 100 / markers.size();
+    if(alive) {
+        if(markers.at(currentMarkerIdx).isDepasse(position)) {
+            score = (++currentMarkerIdx) * 100 / markers.size();
 
-        if(score == 100) {
-            score += (MAX_TIME - timeElapsed) / 1000;
-            alive = false;
-            gagne = true;
+            if(score == 100) {
+                score += (MAX_TIME - timeElapsed) / 100;
+                alive = false;
+                gagne = true;
+                alpha = ALPHA;
+                score += offset;
 
-            return false;
+                return false;
+            }
+        }else if(currentMarkerIdx > 0) {
+            if(markers.at(currentMarkerIdx - 1).isDepasseInv(position)) {
+                score = 0;
+                alive = false;
+                alpha = ALPHA;
+
+                return false;
+            }
+        }else if(currentMarkerIdx == 0) {
+            if(markers.at(markers.size() - 1).isDepasseInv(position)) {
+                score = 0;
+                alive = false;
+                alpha = ALPHA;
+
+                return false;
+            }
         }
-    }else if(currentMarkerIdx > 0) {
-        if(markers.at(currentMarkerIdx - 1).isDepasseInv(position)) {
-            alive = false;
 
-            return false;
-        }
-    }else if(currentMarkerIdx == 0) {
-        if(markers.at(markers.size() - 1).isDepasseInv(position)) {
-            score = 0;
-            alive = false;
-
-            return false;
-        }
+        return true;
     }
 
-    return true;
+    return false;
 }
 
 void CVoiture::setVictoire(int numCircuit, bool victoire) {
     victoires[numCircuit] = victoire;
+}
+
+void CVoiture::setChampion(void) {
+    champion = true;
 }
 
 bool CVoiture::isVainqueur(int numCircuit) {
@@ -123,9 +143,14 @@ double CVoiture::getAngle(void) {
 }
 
 QBrush CVoiture::getBrush(void) {
-    int r = oldScore * 50 / MAX_SCORE;
-    int v = oldScore * 100 / MAX_SCORE;
-    int b = 255 - MAX_SCORE + oldScore;
+    if(champion) {
+        return QBrush(QColor(255, 255, 255, alpha));
+    }
 
-    return QBrush(QColor(r, v, b));
+    int r = qMax(0, qMin(255, oldScore * 50 / MAX_SCORE));
+    int v = qMax(0, qMin(255, oldScore * 100 / MAX_SCORE));
+    int b = qMin(255, qMax(0, 255 - MAX_SCORE + oldScore));
+
+    return QBrush(QColor(r, v, b, alpha));
 }
+
