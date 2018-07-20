@@ -25,7 +25,8 @@ double CNeurone::eval(double a) {
         sigma += inputs[i-1] * genes[i].getValue();
     }
 
-    return 1 / (1 + exp(-sigma / a));
+    double eXp = exp(a * sigma); 
+	return eXp / (eXp + 1);
 }
 
 int CNeurone::getNbGene(void) {

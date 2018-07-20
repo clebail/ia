@@ -12,21 +12,27 @@ CVoiture::CVoiture(void) : CVehicule() {
     currentAngle = 0;
     currentVitesse = 0;
 
-    nVitesse = new CNeurone(NB_CAPTEUR+1);
-    nAngle = new CNeurone(NB_CAPTEUR+1);
+    nVitessePlus = new CNeurone(NB_CAPTEUR+2);
+	nVitesseMoins = new CNeurone(NB_CAPTEUR+2);
+    nAnglePlus = new CNeurone(NB_CAPTEUR+2);
+	nAngleMoins = new CNeurone(NB_CAPTEUR+2);
     champion = false;
 
     memset(&victoires, 0, NB_CIRCUIT * sizeof(bool));
 }
 
 CVoiture::~CVoiture(void) {
-    delete nVitesse;
-    delete nAngle;
+    delete nVitessePlus;
+	delete nVitesseMoins;
+    delete nAnglePlus;
+	delete nAngleMoins;
 }
 
 void CVoiture::init(void) {
-    nVitesse->init();
-    nAngle->init();
+    nVitessePlus->init();
+	nVitesseMoins->init();
+    nAnglePlus->init();
+	nAngleMoins->init();
 }
 
 int CVoiture::getScore(void) {
@@ -34,8 +40,10 @@ int CVoiture::getScore(void) {
 }
 
 void CVoiture::setInputs(double *inputs) {
-    nVitesse->setInputs(inputs);
-    nAngle->setInputs(inputs);
+    nVitessePlus->setInputs(inputs);
+	nVitesseMoins->setInputs(inputs);
+    nAnglePlus->setInputs(inputs);
+	nAngleMoins->setInputs(inputs);
 }
 
 void CVoiture::setStartInfo(QPoint position, double angle, const QList<CMarker>& markers) {
@@ -60,15 +68,25 @@ bool CVoiture::isAlive(void) {
 }
 
 void CVoiture::from(CVoiture *v1, CVoiture *v2, int seuilVitesse, int seuilAngle) {
-    nVitesse->from(*v1->nVitesse, *v2->nVitesse, seuilVitesse);
-    nAngle->from(*v1->nAngle, *v2->nVitesse, seuilAngle);
+    nVitessePlus->from(*v1->nVitessePlus, *v2->nVitessePlus, seuilVitesse);
+	nVitesseMoins->from(*v1->nVitesseMoins, *v2->nVitesseMoins, seuilVitesse);
+    nAnglePlus->from(*v1->nAnglePlus, *v2->nAnglePlus, seuilAngle);
+	nAngleMoins->from(*v1->nAngleMoins, *v2->nAngleMoins, seuilAngle);
 
     if(rand() % 10 < 8) {
-        nVitesse->mute(rand() % nVitesse->getNbGene());
+        nVitessePlus->mute(rand() % nVitessePlus->getNbGene());
+    }
+    
+    if(rand() % 10 < 8) {
+        nVitesseMoins->mute(rand() % nVitesseMoins->getNbGene());
     }
 
     if(rand() % 10 < 8) {
-        nAngle->mute(rand() % nAngle->getNbGene());
+        nAnglePlus->mute(rand() % nAnglePlus->getNbGene());
+    }
+    
+    if(rand() % 10 < 8) {
+        nAngleMoins->mute(rand() % nAngleMoins->getNbGene());
     }
     
     score = 0;
@@ -133,11 +151,25 @@ bool CVoiture::isVainqueur(int numCircuit) {
 }
 
 double CVoiture::getVitesse(void) {
-    return nVitesse->eval(100) * 20;
+	double vitesse = currentVitesse;
+	
+	vitesse += nVitessePlus->eval(100) > 0.5 ? 1 : 0;
+	vitesse -= nVitesseMoins->eval(100) > 0.5 ? 1 : 0;
+	
+	if(vitesse > 100) vitesse = 100;
+	if(vitesse < 0) vitesse = 0;
+	
+    return vitesse;
 }
 
 double CVoiture::getAngle(void) {
-    double angle = nAngle->eval(100) * 3 * PI2 - 3 * PI / 4;
+	double vitesse = getVitesse();
+	double eXp = exp(0.12 * (vitesse - 50)); 
+	double step = eXp / (eXp + 1) * PI / 4;
+	double angle = currentAngle;
+	
+	angle += (nAnglePlus->eval(100) > 0.5 ? 1 : 0) * step;
+	angle -= (nAngleMoins->eval(100) > 0.5 ? 1 : 0) * step;
 
     return angle;
 }

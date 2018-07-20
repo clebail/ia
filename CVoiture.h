@@ -34,8 +34,10 @@ protected:
 private:
     int score, oldScore;
     bool alive;
-    CNeurone *nVitesse;
-    CNeurone *nAngle;
+    CNeurone *nVitessePlus;
+	CNeurone *nVitesseMoins;
+    CNeurone *nAnglePlus;
+	CNeurone *nAngleMoins;
     int currentMarkerIdx;
     QList<CMarker> markers;
     bool victoires[NB_CIRCUIT];
