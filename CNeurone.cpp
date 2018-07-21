@@ -1,3 +1,4 @@
+#include <QtDebug>
 #include <string.h>
 #include <math.h>
 #include "CNeurone.h"
@@ -19,13 +20,20 @@ void CNeurone::setInputs(double *inputs) {
 
 double CNeurone::eval(double a) {
     double sigma = genes[0].getValue();
+	double s = 0;
     int i;
 
     for(i=1;i<nbGene;i++) {
         sigma += inputs[i-1] * genes[i].getValue();
+		s += inputs[i-1];
+		//qDebug() << "l: " << inputs[i-1] << " p: " << genes[i].getValue();
     }
+    //qDebug() << "lm: " << (s / 8) << " sigma: " << sigma;
+    //qDebug() << "";
 
-    return 1 / (1 + exp(-sigma / a));
+    double eXp = exp(a * sigma);
+	
+	return eXp / (eXp + 1);
 }
 
 int CNeurone::getNbGene(void) {

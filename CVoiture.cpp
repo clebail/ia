@@ -5,7 +5,7 @@
 #include "commun.h"
 #include "CVoiture.h"
 
-#define MAX_SCORE       800
+#define MAX_SCORE       300
 
 CVoiture::CVoiture(void) : CVehicule() {
     score = oldScore = 0;
@@ -61,7 +61,7 @@ bool CVoiture::isAlive(void) {
 
 void CVoiture::from(CVoiture *v1, CVoiture *v2, int seuilVitesse, int seuilAngle) {
     nVitesse->from(*v1->nVitesse, *v2->nVitesse, seuilVitesse);
-    nAngle->from(*v1->nAngle, *v2->nVitesse, seuilAngle);
+    nAngle->from(*v1->nAngle, *v2->nAngle, seuilAngle);
 
     if(rand() % 10 < 8) {
         nVitesse->mute(rand() % nVitesse->getNbGene());
@@ -133,11 +133,11 @@ bool CVoiture::isVainqueur(int numCircuit) {
 }
 
 double CVoiture::getVitesse(void) {
-    return nVitesse->eval(100) * 20;
+    return nVitesse->eval(0.1) * 20;
 }
 
 double CVoiture::getAngle(void) {
-    double angle = nAngle->eval(100) * 3 * PI2 - 3 * PI / 4;
+    double angle = nAngle->eval(0.001) * 3 * PI2 - 3 * PI / 4;
 
     return angle;
 }
