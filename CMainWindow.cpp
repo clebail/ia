@@ -55,7 +55,7 @@ void CMainWindow::onGeneticRepaintRequested(void) {
 	int elapsed = mainTime.elapsed() / 1000;
 	QString time = "%1:%2:%3";
 	
-	time = time.arg(elapsed / 3600, 2, 10, QChar('0')).arg(elapsed / 60, 2, 10, QChar('0')).arg(elapsed % 60, 2, 10, QChar('0'));
+	time = time.arg((elapsed / 3600) % 60, 2, 10, QChar('0')).arg((elapsed / 60) % 60, 2, 10, QChar('0')).arg(elapsed % 60, 2, 10, QChar('0'));
 	
 	wCircuit->setElapsedTime(time);
     wCircuit->update();

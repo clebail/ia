@@ -6,14 +6,16 @@
 #include "CVoiture.h"
 
 #define MAX_SCORE       300
+#define V_MAX			20.0
+#define A_MAX			(PI / 8.0)
 
 CVoiture::CVoiture(void) : CVehicule() {
     score = oldScore = 0;
     currentAngle = 0;
     currentVitesse = 0;
 
-    nVitesse = new CNeurone(NB_CAPTEUR+1);
-    nAngle = new CNeurone(NB_CAPTEUR+1);
+    nVitesse = new CNeurone(NB_CAPTEUR+2);
+    nAngle = new CNeurone(NB_CAPTEUR+2);
     champion = false;
 
     memset(&victoires, 0, NB_CIRCUIT * sizeof(bool));
@@ -80,10 +82,8 @@ void CVoiture::from(CVoiture *v1, CVoiture *v2, int seuilVitesse, int seuilAngle
 bool CVoiture::move(int timeElapsed, bool &gagne) {
     gagne = false;
     int offset = champion ? 2000 : oldScore / 5;
-
-    CVehicule::move(timeElapsed, gagne);
-
-    if(alive) {
+	
+	if(alive && CVehicule::move(timeElapsed, gagne)) {
         if(markers.at(currentMarkerIdx).isDepasse(position)) {
             score = (++currentMarkerIdx) * 100 / markers.size();
 
@@ -98,7 +98,7 @@ bool CVoiture::move(int timeElapsed, bool &gagne) {
             }
         }else if(currentMarkerIdx > 0) {
             if(markers.at(currentMarkerIdx - 1).isDepasseInv(position)) {
-                score = 0;
+                //score = 0;
                 alive = false;
                 alpha = ALPHA;
 
@@ -117,6 +117,9 @@ bool CVoiture::move(int timeElapsed, bool &gagne) {
         return true;
     }
 
+    alive = false;
+	alpha = ALPHA;
+    
     return false;
 }
 
@@ -133,11 +136,26 @@ bool CVoiture::isVainqueur(int numCircuit) {
 }
 
 double CVoiture::getVitesse(void) {
-    return nVitesse->eval(0.1) * 20;
+	double a = nVitesse->eval(0.005);
+	double v = currentVitesse;
+	
+	if(a >= 0.66 && v < V_MAX) {
+		v++;
+	} else if(a <= 0.33 && v > 0) {
+		v--;
+	}
+	
+	return v;
 }
 
 double CVoiture::getAngle(void) {
-    double angle = nAngle->eval(0.001) * 3 * PI2 - 3 * PI / 4;
+	double vitesse = currentVitesse - 1;
+	double a = nAngle->eval(0.005);
+	double eXp = exp((vitesse - V_MAX/2.0) * (1.0 / V_MAX * 10.0));
+	double coef = (-eXp / (eXp + 1) + 1) * 0.2 + 0.8;
+	double angle = coef * A_MAX * (a >= 0.66 ? 1 : a <= 0.33 ? -1 : 0);
+	
+	//qDebug() << "v: " << vitesse << " coef: " << coef;
 
     return angle;
 }

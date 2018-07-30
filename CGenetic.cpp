@@ -232,7 +232,7 @@ void CGenetic::calculScores(void) {
             bool gagne;
             if(population[i]->isAlive()) {
                 double angle = population[i]->getCurrentAngle();
-                double inputs[NB_CAPTEUR];
+                double inputs[NB_CAPTEUR+1];
                 QPointF *posRoue = population[i]->getPosRoue();
                 QPointF result;
                 int nbDehors = 0;
@@ -245,6 +245,7 @@ void CGenetic::calculScores(void) {
                 inputs[5] = CDistanceHelper::calculDistance(&circuits[currentCircuit], posRoue[1], posRoue[2], result, angle + 7 * PI / 4);
                 inputs[6] = CDistanceHelper::calculDistance(&circuits[currentCircuit], posRoue[2], posRoue[3], result, angle + PI2);
                 inputs[7] = CDistanceHelper::calculDistance(&circuits[currentCircuit], posRoue[3], posRoue[2], result, angle + 3 * PI2);
+				inputs[8] = population[i]->getCurrentVitesse();
 
                 population[i]->setInputs(inputs);
 

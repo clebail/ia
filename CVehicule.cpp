@@ -44,16 +44,19 @@ bool CVehicule::move(int, bool &) {
 
     currentAngle += getAngle();
     currentVitesse = getVitesse();
+	if(currentVitesse != 0) {
+		dx = cos(currentAngle) * currentVitesse;
+		dy = sin(currentAngle) * currentVitesse;
 
-	dx = cos(currentAngle) * currentVitesse;
-    dy = sin(currentAngle) * currentVitesse;
+		position.rx() += dx;
+		position.ry() += dy;
 
-    position.rx() += dx;
-    position.ry() += dy;
-
-    calculPosRoue();
-
-    return true;
+		calculPosRoue();
+		
+		return true;
+	}
+	
+	return false;
 }
 
 const QPointF& CVehicule::getPosition(void) {
