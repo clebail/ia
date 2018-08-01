@@ -8,27 +8,39 @@
 #define MAX_SCORE       300
 #define V_MAX			20.0
 #define A_MAX			(PI / 8.0)
+#define NVP				0
+#define NVM				1
+#define NAP				2
+#define NAM				3
 
 CVoiture::CVoiture(void) : CVehicule() {
+	int i;
     score = oldScore = 0;
     currentAngle = 0;
     currentVitesse = 0;
 
-    nVitesse = new CNeurone(NB_CAPTEUR+2);
-    nAngle = new CNeurone(NB_CAPTEUR+2);
+	for(i=0;i<NB_NEURONE;i++) {
+		ns[i] = new CNeurone(NB_CAPTEUR+2);
+	}
     champion = false;
 
     memset(&victoires, 0, NB_CIRCUIT * sizeof(bool));
 }
 
 CVoiture::~CVoiture(void) {
-    delete nVitesse;
-    delete nAngle;
+	int i;
+	
+    for(i=0;i<NB_NEURONE;i++) {
+		delete ns[i];
+	}
 }
 
 void CVoiture::init(void) {
-    nVitesse->init();
-    nAngle->init();
+	int i;
+	
+    for(i=0;i<NB_NEURONE;i++) {
+		ns[i]->init();
+	}
 }
 
 int CVoiture::getScore(void) {
@@ -36,8 +48,11 @@ int CVoiture::getScore(void) {
 }
 
 void CVoiture::setInputs(double *inputs) {
-    nVitesse->setInputs(inputs);
-    nAngle->setInputs(inputs);
+	int i;
+	
+    for(i=0;i<NB_NEURONE;i++) {
+		ns[i]->setInputs(inputs);
+	}
 }
 
 void CVoiture::setStartInfo(QPoint position, double angle, const QList<CMarker>& markers) {
@@ -62,19 +77,13 @@ bool CVoiture::isAlive(void) {
 }
 
 void CVoiture::from(CVoiture *v1, CVoiture *v2) {
-    int seuilVitesse = (rand() % (nVitesse->getNbGene() - 1)) + 1;
-    int seuilAngle = (rand() % (nAngle->getNbGene() - 1)) + 1;
-
-    nVitesse->from(*v1->nVitesse, *v2->nVitesse, seuilVitesse);
-    nAngle->from(*v1->nAngle, *v2->nAngle, seuilAngle);
-
-    if(rand() % 10 < 8) {
-        nVitesse->mute(rand() % nVitesse->getNbGene());
-    }
-
-    if(rand() % 10 < 8) {
-        nAngle->mute(rand() % nAngle->getNbGene());
-    }
+	int i;
+	for(i=0;i<NB_NEURONE;i++) {
+		int seuil = rand() % ns[i]->getNbGene();
+		
+		ns[i]->from(*v1->ns[i], *v2->ns[i], seuil);	
+		ns[i]->mute(rand() % ns[i]->getNbGene());
+	}
     
     score = 0;
     alpha = 255;
@@ -139,24 +148,25 @@ bool CVoiture::isVainqueur(int numCircuit) {
 }
 
 double CVoiture::getVitesse(void) {
-	double a = nVitesse->eval(0.005);
+	double a1 = ns[NVP]->eval(1/*0.005*/);
+	double a2 = ns[NVM]->eval(1/*0.005*/);
 	double v = currentVitesse;
 	
-	if(a >= 0.66 && v < V_MAX) {
-		v++;
-	} else if(a <= 0.33 && v > 0) {
-		v--;
-	}
+	v += (a1 >= 0.5 && a2 < 0.5 ? 1 : a2 >= 0.5 && a1 < 0.5 ? -1 : 0);
+	
+	if(v > V_MAX) v = V_MAX;
+	if(v < 0) v = 0;
 	
 	return v;
 }
 
 double CVoiture::getAngle(void) {
 	double vitesse = currentVitesse - 1;
-	double a = nAngle->eval(0.005);
+	double a1 = ns[NAP]->eval(1/*0.005*/);
+	double a2 = ns[NAM]->eval(1/*0.005*/);
 	double eXp = exp((vitesse - V_MAX/2.0) * (1.0 / V_MAX * 10.0));
-	double coef = (-eXp / (eXp + 1) + 1) * 0.2 + 0.8;
-	double angle = coef * A_MAX * (a >= 0.66 ? 1 : a <= 0.33 ? -1 : 0);
+	double coef = (-eXp / (eXp + 1) + 1) * 0.5 + 0.5;
+	double angle = coef * A_MAX * (a1 >= 0.5 && a2 < 0.5 ? 1 : a2 >= 0.5 && a1 < 0.5 ? -1 : 0);
 	
 	//qDebug() << "v: " << vitesse << " coef: " << coef;
 

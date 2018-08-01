@@ -44,6 +44,7 @@ bool CVehicule::move(int, bool &) {
 
     currentAngle += getAngle();
     currentVitesse = getVitesse();
+	
 	if(currentVitesse != 0) {
 		dx = cos(currentAngle) * currentVitesse;
 		dy = sin(currentAngle) * currentVitesse;

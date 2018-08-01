@@ -9,6 +9,7 @@
 #include "CMarker.h"
 
 #define NB_CAPTEUR              8
+#define NB_NEURONE				4
 
 class CVoiture : public CVehicule {
 public:
@@ -34,8 +35,7 @@ protected:
 private:
     int score, oldScore;
     bool alive;
-    CNeurone *nVitesse;
-    CNeurone *nAngle;
+    CNeurone *ns[NB_NEURONE];
     int currentMarkerIdx;
     QList<CMarker> markers;
     bool victoires[NB_CIRCUIT];
