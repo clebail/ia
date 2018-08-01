@@ -20,7 +20,7 @@ public:
     void setStartInfo(QPoint position, double angle, const QList<CMarker> &markers);
     void setAlive(bool alive);
     bool isAlive(void);
-    void from(CVoiture *v1, CVoiture *v2, int seuilVitesse, int seuilAngle);
+    void from(CVoiture *v1, CVoiture *v2);
     bool move(int timeElapsed, bool& gagne);
     void setVictoire(int numCircuit, bool victoire);
     void setChampion(void);

@@ -111,11 +111,8 @@ void CGenetic::croisePopuplation(void) {
 	
 	while(i < max) {
         if(population[i-1]->getScore() > 0 && population[i]->getScore() > 0) {
-            int seuilVitesse = (rand() % (NB_CAPTEUR - 1)) + 1;
-            int seuilAngle = (rand() % (NB_CAPTEUR - 1)) + 1;
-
-            croiseIndividus(i-1, i, ir, seuilVitesse, seuilAngle);
-            croiseIndividus(i, i-1, ir-1, seuilVitesse, seuilAngle);
+            croiseIndividus(i-1, i, ir);
+            croiseIndividus(i, i-1, ir-1);
 
             i+=2;
             ir-=2;
@@ -126,8 +123,8 @@ void CGenetic::croisePopuplation(void) {
 	}
 }
 
-void CGenetic::croiseIndividus(int i1, int i2, int ir, int seuilVitesse, int seuilAngle) {
-    population[ir]->from(population[i1], population[i2], seuilVitesse, seuilAngle);
+void CGenetic::croiseIndividus(int i1, int i2, int ir) {
+    population[ir]->from(population[i1], population[i2]);
 }
 
 void CGenetic::setCircuit(int numCircuit) {

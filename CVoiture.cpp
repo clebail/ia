@@ -61,7 +61,10 @@ bool CVoiture::isAlive(void) {
     return alive;
 }
 
-void CVoiture::from(CVoiture *v1, CVoiture *v2, int seuilVitesse, int seuilAngle) {
+void CVoiture::from(CVoiture *v1, CVoiture *v2) {
+    int seuilVitesse = (rand() % (nVitesse->getNbGene() - 1)) + 1;
+    int seuilAngle = (rand() % (nAngle->getNbGene() - 1)) + 1;
+
     nVitesse->from(*v1->nVitesse, *v2->nVitesse, seuilVitesse);
     nAngle->from(*v1->nAngle, *v2->nAngle, seuilAngle);
 
