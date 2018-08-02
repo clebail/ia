@@ -78,6 +78,7 @@ void CMainWindow::on_pbTest_clicked(bool) {
     setup.setNbCircuit(sbCircuit->value());
     setup.setCreateImages(cbCreateImage->isChecked());
     setup.setNbVainqueur(spVainqueur->value());
+    setup.setCoefVitesse(leCoefVitesse->text().toDouble());
 
     genetic = new CGenetic(wCircuit, setup);
 

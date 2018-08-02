@@ -110,6 +110,26 @@
                </widget>
               </item>
               <item>
+               <widget class="QLabel" name="label_11">
+                <property name="text">
+                 <string>Coef vitesse</string>
+                </property>
+               </widget>
+              </item>
+              <item>
+               <widget class="QLineEdit" name="leCoefVitesse">
+                <property name="inputMask">
+                 <string/>
+                </property>
+                <property name="text">
+                 <string>1</string>
+                </property>
+                <property name="maxLength">
+                 <number>32767</number>
+                </property>
+               </widget>
+              </item>
+              <item>
                <spacer name="horizontalSpacer_3">
                 <property name="orientation">
                  <enum>Qt::Horizontal</enum>

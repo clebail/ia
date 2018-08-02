@@ -19,7 +19,7 @@ CVoiture::CVoiture(void) : CVehicule() {
     currentVitesse = 0;
 
 	for(i=0;i<NB_NEURONE;i++) {
-		ns[i] = new CNeurone(NB_CAPTEUR+2);
+        ns[i] = new CNeurone(NB_CAPTEUR+(i == 0 ? 2 : 1));
 	}
     champion = false;
 
@@ -147,7 +147,7 @@ bool CVoiture::isVainqueur(int numCircuit) {
 }
 
 double CVoiture::getVitesse(void) {
-    double a = ns[NV]->eval(0.01/*0.005*/);
+    double a = ns[NV]->eval(0.01);
 	double v = currentVitesse;
 	
     if(a >= 0.5) {
@@ -163,8 +163,8 @@ double CVoiture::getVitesse(void) {
 
 double CVoiture::getAngle(void) {
 	double vitesse = currentVitesse - 1;
-    double a1 = ns[NAP]->eval(0.01/*0.005*/);
-    double a2 = ns[NAM]->eval(0.01/*0.005*/);
+    double a1 = ns[NAP]->eval(0.01);
+    double a2 = ns[NAM]->eval(0.01);
 	double eXp = exp((vitesse - V_MAX/2.0) * (1.0 / V_MAX * 10.0));
     double coef = (-eXp / (eXp + 1) + 1) * 0.5 + 0.5;
     double angle = currentAngle + coef * A_MAX * (a1 >= 0.5 && a2 < 0.5 ? 1 : a2 >= 0.5 && a1 < 0.5 ? -1 : 0);
