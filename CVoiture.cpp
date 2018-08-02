@@ -8,10 +8,9 @@
 #define MAX_SCORE       (100 + MAX_TIME / 1000)
 #define V_MAX			20.0
 #define A_MAX			(PI / 8.0)
-#define NVP				0
-#define NVM				1
-#define NAP				2
-#define NAM				3
+#define NV				0
+#define NAP				1
+#define NAM				2
 
 CVoiture::CVoiture(void) : CVehicule() {
 	int i;
@@ -148,18 +147,18 @@ bool CVoiture::isVainqueur(int numCircuit) {
 }
 
 double CVoiture::getVitesse(void) {
-    double a1 = ns[NVP]->eval(0.1/*0.005*/);
-    double a2 = ns[NVM]->eval(0.1/*0.005*/);
+    double a = ns[NV]->eval(0.1/*0.005*/);
 	double v = currentVitesse;
 	
-	v += (a1 >= 0.5 && a2 < 0.5 ? 1 : a2 >= 0.5 && a1 < 0.5 ? -1 : 0);
+    if(a >= 0.5) {
+        if(v < V_MAX) {
+            v++;
+        }
+    }else if(v > 0) {
+        v--;
+    }
 	
-	if(v > V_MAX) v = V_MAX;
-	if(v < 0) v = 0;
-
-    //qDebug() << "vitesse " << v;
-	
-	return v;
+    return v;
 }
 
 double CVoiture::getAngle(void) {

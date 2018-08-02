@@ -9,7 +9,7 @@
 #include "CMarker.h"
 
 #define NB_CAPTEUR              8
-#define NB_NEURONE				4
+#define NB_NEURONE				3
 
 class CVoiture : public CVehicule {
 public:
