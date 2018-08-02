@@ -5,7 +5,7 @@
 #include "commun.h"
 #include "CVoiture.h"
 
-#define MAX_SCORE       300
+#define MAX_SCORE       (100 + MAX_TIME / 1000)
 #define V_MAX			20.0
 #define A_MAX			(PI / 8.0)
 #define NVP				0
@@ -100,7 +100,7 @@ bool CVoiture::move(int timeElapsed, bool &gagne) {
             score = (++currentMarkerIdx) * 100 / markers.size();
 
             if(score == 100) {
-                score += (MAX_TIME - timeElapsed) / 100;
+                score += (MAX_TIME - timeElapsed) / 1000;
                 alive = false;
                 gagne = true;
                 alpha = ALPHA;
@@ -148,27 +148,27 @@ bool CVoiture::isVainqueur(int numCircuit) {
 }
 
 double CVoiture::getVitesse(void) {
-	double a1 = ns[NVP]->eval(1/*0.005*/);
-	double a2 = ns[NVM]->eval(1/*0.005*/);
+    double a1 = ns[NVP]->eval(0.1/*0.005*/);
+    double a2 = ns[NVM]->eval(0.1/*0.005*/);
 	double v = currentVitesse;
 	
 	v += (a1 >= 0.5 && a2 < 0.5 ? 1 : a2 >= 0.5 && a1 < 0.5 ? -1 : 0);
 	
 	if(v > V_MAX) v = V_MAX;
 	if(v < 0) v = 0;
+
+    //qDebug() << "vitesse " << v;
 	
 	return v;
 }
 
 double CVoiture::getAngle(void) {
 	double vitesse = currentVitesse - 1;
-	double a1 = ns[NAP]->eval(1/*0.005*/);
-	double a2 = ns[NAM]->eval(1/*0.005*/);
+    double a1 = ns[NAP]->eval(0.1/*0.005*/);
+    double a2 = ns[NAM]->eval(0.1/*0.005*/);
 	double eXp = exp((vitesse - V_MAX/2.0) * (1.0 / V_MAX * 10.0));
 	double coef = (-eXp / (eXp + 1) + 1) * 0.5 + 0.5;
-	double angle = coef * A_MAX * (a1 >= 0.5 && a2 < 0.5 ? 1 : a2 >= 0.5 && a1 < 0.5 ? -1 : 0);
-	
-	//qDebug() << "v: " << vitesse << " coef: " << coef;
+    double angle = currentAngle + coef * A_MAX * (a1 >= 0.5 && a2 < 0.5 ? 1 : a2 >= 0.5 && a1 < 0.5 ? -1 : 0);
 
     return angle;
 }

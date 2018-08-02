@@ -42,7 +42,7 @@ void CVehicule::draw(QPainter *painter) {
 bool CVehicule::move(int, bool &) {
     double dx, dy;
 
-    currentAngle += getAngle();
+    currentAngle = getAngle();
     currentVitesse = getVitesse();
 	
 	if(currentVitesse != 0) {
