@@ -242,7 +242,7 @@ void CGenetic::calculScores(void) {
                 inputs[5] = CDistanceHelper::calculDistance(&circuits[currentCircuit], posRoue[1], posRoue[2], result, angle + 7 * PI / 4);
                 inputs[6] = CDistanceHelper::calculDistance(&circuits[currentCircuit], posRoue[2], posRoue[3], result, angle + PI2);
                 inputs[7] = CDistanceHelper::calculDistance(&circuits[currentCircuit], posRoue[3], posRoue[2], result, angle + 3 * PI2);
-				inputs[8] = population[i]->getCurrentVitesse();
+                inputs[8] = population[i]->getCurrentVitesse() * -2;
 
                 population[i]->setInputs(inputs);
 

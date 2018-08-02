@@ -7,7 +7,7 @@
 
 #define MAX_SCORE       (100 + MAX_TIME / 1000)
 #define V_MAX			20.0
-#define A_MAX			(PI / 8.0)
+#define A_MAX			(PI / 6.0)
 #define NV				0
 #define NAP				1
 #define NAM				2
@@ -147,7 +147,7 @@ bool CVoiture::isVainqueur(int numCircuit) {
 }
 
 double CVoiture::getVitesse(void) {
-    double a = ns[NV]->eval(0.1/*0.005*/);
+    double a = ns[NV]->eval(0.01/*0.005*/);
 	double v = currentVitesse;
 	
     if(a >= 0.5) {
@@ -163,10 +163,10 @@ double CVoiture::getVitesse(void) {
 
 double CVoiture::getAngle(void) {
 	double vitesse = currentVitesse - 1;
-    double a1 = ns[NAP]->eval(0.1/*0.005*/);
-    double a2 = ns[NAM]->eval(0.1/*0.005*/);
+    double a1 = ns[NAP]->eval(0.01/*0.005*/);
+    double a2 = ns[NAM]->eval(0.01/*0.005*/);
 	double eXp = exp((vitesse - V_MAX/2.0) * (1.0 / V_MAX * 10.0));
-	double coef = (-eXp / (eXp + 1) + 1) * 0.5 + 0.5;
+    double coef = (-eXp / (eXp + 1) + 1) * 0.5 + 0.5;
     double angle = currentAngle + coef * A_MAX * (a1 >= 0.5 && a2 < 0.5 ? 1 : a2 >= 0.5 && a1 < 0.5 ? -1 : 0);
 
     return angle;
