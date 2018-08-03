@@ -6,7 +6,7 @@
 #include "CVoiture.h"
 
 #define MAX_SCORE       (100 + MAX_TIME / 1000)
-#define V_MAX			20.0
+#define V_MAX			30.0
 #define A_MAX			(PI / 10.0)
 #define NV				0
 #define NAP				1
