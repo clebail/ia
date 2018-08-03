@@ -95,7 +95,7 @@ void CWCircuit::createImage(QString fileName) {
     QPixmap pixmap(size());
     render(&pixmap);
 
-    pixmap.save(fileName, "JPG");
+    pixmap.save(fileName, "JPG", 75);
 }
 
 void CWCircuit::setElapsedTime(QString elapsedTime) {

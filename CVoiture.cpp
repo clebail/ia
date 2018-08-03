@@ -5,7 +5,8 @@
 #include "commun.h"
 #include "CVoiture.h"
 
-#define MAX_SCORE       (100 + MAX_TIME / 1000)
+#define TIME_DIV		100
+#define MAX_SCORE       (100 + MAX_TIME / TIME_DIV)
 #define V_MAX			30.0
 #define A_MAX			(PI / 10.0)
 #define NV				0
@@ -99,7 +100,7 @@ bool CVoiture::move(int timeElapsed, bool &gagne) {
             score = (++currentMarkerIdx) * 100 / markers.size();
 
             if(score == 100) {
-                score += (MAX_TIME - timeElapsed) / 1000;
+                score += (MAX_TIME - timeElapsed) / TIME_DIV;
                 alive = false;
                 gagne = true;
                 alpha = ALPHA;
