@@ -138,8 +138,8 @@ void CVoiture::setVictoire(int numCircuit, bool victoire) {
     victoires[numCircuit] = victoire;
 }
 
-void CVoiture::setChampion(void) {
-    champion = true;
+void CVoiture::setChampion(bool champion) {
+    this->champion = champion;
 }
 
 bool CVoiture::isVainqueur(int numCircuit) {

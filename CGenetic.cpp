@@ -154,7 +154,10 @@ bool CGenetic::calculVainqueurs(void) {
 
         if(allOk) {
             vainqueurs.append(population[i]);
-            population[i]->setChampion();
+            population[i]->setChampion(true);
+        }else {
+            vainqueurs.removeAll(population[i]);
+            population[i]->setChampion(false);
         }
     }
 

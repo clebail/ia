@@ -24,7 +24,7 @@ public:
     void from(CVoiture *v1, CVoiture *v2);
     bool move(int timeElapsed, bool& gagne);
     void setVictoire(int numCircuit, bool victoire);
-    void setChampion(void);
+    void setChampion(bool champion);
     bool isVainqueur(int numCircuit);
 protected:
     CCapteur * getGene(int idx);
