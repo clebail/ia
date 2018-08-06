@@ -18,9 +18,11 @@ protected:
 private:
     CCircuit *circuit;
     QList<QPoint> markers;
+    QList<QPair<QPoint, QPoint> > lines;
 	QString elapsedTime;
 
     QTextStream& qStdOut(void);
+    QPoint calculNextPoint(const QPoint& p, double angleDepart);
 signals:
     void drawVoitures(QPainter *painter);
 };

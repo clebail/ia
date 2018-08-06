@@ -5,6 +5,8 @@
 #include "commun.h"
 #include "CWCircuit.h"
 
+#define RAYON           22.0
+
 CWCircuit::CWCircuit(QWidget *parent) : QWidget(parent) {
     circuit = 0;
 	elapsedTime = "00:00:00";
@@ -21,6 +23,7 @@ void CWCircuit::calculMarkers(const QPoint& depart, double distance, double angl
     double step = 0.01;
 
     markers.clear();
+    lines.clear();
 
     curPoint = depart;
     while(!fini) {
@@ -37,6 +40,17 @@ void CWCircuit::calculMarkers(const QPoint& depart, double distance, double angl
                 markers.append(p);
 
                 angleDepart = acos(dx / distance) * (ay < 0 ? -1 : 1) - PI2;
+                QPoint pNext = calculNextPoint(p, angleDepart - PI2);
+
+                lines.append(QPair<QPoint, QPoint>(p, pNext));
+                if(abs(pNext.x() - p.x()) > 0) {
+                    double a = (double)(pNext.y() - p.y()) / (double)(pNext.x() - p.x());
+                    double b = pNext.y() - (a * pNext.x());
+
+                    qDebug() << "COblique(" << a << "," << b << ");";
+                } else {
+                    qDebug() << "CVerticale(" << p.x() << ");";
+                }
 
                 curPoint = p;
 
@@ -48,10 +62,6 @@ void CWCircuit::calculMarkers(const QPoint& depart, double distance, double angl
 
         fini = abs(curPoint.x() - depart.x()) < distance/2 && abs(curPoint.y() - depart.y()) < distance/2;
     }
-    markers.takeLast();
-
-    markers.append(depart);
-
     QPoint prev = markers.last();
 
     qStdOut() << "#include <QList>\r\n";
@@ -124,6 +134,14 @@ void CWCircuit::paintEvent(QPaintEvent *) {
             painter.drawEllipse(markers.at(i), 3, 3);
         }
         
+
+        for(i=0;i<lines.size();i++) {
+            painter.setPen(QPen(Qt::red));
+            painter.setBrush(QBrush(Qt::red));
+
+            painter.drawLine(lines.at(i).first, lines.at(i).second);
+        }
+
         if(!circuit->getPosTime().isNull()) {
             painter.setPen(QPen(Qt::white));
             painter.setFont(font);
@@ -138,5 +156,25 @@ QTextStream& CWCircuit::qStdOut(void) {
     static QTextStream ts(stdout);
 
     return ts;
+}
+
+QPoint CWCircuit::calculNextPoint(const QPoint& p, double angleDepart) {
+    double a1 = angleDepart;
+    double a2 = angleDepart + PI;
+    double step = 0.01;
+    QPoint pNext1(cos(a1) * RAYON + p.x(), sin(a1) * RAYON + p.y());
+    QPoint pNext2(cos(a2) * RAYON + p.x(), sin(a2) * RAYON + p.y());
+
+    while(this->circuit->getImage().pixel(pNext1) > 0xFF000000) {
+        a1 += step;
+        pNext1 = QPoint(cos(a1) * RAYON + p.x(), sin(a1) * RAYON + p.y());
+    }
+
+    while(this->circuit->getImage().pixel(pNext2) > 0xFF000000) {
+        a2 -= step;
+        pNext2 = QPoint(cos(a2) * RAYON + p.x(), sin(a2) * RAYON + p.y());
+    }
+
+    return QPoint((pNext1.x() + pNext2.x()) / 2, (pNext1.y() + pNext2.y()) / 2);
 }
 

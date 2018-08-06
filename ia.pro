@@ -37,7 +37,9 @@ SOURCES += \
     CVehicule.cpp \
     CTestVoitureAngle.cpp \
     CTestVoiturePilote.cpp \
-    CDistanceHelper.cpp
+    CDistanceHelper.cpp \
+    CVerticale.cpp \
+    COblique.cpp
 
 HEADERS += \
         CMainWindow.h \
@@ -53,7 +55,10 @@ HEADERS += \
     CVehicule.h \
     CTestVoitureAngle.h \
     CTestVoiturePilote.h \
-    CDistanceHelper.h
+    CDistanceHelper.h \
+    CDroite.h \
+    CVerticale.h \
+    COblique.h
 
 FORMS += \
         CMainWindow.ui
