@@ -55,7 +55,7 @@ void CVoiture::setInputs(double *inputs) {
 	}
 }
 
-void CVoiture::setStartInfo(QPoint position, double angle, const QList<CMarker>& markers) {
+void CVoiture::setStartInfo(QPoint position, double angle, const QList<CDroite *>& markers) {
     this->position = position;
     this->markers = markers;
     currentAngle = angle;
@@ -94,9 +94,18 @@ void CVoiture::from(CVoiture *v1, CVoiture *v2) {
 bool CVoiture::move(int timeElapsed, bool &gagne) {
     gagne = false;
     int offset = champion ? 2000 : oldScore / 5;
+	QPointF orig = position;
 	
 	if(alive && CVehicule::move(timeElapsed, gagne)) {
-        if(markers.at(currentMarkerIdx).isDepasse(position)) {
+		CDroite *d = CDroite::create(orig, position);
+		QPointF croise = markers.at(currentMarkerIdx)->croise(*d);
+		QRectF r(orig, position);
+		
+		//qDebug() << orig << position << croise << r.contains(croise);
+		
+		delete d;
+		
+		if(!croise.isNull() && r.contains(croise)) {
             score = (++currentMarkerIdx) * 100 / markers.size();
 
             if(score == 100) {
@@ -108,23 +117,7 @@ bool CVoiture::move(int timeElapsed, bool &gagne) {
 
                 return false;
             }
-        }/*else if(currentMarkerIdx > 0) {
-            if(markers.at(currentMarkerIdx - 1).isDepasseInv(position)) {
-                //score = 0;
-                alive = false;
-                alpha = ALPHA;
-
-                return false;
-            }
-        }else if(currentMarkerIdx == 0) {
-            if(markers.at(markers.size() - 1).isDepasseInv(position)) {
-                score = 0;
-                alive = false;
-                alpha = ALPHA;
-
-                return false;
-            }
-        }*/
+        }
 
         return true;
     }

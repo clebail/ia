@@ -26,11 +26,11 @@ double CCircuit::getAngle(void) {
     return angle;
 }
 
-void CCircuit::setMarkers(const QList<CMarker>& markers) {
+void CCircuit::setMarkers(const QList<CDroite *>& markers) {
     this->markers = markers;
 }
 
-const QList<CMarker>& CCircuit::getMarkers(void) {
+const QList<CDroite *>& CCircuit::getMarkers(void) {
     return markers;
 }
 

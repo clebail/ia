@@ -5,5 +5,5 @@ CSetup::CSetup() {
     nbCircuit = 10;
     createImages = false;
     nbVainqueur = TAILLE_POPULATION / 4;
-    coefVitesse = -3.0;
+    coefVitesse = -15.0;
 }

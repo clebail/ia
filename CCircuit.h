@@ -5,7 +5,7 @@
 #include <QString>
 #include <QImage>
 #include <QList>
-#include "CMarker.h"
+#include "CDroite.h"
 
 class CCircuit {
 public:
@@ -14,8 +14,8 @@ public:
     const QPoint& getDepart(void);
     const QImage& getImage(void);
     double getAngle(void);
-    void setMarkers(const QList<CMarker>& markers);
-    const QList<CMarker>& getMarkers(void);
+    void setMarkers(const QList<CDroite *>& markers);
+    const QList<CDroite *>& getMarkers(void);
     void normCoordonnees(QPoint& p);
 	void normCoordonnees(int& x, int& y);
 	const QPoint& getPosTime(void);
@@ -25,7 +25,7 @@ private:
     QPoint depart, posTime;
     double angle;
     QImage image;
-    QList<CMarker> markers;
+    QList<CDroite *> markers;
     int nbGagne;
 };
 

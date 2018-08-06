@@ -23,9 +23,14 @@ void CWCircuit::calculMarkers(const QPoint& depart, double distance, double angl
     double step = 0.01;
 
     markers.clear();
-    lines.clear();
-
+	lines.clear();
+    
     curPoint = depart;
+	
+	qStdOut() << "#include <QList>\r\n";
+    qStdOut() << "#include \"CDroite.h\"\r\n\r\n";
+    qStdOut() << "void initCircuit" << numCircuit << "(QList<CDroite *>& mks) {\r\n";
+	
     while(!fini) {
         double angle = angleDepart;
 
@@ -41,18 +46,16 @@ void CWCircuit::calculMarkers(const QPoint& depart, double distance, double angl
 
                 angleDepart = acos(dx / distance) * (ay < 0 ? -1 : 1) - PI2;
                 QPoint pNext = calculNextPoint(p, angleDepart - PI2);
+				QPoint pNext2 = pNext;
+				
+				pNext2.rx() += (p.x() - pNext.x());
+				pNext2.ry() += (p.y() - pNext.y());
+				
+				lines.append(QLine(pNext, pNext2));
 
-                lines.append(QPair<QPoint, QPoint>(p, pNext));
-                if(abs(pNext.x() - p.x()) > 0) {
-                    double a = (double)(pNext.y() - p.y()) / (double)(pNext.x() - p.x());
-                    double b = pNext.y() - (a * pNext.x());
-
-                    qDebug() << "COblique(" << a << "," << b << ");";
-                } else {
-                    qDebug() << "CVerticale(" << p.x() << ");";
-                }
-
-                curPoint = p;
+                qStdOut() << "\tmks << CDroite::create(QPointF(" << p.x() << ", " << p.y() << "), QPointF(" << pNext.x() << ", " << pNext.y() << "));\r\n";
+                
+				curPoint = p;
 
                 break;
             }
@@ -62,42 +65,8 @@ void CWCircuit::calculMarkers(const QPoint& depart, double distance, double angl
 
         fini = abs(curPoint.x() - depart.x()) < distance/2 && abs(curPoint.y() - depart.y()) < distance/2;
     }
-    QPoint prev = markers.last();
-
-    qStdOut() << "#include <QList>\r\n";
-    qStdOut() << "#include \"CMarker.h\"\r\n\r\n";
-    qStdOut() << "void initCircuit" << numCircuit << "(QList<CMarker>& mks) {\r\n";
-
-    for(int i = 0;i<markers.size();i++) {
-        int dx = abs(prev.x() - markers.at(i).x());
-        int dy = abs(prev.y() - markers.at(i).y());
-        QString sens, sensInv;
-
-        if(dx >= dy) {
-            if(prev.x() > markers.at(i).x()) {
-                sens = "Gauche";
-                sensInv = "Droite";
-            }else {
-                sens = "Droite";
-                sensInv = "Gauche";
-            }
-        }else {
-            if(prev.y() > markers.at(i).y()) {
-                sens = "Haut";
-                sensInv = "Bas";
-            } else {
-                sens = "Bas";
-                sensInv = "Haut";
-            }
-        }
-
-        qStdOut() << "\tmks << CMarker(QPoint(" << markers.at(i).x() << ", " << markers.at(i).y() << "), &CMarker::depasse" << sens <<", &CMarker::depasse" << sensInv <<");\r\n";
-
-        prev = markers.at(i);
-    }
-
     qStdOut() << "}\r\n";
-
+    
     repaint();
 }
 
@@ -134,14 +103,13 @@ void CWCircuit::paintEvent(QPaintEvent *) {
             painter.drawEllipse(markers.at(i), 3, 3);
         }
         
-
         for(i=0;i<lines.size();i++) {
             painter.setPen(QPen(Qt::red));
             painter.setBrush(QBrush(Qt::red));
 
-            painter.drawLine(lines.at(i).first, lines.at(i).second);
+            painter.drawLine(lines.at(i));
         }
-
+        
         if(!circuit->getPosTime().isNull()) {
             painter.setPen(QPen(Qt::white));
             painter.setFont(font);

@@ -6,7 +6,7 @@
 #include "CCapteur.h"
 #include "CCircuit.h"
 #include "CNeurone.h"
-#include "CMarker.h"
+#include "CDroite.h"
 
 #define NB_CAPTEUR              8
 #define NB_NEURONE				3
@@ -18,7 +18,7 @@ public:
     void init(void);
     int getScore(void);
     void setInputs(double *inputs);
-    void setStartInfo(QPoint position, double angle, const QList<CMarker> &markers);
+    void setStartInfo(QPoint position, double angle, const QList<CDroite *> &markers);
     void setAlive(bool alive);
     bool isAlive(void);
     void from(CVoiture *v1, CVoiture *v2);
@@ -37,7 +37,7 @@ private:
     bool alive;
     CNeurone *ns[NB_NEURONE];
     int currentMarkerIdx;
-    QList<CMarker> markers;
+    QList<CDroite *> markers;
     bool victoires[NB_CIRCUIT];
     bool champion;
 };

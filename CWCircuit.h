@@ -18,7 +18,7 @@ protected:
 private:
     CCircuit *circuit;
     QList<QPoint> markers;
-    QList<QPair<QPoint, QPoint> > lines;
+	QList<QLine> lines;
 	QString elapsedTime;
 
     QTextStream& qStdOut(void);

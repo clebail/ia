@@ -22,7 +22,7 @@
 #include "circuit12.cpp"
 
 CGenetic::CGenetic(CWCircuit *wCircuit, const CSetup &setup) {
-    QList<CMarker> mks0, mks1, mks2, mks3, mks4, mks5, mks6, mks7, mks8, mks9, mks10, mks11;
+    QList<CDroite *> mks0, mks1, mks2, mks3, mks4, mks5, mks6, mks7, mks8, mks9, mks10, mks11;
 
     initCircuit1(mks0);
     initCircuit2(mks1);

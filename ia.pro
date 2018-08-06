@@ -39,7 +39,8 @@ SOURCES += \
     CTestVoiturePilote.cpp \
     CDistanceHelper.cpp \
     CVerticale.cpp \
-    COblique.cpp
+    COblique.cpp \
+    CDroite.cpp
 
 HEADERS += \
         CMainWindow.h \

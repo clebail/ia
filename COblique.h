@@ -6,7 +6,7 @@
 class COblique : public CDroite {
 public:
     COblique(double a, double b);
-    QPoint croise(const CDroite& other) const;
+    QPointF croise(const CDroite& other) const;
     double eval(double x) const;
 private:
     double a;
