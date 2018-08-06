@@ -59,7 +59,9 @@ void CMainWindow::onGeneticRepaintRequested(void) {
 	
 	wCircuit->setElapsedTime(time);
     wCircuit->update();
-    wCircuit->createImage("images/img_"+QString("%1").arg(imgIdx, 6, 10, QChar('0'))+".jpg");
+	if(setup.getCreateImages()) {
+		wCircuit->createImage("images/img_"+QString("%1").arg(imgIdx, 6, 10, QChar('0'))+".jpg");
+	}
 
     imgIdx++;
 }

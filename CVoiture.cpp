@@ -7,7 +7,7 @@
 
 #define TIME_DIV		100
 #define MAX_SCORE       (100 + MAX_TIME / TIME_DIV)
-#define V_MAX			30.0
+#define V_MAX			60.0
 #define A_MAX			(PI / 10.0)
 #define NV				0
 #define NAP				1
@@ -108,7 +108,7 @@ bool CVoiture::move(int timeElapsed, bool &gagne) {
 
                 return false;
             }
-        }else if(currentMarkerIdx > 0) {
+        }/*else if(currentMarkerIdx > 0) {
             if(markers.at(currentMarkerIdx - 1).isDepasseInv(position)) {
                 //score = 0;
                 alive = false;
@@ -124,7 +124,7 @@ bool CVoiture::move(int timeElapsed, bool &gagne) {
 
                 return false;
             }
-        }
+        }*/
 
         return true;
     }
