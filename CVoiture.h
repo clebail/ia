@@ -18,7 +18,7 @@ public:
     void init(void);
     int getScore(void);
     void setInputs(double *inputs);
-    void setStartInfo(QPoint position, double angle, const QList<CDroite *> &markers);
+    void setStartInfo(QPoint position, double angle, const QList<CDroite *> &markers, int idx);
     void setAlive(bool alive);
     bool isAlive(void);
     void from(CVoiture *v1, CVoiture *v2);
@@ -40,6 +40,7 @@ private:
     QList<CDroite *> markers;
     bool victoires[NB_CIRCUIT];
     bool champion;
+    int idx;
 };
 
 #endif // CVOITURE_H

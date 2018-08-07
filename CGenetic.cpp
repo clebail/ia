@@ -133,7 +133,7 @@ void CGenetic::setCircuit(int numCircuit) {
     currentCircuit = numCircuit;
 
     for(i=0;i<TAILLE_POPULATION;i++) {
-        population[i]->setStartInfo(circuits[numCircuit].getDepart(), circuits[numCircuit].getAngle(), circuits[numCircuit].getMarkers());
+        population[i]->setStartInfo(circuits[numCircuit].getDepart(), circuits[numCircuit].getAngle(), circuits[numCircuit].getMarkers(), i);
         population[i]->setAlive(true);
     }
 

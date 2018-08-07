@@ -55,9 +55,10 @@ void CVoiture::setInputs(double *inputs) {
 	}
 }
 
-void CVoiture::setStartInfo(QPoint position, double angle, const QList<CDroite *>& markers) {
+void CVoiture::setStartInfo(QPoint position, double angle, const QList<CDroite *>& markers, int idx) {
     this->position = position;
     this->markers = markers;
+    this->idx = idx;
     currentAngle = angle;
     oldScore = score;
     score = 0;
@@ -101,12 +102,11 @@ bool CVoiture::move(int timeElapsed, bool &gagne) {
 		QPointF croise = markers.at(currentMarkerIdx)->croise(*d);
 		QRectF r(orig, position);
         r = r.normalized();
+        r.adjust(-0.1, -0.1, 0.1, 0.1);
 		
-        //qDebug() << orig << position << markers.at(currentMarkerIdx)->toString() << croise << r.contains(croise) << r;
+        //qDebug() << idx << orig << position << markers.at(currentMarkerIdx)->toString() << croise << r.contains(croise) << r;
 		
-		delete d;
-		
-		if(!croise.isNull() && r.contains(croise)) {
+        while(r.contains(croise)) {
             score = (++currentMarkerIdx) * 100 / markers.size();
 
             if(score == 100) {
@@ -116,9 +116,15 @@ bool CVoiture::move(int timeElapsed, bool &gagne) {
                 alpha = ALPHA;
                 score += offset;
 
+                delete d;
+
                 return false;
             }
+
+            croise = markers.at(currentMarkerIdx)->croise(*d);
         }
+
+        delete d;
 
         return true;
     }
