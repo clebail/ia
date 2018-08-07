@@ -26,6 +26,7 @@ public:
     void setVictoire(int numCircuit, bool victoire);
     void setChampion(bool champion);
     bool isVainqueur(int numCircuit);
+	QString serialize(void);
 protected:
     CCapteur * getGene(int idx);
 

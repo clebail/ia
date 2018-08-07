@@ -13,6 +13,7 @@ public:
     void from(const CNeurone& n1, const CNeurone& n2, int seuil);
     void mute(int idx);
     void init(void);
+	QString serialize(void);
 private:
     int nbGene;
     CCapteur *genes;

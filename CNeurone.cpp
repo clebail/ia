@@ -66,3 +66,18 @@ void CNeurone::init(void) {
         genes[i].init();
     }
 }
+
+QString CNeurone::serialize(void) {
+	int i;
+	QString ret = "[";
+	QString s = "";
+
+    for(i=0;i<nbGene;i++) {
+        ret += s + QString::number(genes[i].getValue());
+		s = ",";
+    }
+    
+    ret += "]";
+	
+	return ret;
+}

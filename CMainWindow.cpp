@@ -1,5 +1,6 @@
 #include <QtDebug>
 #include <QKeyEvent>
+#include <iostream>
 #include "CMainWindow.h"
 
 CMainWindow::CMainWindow(QWidget *parent) : QMainWindow(parent) {
@@ -44,7 +45,19 @@ bool CMainWindow::eventFilter(QObject *obj, QEvent *event) {
 }
 
 void CMainWindow::onGeneticCalculOk(void) {
-    qDebug() << genetic->getVainqueurs().size();
+   	int i;
+	
+	std::cout << "[" << std::endl;
+	
+	for(i=0;i<genetic->getVainqueurs().size();i++) {
+		if(i != 0) {
+			std::cout << "," << std::endl;
+		}
+		
+		std::cout << genetic->getVainqueurs().at(i)->serialize().toStdString();
+	}
+	
+	std::cout << std::endl << "]" << std::endl;
 }
 
 void CMainWindow::onGeneticCircuitChange(CCircuit *circuit) {

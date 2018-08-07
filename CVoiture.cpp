@@ -147,6 +147,21 @@ bool CVoiture::isVainqueur(int numCircuit) {
     return victoires[numCircuit];
 }
 
+QString CVoiture::serialize(void) {
+	int i;
+	QString ret = "[";
+	QString s = "";
+	
+	for(i=0;i<NB_NEURONE;i++) {
+		ret += s + ns[i]->serialize();
+		s = ",\r\n";
+	}
+	
+	ret += "]";
+	
+	return ret;
+}
+
 double CVoiture::getVitesse(void) {
     double a = ns[NV]->eval(0.01);
 	double v = currentVitesse;
