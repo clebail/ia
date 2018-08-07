@@ -22,20 +22,21 @@
 #include "circuit12.cpp"
 
 CGenetic::CGenetic(CWCircuit *wCircuit, const CSetup &setup) {
-    QList<CDroite *> mks0, mks1, mks2, mks3, mks4, mks5, mks6, mks7, mks8, mks9, mks10, mks11;
+    QList<CDroite *> mks[NB_CIRCUIT];
+    int i;
 
-    initCircuit1(mks0);
-    initCircuit2(mks1);
-    initCircuit3(mks2);
-    initCircuit4(mks3);
-    initCircuit5(mks4);
-    initCircuit6(mks5);
-    initCircuit7(mks6);
-    initCircuit8(mks7);
-    initCircuit9(mks8);
-    initCircuit10(mks9);
-    initCircuit11(mks10);
-    initCircuit12(mks11);
+    initCircuit1(mks[0]);
+    initCircuit2(mks[1]);
+    initCircuit3(mks[2]);
+    initCircuit4(mks[3]);
+    initCircuit5(mks[4]);
+    initCircuit6(mks[5]);
+    initCircuit7(mks[6]);
+    initCircuit8(mks[7]);
+    initCircuit9(mks[8]);
+    initCircuit10(mks[9]);
+    initCircuit11(mks[10]);
+    initCircuit12(mks[11]);
 
     this->wCircuit = wCircuit;
     this->setup = setup;
@@ -55,18 +56,9 @@ CGenetic::CGenetic(CWCircuit *wCircuit, const CSetup &setup) {
     circuits[10] = CCircuit(QPoint(631, 402), 0, ":/circuits/circuit5.png", QPoint(152, 138));
     circuits[11] = CCircuit(QPoint(539, 543), 0, ":/circuits/circuit6.png", QPoint(527, 279));
 
-    circuits[0].setMarkers(mks0);
-    circuits[1].setMarkers(mks1);
-    circuits[2].setMarkers(mks2);
-    circuits[3].setMarkers(mks3);
-    circuits[4].setMarkers(mks4);
-    circuits[5].setMarkers(mks5);
-    circuits[6].setMarkers(mks6);
-    circuits[7].setMarkers(mks7);
-    circuits[8].setMarkers(mks8);
-    circuits[9].setMarkers(mks9);
-    circuits[10].setMarkers(mks10);
-    circuits[11].setMarkers(mks11);
+    for(i=0;i<NB_CIRCUIT;i++) {
+        circuits[i].setMarkers(mks[i]);
+    }
 	
 	currentCircuit = 0;
 
@@ -74,6 +66,14 @@ CGenetic::CGenetic(CWCircuit *wCircuit, const CSetup &setup) {
 }
 
 CGenetic::~CGenetic(void) {
+    int i;
+
+    for(i=0;i<NB_CIRCUIT;i++) {
+        int j;
+        for(j=0;j<circuits[i].getMarkers().size();j++) {
+            delete circuits[i].getMarkers().at(j);
+        }
+    }
 }
 
 void CGenetic::initPopulation(int from, int to) {

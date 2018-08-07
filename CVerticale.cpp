@@ -22,3 +22,11 @@ double CVerticale::eval(double) const {
     return x;
 }
 
+QLine CVerticale::getLine(const QSize& size) const {
+    return QLine(QPoint(x, 0), QPoint(x, size.height()-1));
+}
+
+QString CVerticale::toString(void) const {
+    return QString("x = %1").arg(x);
+}
+

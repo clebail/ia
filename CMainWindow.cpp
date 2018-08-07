@@ -123,7 +123,7 @@ void CMainWindow::on_pbCalculMarkers_clicked(bool) {
     CCircuit circuit(depart, 0, ":circuits/circuit"+QString::number(sbNumCircuit->value())+".png");
 
     wCircuit->setCircuit(&circuit);
-    wCircuit->calculMarkers(depart, leDistance->text().toDouble(), leAngleDepart->text().toDouble(), sbNumCircuit->value());
+    wCircuit->calculMarkers(depart, leDistance->text().toDouble(), leAngleDepart->text().toDouble(), sbNumCircuit->value(), cbShowDroite->isChecked());
 }
 
 void CMainWindow::on_pbTestPilote_clicked(bool) {

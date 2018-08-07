@@ -17,7 +17,7 @@ void CWCircuit::setCircuit(CCircuit *circuit) {
     repaint();
 }
 
-void CWCircuit::calculMarkers(const QPoint& depart, double distance, double angleDepart, int numCircuit) {
+void CWCircuit::calculMarkers(const QPoint& depart, double distance, double angleDepart, int numCircuit, bool showDroite) {
     QPoint curPoint;
     bool fini = false;
     double step = 0.01;
@@ -46,17 +46,17 @@ void CWCircuit::calculMarkers(const QPoint& depart, double distance, double angl
 
                 angleDepart = acos(dx / distance) * (ay < 0 ? -1 : 1) - PI2;
                 QPoint pNext = calculNextPoint(p, angleDepart - PI2);
-				QPoint pNext2 = pNext;
-				
-				pNext2.rx() += (p.x() - pNext.x());
-				pNext2.ry() += (p.y() - pNext.y());
-				
-				lines.append(QLine(pNext, pNext2));
+                CDroite *d = CDroite::create(p, pNext);
 
-                qStdOut() << "\tmks << CDroite::create(QPointF(" << p.x() << ", " << p.y() << "), QPointF(" << pNext.x() << ", " << pNext.y() << "));\r\n";
+                if(showDroite) {
+                    lines.append(d->getLine(this->circuit->getImage().size()));
+                }
+
+                qStdOut() << "\tmks << CDroite::create(QPointF(" << p.x() << ", " << p.y() << "), QPointF(" << pNext.x() << ", " << pNext.y() << ")); //" << d->toString() << "\r\n";
                 
 				curPoint = p;
 
+                delete d;
                 break;
             }
 

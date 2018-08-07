@@ -8,6 +8,8 @@ public:
     COblique(double a, double b);
     QPointF croise(const CDroite& other) const;
     double eval(double x) const;
+    QLine getLine(const QSize& size) const;
+    QString toString(void) const;
 private:
     double a;
     double b;

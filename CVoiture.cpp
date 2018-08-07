@@ -100,8 +100,9 @@ bool CVoiture::move(int timeElapsed, bool &gagne) {
 		CDroite *d = CDroite::create(orig, position);
 		QPointF croise = markers.at(currentMarkerIdx)->croise(*d);
 		QRectF r(orig, position);
+        r = r.normalized();
 		
-		//qDebug() << orig << position << croise << r.contains(croise);
+        //qDebug() << orig << position << markers.at(currentMarkerIdx)->toString() << croise << r.contains(croise) << r;
 		
 		delete d;
 		
