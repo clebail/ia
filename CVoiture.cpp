@@ -64,6 +64,7 @@ void CVoiture::setStartInfo(QPoint position, double angle, const QList<CDroite *
     score = 0;
     currentMarkerIdx = 0;
     alpha = 255;
+    vMax = 0;
 
     calculPosRoue();
 }
@@ -162,6 +163,10 @@ QString CVoiture::serialize(void) {
 	return ret;
 }
 
+double CVoiture::getVMax(void) {
+    return vMax;
+}
+
 double CVoiture::getVitesse(void) {
     double a = ns[NV]->eval(0.01);
 	double v = currentVitesse;
@@ -173,6 +178,8 @@ double CVoiture::getVitesse(void) {
     }else if(v > 0) {
         v--;
     }
+
+    vMax = qMax(vMax, v);
 	
     return v;
 }

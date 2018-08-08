@@ -181,7 +181,7 @@ void CGenetic::run(void) {
 		
         fini = calculVainqueurs();
 
-        qDebug() << "Num circuit" << currentCircuit << "Meilleur score" << population[0]->getScore() << "Nombre de gagnant" << circuits[currentCircuit].getNbGagne() << "total vainqueurs" << vainqueurs.size();
+        qDebug() << "Num circuit" << currentCircuit << "Meilleur score" << population[0]->getScore() << " (vmax" <<  population[0]->getVMax() << ") Nombre de gagnant" << circuits[currentCircuit].getNbGagne() << "Total vainqueurs" << vainqueurs.size();
 		
         if(!fini) {
             croisePopuplation();

@@ -27,6 +27,7 @@ public:
     void setChampion(bool champion);
     bool isVainqueur(int numCircuit);
 	QString serialize(void);
+    double getVMax(void);
 protected:
     CCapteur * getGene(int idx);
 
@@ -42,6 +43,7 @@ private:
     bool victoires[NB_CIRCUIT];
     bool champion;
     int idx;
+    double vMax;
 };
 
 #endif // CVOITURE_H
