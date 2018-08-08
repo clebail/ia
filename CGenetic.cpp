@@ -271,7 +271,7 @@ void CGenetic::calculScores(void) {
         circuits[currentCircuit].setNbGagne(nbGagne);
 
         emit repaintRequested();
-        msleep(1000 / 24);
+        msleep(1000 / STEP_BY_SECOND);
 
         timeElapsed = time.elapsed();
     }

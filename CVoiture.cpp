@@ -7,8 +7,6 @@
 
 #define TIME_DIV		100
 #define MAX_SCORE       (100 + MAX_TIME / TIME_DIV)
-#define V_MAX			60.0
-#define A_MAX			(PI / 10.0)
 #define NV				0
 #define NAP				1
 #define NAM				2
@@ -172,12 +170,13 @@ double CVoiture::getVitesse(void) {
 	double v = currentVitesse;
 	
     if(a >= 0.5) {
-        if(v < V_MAX) {
-            v++;
-        }
-    }else if(v > 0) {
-        v--;
+		v+=STEP_V_P;
+    }else {
+        v-=STEP_V_M;
     }
+    
+    if(v < 0) v = 0;
+	if(v > V_MAX) v = V_MAX;
 
     vMax = qMax(vMax, v);
 	
