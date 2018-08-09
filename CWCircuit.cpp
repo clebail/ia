@@ -81,6 +81,29 @@ void CWCircuit::setElapsedTime(QString elapsedTime) {
 	this->elapsedTime = elapsedTime;
 }
 
+void CWCircuit::setPositionRef(const QPoint& positionRef) {
+	if(circuit != 0) {
+		if(positionRef.x() > width() || positionRef.y() > height()) {
+			QPoint p;
+			
+			p.setX(positionRef.x() + 50 - width());
+			if(p.x() < 0) p.setX(0);
+			if(p.x() + width() > circuit->getImage().width()) p.setX(circuit->getImage().width() - width());
+			
+			p.setY(positionRef.y() + 50 - height());
+			if(p.y() < 0) p.setY(0);
+			if(p.y() + height() > circuit->getImage().height()) p.setY(circuit->getImage().height() - height());
+			
+			
+			this->positionRef = p;
+		} else {
+			this->positionRef = QPoint(0, 0);
+		}
+	
+		update();
+	}
+}
+
 void CWCircuit::paintEvent(QPaintEvent *) {
     QPainter painter(this);
 	QFont font;

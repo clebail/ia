@@ -28,7 +28,7 @@ private:
 private slots:
     void onGeneticCalculOk(void);
     void onGeneticCircuitChange(CCircuit *circuit);
-    void onGeneticRepaintRequested(void);
+    void onGeneticRepaintRequested(const QPointF&);
     void onGeneticTerminated(void);
     void on_pbTest_clicked(bool checked = false);
 	void on_pbTestVoiture_clicked(bool checked = false);

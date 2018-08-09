@@ -177,7 +177,6 @@ void CGenetic::run(void) {
 
     do {
         calculScores();
-        triPopulation();
 		
         fini = calculVainqueurs();
 
@@ -267,8 +266,10 @@ void CGenetic::calculScores(void) {
         }
 
         circuits[currentCircuit].setNbGagne(nbGagne);
+		
+		triPopulation();
 
-        emit repaintRequested();
+        emit repaintRequested(population[0]->getPosition());
         msleep(1000 / STEP_BY_SECOND);
 
         timeElapsed = time.elapsed();

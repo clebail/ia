@@ -67,14 +67,14 @@ void CMainWindow::onGeneticCircuitChange(CCircuit *circuit) {
     wCircuit->setCircuit(circuit);
 }
 
-void CMainWindow::onGeneticRepaintRequested(void) {
+void CMainWindow::onGeneticRepaintRequested(const QPointF& posMeilleur) {
 	int elapsed = mainTime.elapsed() / 1000;
 	QString time = "%1:%2:%3";
 	
 	time = time.arg((elapsed / 3600) % 60, 2, 10, QChar('0')).arg((elapsed / 60) % 60, 2, 10, QChar('0')).arg(elapsed % 60, 2, 10, QChar('0'));
 	
 	wCircuit->setElapsedTime(time);
-    wCircuit->update();
+    wCircuit->setPositionRef(posMeilleur.toPoint());
 	if(setup.getCreateImages()) {
 		wCircuit->createImage("images/img_"+QString("%1").arg(imgIdx, 6, 10, QChar('0'))+".jpg");
 	}
@@ -102,7 +102,7 @@ void CMainWindow::on_pbTest_clicked(bool) {
 
     connect(genetic, SIGNAL(calculOk()), this, SLOT(onGeneticCalculOk()));
     connect(genetic, SIGNAL(circuitChange(CCircuit*)), this, SLOT(onGeneticCircuitChange(CCircuit*)));
-    connect(genetic, SIGNAL(repaintRequested()), this, SLOT(onGeneticRepaintRequested()));
+    connect(genetic, SIGNAL(repaintRequested(const QPointF&)), this, SLOT(onGeneticRepaintRequested(const QPointF&)));
     connect(genetic, SIGNAL(terminated()), this, SLOT(onGeneticTerminated()));
 
 	mainTime.start();

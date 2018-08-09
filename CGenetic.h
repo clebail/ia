@@ -39,7 +39,7 @@ public:
 signals:
     void calculOk(void);
     void circuitChange(CCircuit *circuit);
-    void repaintRequested(void);
+    void repaintRequested(const QPointF& positionMeilleur);
 private slots:
     void onWCircuitDrawVoitures(QPainter *painter);
 };

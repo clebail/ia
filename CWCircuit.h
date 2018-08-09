@@ -13,6 +13,7 @@ public:
     void calculMarkers(const QPoint &depart, double distance, double angleDepart, int numCircuit, bool showDroite);
     void createImage(QString fileName);
 	void setElapsedTime(QString elapsedTime);
+	void setPositionRef(const QPoint& positionRef);
 protected:
     virtual void paintEvent(QPaintEvent *);
 private:
@@ -20,6 +21,7 @@ private:
     QList<QPoint> markers;
 	QList<QLine> lines;
 	QString elapsedTime;
+	QPoint positionRef;
 
     QTextStream& qStdOut(void);
     QPoint calculNextPoint(const QPoint& p, double angleDepart);
