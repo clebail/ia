@@ -2,6 +2,7 @@
 #include <QKeyEvent>
 #include <iostream>
 #include "CMainWindow.h"
+#include "CResultTestDialog.h"
 
 CMainWindow::CMainWindow(QWidget *parent) : QMainWindow(parent) {
     setupUi(this);
@@ -46,18 +47,20 @@ bool CMainWindow::eventFilter(QObject *obj, QEvent *event) {
 
 void CMainWindow::onGeneticCalculOk(void) {
    	int i;
-	
-	std::cout << "[" << std::endl;
+    QString result = "[\r\n";
 	
 	for(i=0;i<genetic->getVainqueurs().size();i++) {
 		if(i != 0) {
-			std::cout << "," << std::endl;
+            result += ",\r\n";
 		}
 		
-		std::cout << genetic->getVainqueurs().at(i)->serialize().toStdString();
+        result += genetic->getVainqueurs().at(i)->serialize();
 	}
 	
-	std::cout << std::endl << "]" << std::endl;
+    result += "\r\n]\r\n";
+
+    CResultTestDialog resultDialog(this, result);
+    resultDialog.exec();
 }
 
 void CMainWindow::onGeneticCircuitChange(CCircuit *circuit) {

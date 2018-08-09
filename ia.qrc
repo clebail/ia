@@ -7,5 +7,6 @@
         <file>circuits/circuit1.png</file>
         <file>circuits/circuit5.png</file>
         <file>circuits/circuit6.png</file>
+        <file>circuits/circuitFinal.png</file>
     </qresource>
 </RCC>

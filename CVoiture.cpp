@@ -103,8 +103,6 @@ bool CVoiture::move(int timeElapsed, bool &gagne) {
         r = r.normalized();
         r.adjust(-0.1, -0.1, 0.1, 0.1);
 		
-        //qDebug() << idx << orig << position << markers.at(currentMarkerIdx)->toString() << croise << r.contains(croise) << r;
-		
         while(r.contains(croise)) {
             score = (++currentMarkerIdx) * 100 / markers.size();
 
@@ -188,7 +186,7 @@ double CVoiture::getAngle(void) {
     double a1 = ns[NAP]->eval(0.01);
     double a2 = ns[NAM]->eval(0.01);
 	double eXp = exp((vitesse - V_MAX/2.0) * (1.0 / V_MAX * 10.0));
-    double coef = (-eXp / (eXp + 1) + 1) * 0.5 + 0.5;
+    double coef = (-eXp / (eXp + 1) + 1) * PERTE_ANGLE_MAX + 1 - PERTE_ANGLE_MAX;
     double angle = currentAngle + coef * A_MAX * (a1 >= 0.5 && a2 < 0.5 ? 1 : a2 >= 0.5 && a1 < 0.5 ? -1 : 0);
 
     return angle;

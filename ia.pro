@@ -39,7 +39,8 @@ SOURCES += \
     CDistanceHelper.cpp \
     CVerticale.cpp \
     COblique.cpp \
-    CDroite.cpp
+    CDroite.cpp \
+    CResultTestDialog.cpp
 
 HEADERS += \
         CMainWindow.h \
@@ -57,10 +58,12 @@ HEADERS += \
     CDistanceHelper.h \
     CDroite.h \
     CVerticale.h \
-    COblique.h
+    COblique.h \
+    CResultTestDialog.h
 
 FORMS += \
-        CMainWindow.ui
+        CMainWindow.ui \
+    CResultTestDialog.ui
 
 RESOURCES += \
     ia.qrc

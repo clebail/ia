@@ -208,9 +208,7 @@ void CGenetic::drawPopulation(QPainter *painter) {
         int i;
 
         for(i=0;i<TAILLE_POPULATION;i++) {
-            //if(population[i]->isAlive()) {
-                population[i]->draw(painter);
-            //}
+            population[i]->draw(painter);
         }
     }
 }
