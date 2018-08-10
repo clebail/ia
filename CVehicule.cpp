@@ -5,15 +5,18 @@ CVehicule::~CVehicule(void) {
     alpha = 255;
 }
 
-void CVehicule::draw(QPainter *painter) {
+void CVehicule::draw(QPainter *painter, double dx, double dy) {
     QRect rect(-(WIDTH / 2), -(HEIGHT / 2), WIDTH, HEIGHT);
     QColor yellow = QColor(255, 255, 0, alpha);
     QColor red = QColor(255, 0, 0, alpha);
     QColor blue = QColor(0, 0, 255, alpha);
+    QPoint p(position.toPoint());
 
+    p.rx() += dx;
+    p.ry() += dy;
 
     painter->save();
-    painter->translate(position.x(), position.y());
+    painter->translate(p.x(), p.y());
     painter->rotate(currentAngle * 180 / PI);
 
     painter->setPen(QPen(blue));
@@ -24,19 +27,19 @@ void CVehicule::draw(QPainter *painter) {
 
     painter->setPen(QPen(yellow));
     painter->setBrush(QBrush(yellow));
-    painter->drawEllipse(posRoue[0].x(), posRoue[0].y(), 3, 3);
+    painter->drawEllipse(posRoue[0].x() + dx, posRoue[0].y() + dy, 3, 3);
 
     painter->setPen(QPen(yellow));
     painter->setBrush(QBrush(yellow));
-    painter->drawEllipse(posRoue[1].x(), posRoue[1].y(), 3, 3);
+    painter->drawEllipse(posRoue[1].x() + dx, posRoue[1].y() + dy, 3, 3);
 
     painter->setPen(QPen(red));
     painter->setBrush(QBrush(red));
-    painter->drawEllipse(posRoue[2].x(), posRoue[2].y(), 3, 3);
+    painter->drawEllipse(posRoue[2].x() + dx, posRoue[2].y() + dy, 3, 3);
 
     painter->setPen(QPen(red));
     painter->setBrush(QBrush(red));
-    painter->drawEllipse(posRoue[3].x(), posRoue[3].y(), 3, 3);
+    painter->drawEllipse(posRoue[3].x() + dx, posRoue[3].y() + dy, 3, 3);
 }
 
 bool CVehicule::move(int, bool &) {

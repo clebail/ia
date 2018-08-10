@@ -1,36 +1,48 @@
 #include <QtDebug>
 #include <iostream>
-#include <math.h>
 #include <string.h>
 #include "commun.h"
 #include "CVoiture.h"
 
 #define TIME_DIV		100
 #define MAX_SCORE       (100 + MAX_TIME / TIME_DIV)
-#define NV				0
-#define NAP				1
-#define NAM				2
 
-CVoiture::CVoiture(void) : CVehicule() {
-	int i;
+
+QColor colors[NB_CIRCUIT+1] = {
+    QColor(0, 0, 153),
+    QColor(0, 0, 204),
+    QColor(0, 17, 255),
+    QColor(0, 85, 255),
+    QColor(0, 153, 255),
+    QColor(0, 221, 255),
+    QColor(34, 255, 221),
+    QColor(102, 255, 153),
+    QColor(170, 255, 85),
+    QColor(238, 255, 17),
+    QColor(255, 204, 0),
+    QColor(255, 119, 0),
+    QColor(255, 34, 0),
+};
+
+CVoiture::CVoiture(void) : CBaseVoiture() {
     score = oldScore = 0;
     currentAngle = 0;
     currentVitesse = 0;
-
-	for(i=0;i<NB_NEURONE;i++) {
-        ns[i] = new CNeurone(NB_CAPTEUR+(i == 0 ? 2 : 1));
-	}
     champion = false;
 
-    memset(&victoires, 0, NB_CIRCUIT * sizeof(bool));
+    memset(victoires, 0, NB_CIRCUIT * sizeof(bool));
 }
 
-CVoiture::~CVoiture(void) {
-	int i;
-	
-    for(i=0;i<NB_NEURONE;i++) {
-		delete ns[i];
-	}
+void CVoiture::setStartInfo(QPoint position, double angle, const QList<CDroite *>& markers, int idx) {
+    CBaseVoiture::setStartInfo(position, angle);
+
+    this->markers = markers;
+    this->idx = idx;
+    oldScore = score;
+    score = 0;
+    currentMarkerIdx = 0;
+    vMax = 0;
+    asColor = false;
 }
 
 void CVoiture::init(void) {
@@ -45,37 +57,6 @@ int CVoiture::getScore(void) {
     return score;
 }
 
-void CVoiture::setInputs(double *inputs) {
-	int i;
-	
-    for(i=0;i<NB_NEURONE;i++) {
-		ns[i]->setInputs(inputs);
-	}
-}
-
-void CVoiture::setStartInfo(QPoint position, double angle, const QList<CDroite *>& markers, int idx) {
-    this->position = position;
-    this->markers = markers;
-    this->idx = idx;
-    currentAngle = angle;
-    oldScore = score;
-    score = 0;
-    currentMarkerIdx = 0;
-    alpha = 255;
-    vMax = 0;
-
-    calculPosRoue();
-}
-
-void CVoiture::setAlive(bool alive) {
-    this->alive = alive;
-    alpha = alive ? 255 : ALPHA;
-}
-
-bool CVoiture::isAlive(void) {
-    return alive;
-}
-
 void CVoiture::from(CVoiture *v1, CVoiture *v2) {
 	int i;
 	for(i=0;i<NB_NEURONE;i++) {
@@ -86,9 +67,8 @@ void CVoiture::from(CVoiture *v1, CVoiture *v2) {
 	}
     
     score = 0;
-    alpha = 255;
     champion = false;
-    memset(&victoires, 0, NB_CIRCUIT * sizeof(bool));
+    memset(victoires, 0, NB_CIRCUIT * sizeof(bool));
 }
 
 bool CVoiture::move(int timeElapsed, bool &gagne) {
@@ -96,7 +76,7 @@ bool CVoiture::move(int timeElapsed, bool &gagne) {
     int offset = champion ? 2000 : oldScore / 5;
 	QPointF orig = position;
 	
-	if(alive && CVehicule::move(timeElapsed, gagne)) {
+    if(alive && CVehicule::move(timeElapsed, gagne)) {
 		CDroite *d = CDroite::create(orig, position);
 		QPointF croise = markers.at(currentMarkerIdx)->croise(*d);
 		QRectF r(orig, position);
@@ -164,43 +144,25 @@ double CVoiture::getVMax(void) {
 }
 
 double CVoiture::getVitesse(void) {
-    double a = ns[NV]->eval(0.01);
-	double v = currentVitesse;
-	
-    if(a >= 0.5) {
-		v+=STEP_V_P;
-    }else {
-        v-=STEP_V_M;
-    }
-    
-    if(v < 0) v = 0;
-	if(v > V_MAX) v = V_MAX;
+    double v = CBaseVoiture::getVitesse();
 
     vMax = qMax(vMax, v);
-	
+
     return v;
 }
 
-double CVoiture::getAngle(void) {
-	double vitesse = currentVitesse - 1;
-    double a1 = ns[NAP]->eval(0.01);
-    double a2 = ns[NAM]->eval(0.01);
-	double eXp = exp((vitesse - V_MAX/2.0) * (1.0 / V_MAX * 10.0));
-    double coef = (-eXp / (eXp + 1) + 1) * PERTE_ANGLE_MAX + 1 - PERTE_ANGLE_MAX;
-    double angle = currentAngle + coef * A_MAX * (a1 >= 0.5 && a2 < 0.5 ? 1 : a2 >= 0.5 && a1 < 0.5 ? -1 : 0);
-
-    return angle;
-}
-
 QBrush CVoiture::getBrush(void) {
-    if(champion) {
-        return QBrush(QColor(255, 255, 255, alpha));
+    if(!asColor) {
+        int nbVictoire = 0;
+        int i;
+        for(i=0;i<NB_CIRCUIT;i++) {
+            nbVictoire += (victoires[i] ? 1 : 0);
+        }
+        color = colors[nbVictoire];
+        asColor = true;
     }
 
-    int r = qMax(0, qMin(255, oldScore * 50 / MAX_SCORE));
-    int v = qMax(0, qMin(255, oldScore * 100 / MAX_SCORE));
-    int b = qMin(255, qMax(0, 255 - MAX_SCORE + oldScore));
-
-    return QBrush(QColor(r, v, b, alpha));
+    color.setAlpha(alpha);
+    return QBrush(color);
 }
 

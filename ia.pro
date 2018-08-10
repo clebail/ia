@@ -23,6 +23,9 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 
+INCLUDEPATH += /usr/include/json-c
+LIBS += -ljson-c
+
 SOURCES += \
         main.cpp \
         CMainWindow.cpp \
@@ -40,7 +43,11 @@ SOURCES += \
     CVerticale.cpp \
     COblique.cpp \
     CDroite.cpp \
-    CResultTestDialog.cpp
+    CResultTestDialog.cpp \
+    CJSonDialog.cpp \
+    CVerdict.cpp \
+    CBaseVoiture.cpp \
+    CVerdictVoiture.cpp
 
 HEADERS += \
         CMainWindow.h \
@@ -59,11 +66,16 @@ HEADERS += \
     CDroite.h \
     CVerticale.h \
     COblique.h \
-    CResultTestDialog.h
+    CResultTestDialog.h \
+    CJSonDialog.h \
+    CVerdict.h \
+    CBaseVoiture.h \
+    CVerdictVoiture.h
 
 FORMS += \
         CMainWindow.ui \
-    CResultTestDialog.ui
+    CResultTestDialog.ui \
+    CJSonDialog.ui
 
 RESOURCES += \
     ia.qrc

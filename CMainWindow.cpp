@@ -1,8 +1,11 @@
 #include <QtDebug>
 #include <QKeyEvent>
 #include <iostream>
+#include <json.h>
 #include "CMainWindow.h"
 #include "CResultTestDialog.h"
+#include "CJSonDialog.h"
+#include "CVerdict.h"
 
 CMainWindow::CMainWindow(QWidget *parent) : QMainWindow(parent) {
     setupUi(this);
@@ -127,9 +130,9 @@ void CMainWindow::on_pbTestVoiture_clicked(bool) {
     testVoiture = 0;
 }
 
-void CMainWindow::CMainWindow::onTVdrawVoitures(QPainter *painter) {
+void CMainWindow::CMainWindow::onTVdrawVoitures(QPainter *painter, double dx, double dy) {
     if(testVoiture != 0) {
-        testVoiture->draw(painter);
+        testVoiture->draw(painter, dx, dy);
     }
 }
 
@@ -176,9 +179,9 @@ void CMainWindow::on_pbTestPilote_clicked(bool) {
     }
 }
 
-void CMainWindow::onTVPdrawVoitures(QPainter *painter) {
+void CMainWindow::onTVPdrawVoitures(QPainter *painter, double dx, double dy) {
 	if(testVoiturePilote != 0) {
-		testVoiturePilote->draw(painter);
+        testVoiturePilote->draw(painter, dx, dy);
 	}
 }
 
@@ -189,4 +192,24 @@ void CMainWindow::onTestTimerPiloteTimeout(void) {
         testVoiturePilote->move(0, b);
 		wCircuit->update();
 	}
+}
+
+void CMainWindow::on_pbVerdict_clicked(bool) {
+    CJSonDialog dialog(this);
+
+    if(dialog.exec() == QDialog::Accepted) {
+        QString jSon = dialog.getJSon();
+
+        if(!jSon.isEmpty()) {
+            CVerdict *verdict = new CVerdict(wCircuit, leCoefVitesseVerdict->text().toDouble(), jSon);
+
+            connect(verdict, SIGNAL(repaintRequested(const QPointF&)), this, SLOT(onVerdictRepaintRequested(const QPointF&)));
+
+            verdict->start();
+        }
+    }
+}
+
+void CMainWindow::onVerdictRepaintRequested(const QPointF& posMeilleur) {
+    wCircuit->setPositionRef(posMeilleur.toPoint());
 }

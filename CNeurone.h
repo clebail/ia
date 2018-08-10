@@ -1,6 +1,7 @@
 #ifndef CNEURONE_H
 #define CNEURONE_H
 
+#include <json.h>
 #include "CCapteur.h"
 
 class CNeurone {
@@ -14,6 +15,7 @@ public:
     void mute(int idx);
     void init(void);
 	QString serialize(void);
+    void setJSonGenes(json_object *jObj);
 private:
     int nbGene;
     CCapteur *genes;

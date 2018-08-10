@@ -26,10 +26,7 @@ double CNeurone::eval(double a) {
     for(i=1;i<nbGene;i++) {
         sigma += inputs[i-1] * genes[i].getValue();
 		s += inputs[i-1];
-		//qDebug() << "l: " << inputs[i-1] << " p: " << genes[i].getValue();
     }
-    //qDebug() << "lm: " << (s / 8) << " sigma: " << sigma;
-    //qDebug() << "";
 
     double eXp = exp(a * sigma);
 	
@@ -80,4 +77,22 @@ QString CNeurone::serialize(void) {
     ret += "]";
 	
 	return ret;
+}
+
+void CNeurone::setJSonGenes(json_object *jObj) {
+    if(json_object_get_type(jObj) == json_type_array) {
+        int len = json_object_array_length(jObj);
+        int i;
+
+        if(len == nbGene) {
+            for(i=0;i<len;i++) {
+                json_object *val = json_object_array_get_idx(jObj, i);
+                genes[i] = CCapteur(json_object_get_double(val));
+            }
+        } else {
+            qCritical() << "Impossible de créer les genes, le tableau n'a pas le bon nombre d'élément";
+        }
+    } else {
+        qCritical() << "Impossible de créer les neurones, l'objet n'est pas un tableau";
+    }
 }

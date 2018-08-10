@@ -26,7 +26,7 @@ private:
     QTextStream& qStdOut(void);
     QPoint calculNextPoint(const QPoint& p, double angleDepart);
 signals:
-    void drawVoitures(QPainter *painter);
+    void drawVoitures(QPainter *painter, double dx, double dy);
 };
 
 #endif // CWCIRCUIT_H

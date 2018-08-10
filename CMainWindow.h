@@ -32,11 +32,13 @@ private slots:
     void onGeneticTerminated(void);
     void on_pbTest_clicked(bool checked = false);
 	void on_pbTestVoiture_clicked(bool checked = false);
-	void onTVdrawVoitures(QPainter *painter);
+    void onTVdrawVoitures(QPainter *painter, double dx, double dy);
     void on_pbCalculMarkers_clicked(bool checked = false);
     void on_pbTestPilote_clicked(bool checked = false);
-    void onTVPdrawVoitures(QPainter *painter);
+    void onTVPdrawVoitures(QPainter *painter, double dx, double dy);
     void onTestTimerPiloteTimeout(void);
+    void on_pbVerdict_clicked(bool checked = false);
+    void onVerdictRepaintRequested(const QPointF&);
 };
 
 #endif // CMAINWINDOW_H

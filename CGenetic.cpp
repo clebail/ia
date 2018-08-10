@@ -62,7 +62,7 @@ CGenetic::CGenetic(CWCircuit *wCircuit, const CSetup &setup) {
 	
 	currentCircuit = 0;
 
-    connect(this->wCircuit, SIGNAL(drawVoitures(QPainter*)), this, SLOT(onWCircuitDrawVoitures(QPainter*)));
+    connect(this->wCircuit, SIGNAL(drawVoitures(QPainter*, double, double)), this, SLOT(onWCircuitDrawVoitures(QPainter*, double, double)));
 }
 
 CGenetic::~CGenetic(void) {
@@ -156,7 +156,6 @@ bool CGenetic::calculVainqueurs(void) {
             vainqueurs.append(population[i]);
             population[i]->setChampion(true);
         }else {
-            vainqueurs.removeAll(population[i]);
             population[i]->setChampion(false);
         }
     }
@@ -180,7 +179,7 @@ void CGenetic::run(void) {
 		
         fini = calculVainqueurs();
 
-        qDebug() << "Num circuit" << currentCircuit << "Meilleur score" << population[0]->getScore() << " (vmax" <<  population[0]->getVMax() << ") Nombre de gagnant" << circuits[currentCircuit].getNbGagne() << "Total vainqueurs" << vainqueurs.size();
+        qDebug() << QString("Num circuit %1, Meilleur score %2 (vmax %3), Nombre de gagnant %4, Total vainqueurs %5").arg(currentCircuit).arg(population[0]->getScore()).arg(population[0]->getVMax()).arg(circuits[currentCircuit].getNbGagne()).arg(vainqueurs.size());
 		
         if(!fini) {
             croisePopuplation();
@@ -202,12 +201,12 @@ void CGenetic::run(void) {
     emit calculOk();
 }
 
-void CGenetic::drawPopulation(QPainter *painter) {
+void CGenetic::drawPopulation(QPainter *painter, double dx, double dy) {
     if(populationInited) {
         int i;
 
         for(i=0;i<TAILLE_POPULATION;i++) {
-            population[i]->draw(painter);
+            population[i]->draw(painter, dx, dy);
         }
     }
 }
@@ -226,7 +225,7 @@ void CGenetic::calculScores(void) {
     time.start();
     while(nbAlive != 0 && timeElapsed < MAX_TIME) {
         for(i=0;i<TAILLE_POPULATION;i++) {
-            bool gagne;
+            bool gagne = false;
             if(population[i]->isAlive()) {
                 double angle = population[i]->getCurrentAngle();
                 double inputs[NB_CAPTEUR+1];
@@ -253,15 +252,15 @@ void CGenetic::calculScores(void) {
                     nbDehors += CDistanceHelper::isDehors(&circuits[currentCircuit], posRoue[3]) ? 1 : 0;
 
 					population[i]->setAlive(nbDehors < 2);
-					nbAlive -= nbDehors < 2 ? 0 : 1;
+                    nbAlive -= (nbDehors < 2 ? 0 : 1);
 				} else {
 					nbAlive--;
 				}
 
-                nbGagne += gagne ? 1 : 0;
-                population[i]->setVictoire(currentCircuit, gagne);
-            } else {
-                population[i]->move(timeElapsed, gagne);
+                nbGagne += (gagne ? 1 : 0);
+                if(!population[i]->isAlive()) {
+                    population[i]->setVictoire(currentCircuit, gagne);
+                }
             }
         }
 
@@ -276,6 +275,6 @@ void CGenetic::calculScores(void) {
     }
 }
 
-void CGenetic::onWCircuitDrawVoitures(QPainter *painter) {
-    drawPopulation(painter);
+void CGenetic::onWCircuitDrawVoitures(QPainter *painter, double dx, double dy) {
+    drawPopulation(painter, dx, dy);
 }

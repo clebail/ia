@@ -6,6 +6,7 @@
 #include "CWCircuit.h"
 
 #define RAYON           22.0
+#define MARGE           300
 
 CWCircuit::CWCircuit(QWidget *parent) : QWidget(parent) {
     circuit = 0;
@@ -83,24 +84,27 @@ void CWCircuit::setElapsedTime(QString elapsedTime) {
 
 void CWCircuit::setPositionRef(const QPoint& positionRef) {
 	if(circuit != 0) {
-		if(positionRef.x() > width() || positionRef.y() > height()) {
+        if(positionRef.x() > width() - MARGE || positionRef.y() > height() - MARGE) {
 			QPoint p;
 			
-			p.setX(positionRef.x() + 50 - width());
-			if(p.x() < 0) p.setX(0);
-			if(p.x() + width() > circuit->getImage().width()) p.setX(circuit->getImage().width() - width());
-			
-			p.setY(positionRef.y() + 50 - height());
-			if(p.y() < 0) p.setY(0);
-			if(p.y() + height() > circuit->getImage().height()) p.setY(circuit->getImage().height() - height());
-			
+            if(positionRef.x() > width() - MARGE) {
+                p.setX(positionRef.x() + MARGE - width());
+                if(p.x() < 0) p.setX(0);
+                if(p.x() + width() > circuit->getImage().width()) p.setX(circuit->getImage().width() - width());
+            }
+
+            if(positionRef.y() > height() - MARGE) {
+                p.setY(positionRef.y() + MARGE - height());
+                if(p.y() < 0) p.setY(0);
+                if(p.y() + height() > circuit->getImage().height()) p.setY(circuit->getImage().height() - height());
+            }
 			
 			this->positionRef = p;
 		} else {
 			this->positionRef = QPoint(0, 0);
 		}
-	
-		update();
+
+        update();
 	}
 }
 
@@ -117,7 +121,7 @@ void CWCircuit::paintEvent(QPaintEvent *) {
     if(circuit != 0) {
         int i;
 
-        painter.drawImage(QPoint(0, 0), circuit->getImage());
+        painter.drawImage(rect(), circuit->getImage(), QRect(this->positionRef, size()));
 
         for(i=0;i<markers.size();i++) {
             painter.setPen(QPen(Qt::red));
@@ -140,7 +144,7 @@ void CWCircuit::paintEvent(QPaintEvent *) {
         }
     }
 
-    emit drawVoitures(&painter);
+    emit drawVoitures(&painter, -positionRef.x(), -positionRef.y());
 }
 
 QTextStream& CWCircuit::qStdOut(void) {

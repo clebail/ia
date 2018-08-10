@@ -34,14 +34,14 @@ public:
     ~CGenetic(void);
     void run(void);
     void calculScores(void);
-    void drawPopulation(QPainter *painter);
+    void drawPopulation(QPainter *painter, double dx, double dy);
 	const QList<CVoiture *>& getVainqueurs(void);
 signals:
     void calculOk(void);
     void circuitChange(CCircuit *circuit);
     void repaintRequested(const QPointF& positionMeilleur);
 private slots:
-    void onWCircuitDrawVoitures(QPainter *painter);
+    void onWCircuitDrawVoitures(QPainter *painter, double dx, double dy);
 };
 
 #endif //CGENETIC_H

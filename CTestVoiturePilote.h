@@ -9,7 +9,7 @@ public:
     CTestVoiturePilote(CCircuit *circuit, QPoint position, double angle, bool showCapteurs);
     void incAngle(double inc);
     void incVitesse(double inc);
-    void draw(QPainter *painter);
+    void draw(QPainter *painter, double dx, double dy);
 protected:
     double getVitesse(void);
     double getAngle(void);

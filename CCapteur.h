@@ -3,6 +3,8 @@
 
 class CCapteur {
 public:
+    CCapteur(void);
+    CCapteur(double value);
     void init(void);
     double getValue(void);
     void from(CCapteur *other);

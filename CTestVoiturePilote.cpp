@@ -22,8 +22,8 @@ void CTestVoiturePilote::incVitesse(double inc) {
     vitesse += inc;
 }
 
-void CTestVoiturePilote::draw(QPainter *painter) {
-    CVehicule::draw(painter);
+void CTestVoiturePilote::draw(QPainter *painter, double dx, double dy) {
+    CVehicule::draw(painter, dx, dy);
 
     if(showCapteurs) {
         QPointF result;
