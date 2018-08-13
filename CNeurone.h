@@ -7,19 +7,31 @@
 class CNeurone {
 public:
     CNeurone(int nbGene);
-    ~CNeurone(void);
+    virtual ~CNeurone(void);
     void setInputs(double *inputs);
     double eval(double a);
     int getNbGene(void);
-    void from(const CNeurone& n1, const CNeurone& n2, int seuil);
-    void mute(int idx);
-    void init(void);
-	QString serialize(void);
+    virtual void from(const CNeurone& n1, const CNeurone& n2, int seuil);
+    virtual void mute(int idx);
+    void initGenes(void);
+    void initSeuil(void);
+    void initPente(void);
+    virtual QString serialize(void);
     void setJSonGenes(json_object *jObj);
+    double getSeuil(void);
+    void setSeuil(double seuil);
+    double getPente(void);
+    void setPente(double pente);
+protected:
+    QString serializeSimples(void);
+    QString serializeGenes(void);
 private:
     int nbGene;
     CCapteur *genes;
     double *inputs;
+    double seuil;
+    double pente;
+    double coefVitesse;
 };
 
 #endif // CNEURONE_H

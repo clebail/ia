@@ -48,15 +48,35 @@ void CNeurone::from(const CNeurone& n1, const CNeurone& n2, int seuil) {
 
         genes[i].from(&src->genes[i]);
     }
+
+    if(rand() % 2 > 0.5) {
+        this->seuil = n1.seuil;
+    }else {
+        this->seuil = n2.seuil;
+    }
+
+    if(rand() % 2 > 0.5) {
+        this->pente = n1.pente;
+    }else {
+        this->pente = n2.pente;
+    }
 }
 
 void CNeurone::mute(int idx) {
     if(idx >= 0 && idx < nbGene) {
         genes[idx].init();
     }
+
+    if(rand() % 2 > 0.5) {
+        initSeuil();
+    }
+
+    if(rand() % 2 > 0.5) {
+        initPente();
+    }
 }
 
-void CNeurone::init(void) {
+void CNeurone::initGenes(void) {
     int i;
 
     for(i=0;i<nbGene;i++) {
@@ -64,19 +84,18 @@ void CNeurone::init(void) {
     }
 }
 
-QString CNeurone::serialize(void) {
-	int i;
-	QString ret = "[";
-	QString s = "";
+void CNeurone::initSeuil(void) {
+    seuil = ((double)(rand() % 801 + 100)) / 1000.0;
+}
 
-    for(i=0;i<nbGene;i++) {
-        ret += s + QString::number(genes[i].getValue());
-		s = ",";
-    }
-    
-    ret += "]";
-	
-	return ret;
+void CNeurone::initPente(void) {
+    pente = ((double)(rand() % 10000 + 1)) / 10000.0;
+}
+
+QString CNeurone::serialize(void) {
+    QString ret = "{ "+serializeSimples()+", "+serializeGenes()+ " }";
+
+    return ret;
 }
 
 void CNeurone::setJSonGenes(json_object *jObj) {
@@ -95,4 +114,41 @@ void CNeurone::setJSonGenes(json_object *jObj) {
     } else {
         qCritical() << "Impossible de créer les neurones, l'objet n'est pas un tableau";
     }
+}
+
+double CNeurone::getSeuil(void) {
+    return seuil;
+}
+
+void CNeurone::setSeuil(double seuil) {
+    this->seuil = seuil;
+}
+
+double CNeurone::getPente(void) {
+    return pente;
+}
+
+void CNeurone::setPente(double pente) {
+    this->pente = pente;
+}
+
+QString CNeurone::serializeSimples(void) {
+    QString ret = "\"seuil\": "+QString::number(seuil)+", \"pente\": "+QString::number(pente);
+
+    return ret;
+}
+
+QString CNeurone::serializeGenes(void) {
+    int i;
+    QString ret = "\"genes\": [";
+    QString s = "";
+
+    for(i=0;i<nbGene;i++) {
+        ret += s + QString::number(genes[i].getValue());
+        s = ",";
+    }
+
+    ret += "]";
+
+    return ret;
 }

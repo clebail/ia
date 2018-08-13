@@ -35,6 +35,7 @@ SOURCES += \
     CVoiture.cpp \
     CCapteur.cpp \
     CNeurone.cpp \
+    CNeuroneVitesse.cpp \
     CSetup.cpp \
     CVehicule.cpp \
     CTestVoitureAngle.cpp \
@@ -57,6 +58,7 @@ HEADERS += \
     CVoiture.h \
     CCapteur.h \
     CNeurone.h \
+    CNeuroneVitesse.h \
     commun.h \
     CSetup.h \
     CVehicule.h \

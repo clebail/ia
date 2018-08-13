@@ -41,6 +41,8 @@ void CTestVoiturePilote::draw(QPainter *painter, double dx, double dy) {
         painter->drawLine(posRoue[1], result);
         CDistanceHelper::calculDistance(circuit, posRoue[1], posRoue[2], result, currentAngle + 7 * PI / 4);
         painter->drawLine(posRoue[1], result);
+        CDistanceHelper::calculDistance(circuit, position, posRoue[2], result, currentAngle);
+        painter->drawLine(position, result);
 
         painter->setPen(QPen(Qt::red));
 

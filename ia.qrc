@@ -8,5 +8,6 @@
         <file>circuits/circuit5.png</file>
         <file>circuits/circuit6.png</file>
         <file>circuits/circuitFinal.png</file>
+        <file>circuits/circuitFinalFun.png</file>
     </qresource>
 </RCC>

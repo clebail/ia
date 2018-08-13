@@ -3,10 +3,10 @@
 #include "commun.h"
 #include "CDistanceHelper.h"
 
-CVerdict::CVerdict(CWCircuit *wCircuit, double coefVitesse, QString jSon) {
+CVerdict::CVerdict(CWCircuit *wCircuit, QString circutResource, double coefVitesse, QString jSon) {
     parseVoitures(jSon);
 
-    circuit = CCircuit(QPoint(387, 787), 0, ":/circuits/circuitFinal.png");
+    circuit = CCircuit(QPoint(387, 787), 0, circutResource, QPoint(25, 50));
     this->wCircuit = wCircuit;
     this->coefVitesse = coefVitesse;
 
@@ -41,6 +41,8 @@ void CVerdict::run(void) {
                 QPointF result;
                 int nbDehors = 0;
                 bool gagne;
+                QPointF devant = QPointF((posRoue[0].x() + posRoue[1].x()) / 2, (posRoue[0].y() + posRoue[1].y()) / 2);
+                QPointF derriere = QPointF((posRoue[2].x() + posRoue[3].x()) / 2, (posRoue[2].y() + posRoue[3].y()) / 2);
 
                 inputs[0] = CDistanceHelper::calculDistance(&circuit, posRoue[0], posRoue[2], result, angle);
                 inputs[1] = CDistanceHelper::calculDistance(&circuit, posRoue[0], posRoue[1], result, angle + PI2);
@@ -50,7 +52,8 @@ void CVerdict::run(void) {
                 inputs[5] = CDistanceHelper::calculDistance(&circuit, posRoue[1], posRoue[2], result, angle + 7 * PI / 4);
                 inputs[6] = CDistanceHelper::calculDistance(&circuit, posRoue[2], posRoue[3], result, angle + PI2);
                 inputs[7] = CDistanceHelper::calculDistance(&circuit, posRoue[3], posRoue[2], result, angle + 3 * PI2);
-                inputs[8] = voitures.at(i)->getCurrentVitesse() * coefVitesse;
+                inputs[8] = CDistanceHelper::calculDistance(&circuit, devant, derriere, result, angle);
+                inputs[9] = voitures.at(i)->getCurrentVitesse() * coefVitesse;
 
                 voitures.at(i)->setInputs(inputs);
 
@@ -73,10 +76,10 @@ void CVerdict::run(void) {
 			}
         }
 
-        if(voitures.size()) {
-			emit repaintRequested(voitures.at(0)->getPosition());
-			msleep(1000 / STEP_BY_SECOND);
-		}
+        this->wCircuit->setNbVoiture(voitures.size());
+
+        emit repaintRequested(voitures.at(0)->getPosition());
+        msleep(1000 / STEP_BY_SECOND);
     }while(voitures.size());
 }
 

@@ -11,6 +11,7 @@
 CWCircuit::CWCircuit(QWidget *parent) : QWidget(parent) {
     circuit = 0;
 	elapsedTime = "00:00:00";
+    nbVoiture = 0;
 }
 
 void CWCircuit::setCircuit(CCircuit *circuit) {
@@ -112,6 +113,10 @@ void CWCircuit::setPositionRef(const QPoint& positionRef) {
 	}
 }
 
+void CWCircuit::setNbVoiture(int nbVoiture) {
+    this->nbVoiture = nbVoiture;
+}
+
 void CWCircuit::paintEvent(QPaintEvent *) {
     QPainter painter(this);
 	QFont font;
@@ -144,7 +149,7 @@ void CWCircuit::paintEvent(QPaintEvent *) {
         if(!circuit->getPosTime().isNull()) {
             painter.setPen(QPen(Qt::white));
             painter.setFont(font);
-            painter.drawText(circuit->getPosTime(), elapsedTime);
+            painter.drawText(circuit->getPosTime(), elapsedTime+" - "+QString::number(nbVoiture));
         }
     }
 

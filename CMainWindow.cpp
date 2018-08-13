@@ -16,6 +16,9 @@ CMainWindow::CMainWindow(QWidget *parent) : QMainWindow(parent) {
 
     spVainqueur->setMaximum(TAILLE_POPULATION);
     spVainqueur->setValue(TAILLE_POPULATION / 4);
+
+    cbCircuit->addItem("Circuit normal", QVariant(":/circuits/circuitFinal.png"));
+    cbCircuit->addItem("Circuit fun", QVariant(":/circuits/circuitFinalFun.png"));
 }
 
 CMainWindow::~CMainWindow(void) {
@@ -115,7 +118,7 @@ void CMainWindow::on_pbTest_clicked(bool) {
 void CMainWindow::on_pbTestVoiture_clicked(bool) {
     testVoiture = new CTestVoitureAngle(QPoint(400, 300), leAngle->text().toDouble());
 
-    connect(wCircuit, SIGNAL(drawVoitures(QPainter *)), this, SLOT(onTVdrawVoitures(QPainter *)));
+    connect(wCircuit, SIGNAL(drawVoitures(QPainter *, double , double)), this, SLOT(onTVdrawVoitures(QPainter *, double , double)));
 	
 	for(int i=0;i<50;i++) {
         bool b;
@@ -124,7 +127,7 @@ void CMainWindow::on_pbTestVoiture_clicked(bool) {
         wCircuit->repaint();
 	}
 	
-	disconnect(wCircuit, SIGNAL(drawVoitures(QPainter *)), this, SLOT(onTVdrawVoitures(QPainter *)));
+    disconnect(wCircuit, SIGNAL(drawVoitures(QPainter *, double , double)), this, SLOT(onTVdrawVoitures(QPainter *, double , double)));
 
     delete testVoiture;
     testVoiture = 0;
@@ -155,7 +158,7 @@ void CMainWindow::on_pbTestPilote_clicked(bool) {
 
         testVoiturePilote = new CTestVoiturePilote(circuitPilote, depart, leAngleDepartPilote->text().toDouble(), cbCapteurs->isChecked());
 
-        connect(wCircuit, SIGNAL(drawVoitures(QPainter *)), this, SLOT(onTVPdrawVoitures(QPainter *)));
+        connect(wCircuit, SIGNAL(drawVoitures(QPainter *, double , double)), this, SLOT(onTVPdrawVoitures(QPainter *, double , double)));
 
         installEventFilter(this);
 
@@ -167,7 +170,7 @@ void CMainWindow::on_pbTestPilote_clicked(bool) {
 
         testPiloteTimer->start();
     } else {
-        disconnect(wCircuit, SIGNAL(drawVoitures(QPainter *)), this, SLOT(onTVPdrawVoitures(QPainter *)));
+        disconnect(wCircuit, SIGNAL(drawVoitures(QPainter *, double , double)), this, SLOT(onTVPdrawVoitures(QPainter *, double , double)));
 
         removeEventFilter(this);
 
@@ -201,15 +204,22 @@ void CMainWindow::on_pbVerdict_clicked(bool) {
         QString jSon = dialog.getJSon();
 
         if(!jSon.isEmpty()) {
-            CVerdict *verdict = new CVerdict(wCircuit, leCoefVitesseVerdict->text().toDouble(), jSon);
+            CVerdict *verdict = new CVerdict(wCircuit, cbCircuit->itemData(cbCircuit->currentIndex()).toString(), leCoefVitesseVerdict->text().toDouble(), jSon);
 
             connect(verdict, SIGNAL(repaintRequested(const QPointF&)), this, SLOT(onVerdictRepaintRequested(const QPointF&)));
 
+            mainTime.start();
             verdict->start();
         }
     }
 }
 
 void CMainWindow::onVerdictRepaintRequested(const QPointF& posMeilleur) {
+    int elapsed = mainTime.elapsed() / 1000;
+    QString time = "%1:%2:%3";
+
+    time = time.arg((elapsed / 3600) % 60, 2, 10, QChar('0')).arg((elapsed / 60) % 60, 2, 10, QChar('0')).arg(elapsed % 60, 2, 10, QChar('0'));
+
+    wCircuit->setElapsedTime(time);
     wCircuit->setPositionRef(posMeilleur.toPoint());
 }

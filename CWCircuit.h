@@ -14,6 +14,7 @@ public:
     void createImage(QString fileName);
 	void setElapsedTime(QString elapsedTime);
 	void setPositionRef(const QPoint& positionRef);
+    void setNbVoiture(int nbVoiture);
 protected:
     virtual void paintEvent(QPaintEvent *);
 private:
@@ -21,6 +22,7 @@ private:
     QList<QPoint> markers;
 	QList<QLine> lines;
 	QString elapsedTime;
+    int nbVoiture;
 	QPoint positionRef;
 
     QTextStream& qStdOut(void);

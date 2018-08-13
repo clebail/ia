@@ -49,8 +49,14 @@ void CVoiture::init(void) {
 	int i;
 	
     for(i=0;i<NB_NEURONE;i++) {
-		ns[i]->init();
-	}
+        ns[i]->initGenes();
+        ns[i]->initSeuil();
+        ns[i]->initPente();
+
+        if(i == NV) {
+            static_cast<CNeuroneVitesse *>(ns[i])->initCoefVitesse();
+        }
+    }
 }
 
 int CVoiture::getScore(void) {

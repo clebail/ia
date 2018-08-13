@@ -206,6 +206,16 @@
          <widget class="QWidget" name="widget_13" native="true">
           <layout class="QHBoxLayout" name="horizontalLayout_13">
            <item>
+            <widget class="QLabel" name="label_13">
+             <property name="text">
+              <string>Circuit</string>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <widget class="QComboBox" name="cbCircuit"/>
+           </item>
+           <item>
             <widget class="QCheckBox" name="cbCreateImageVerdict">
              <property name="text">
               <string>Créer les images</string>

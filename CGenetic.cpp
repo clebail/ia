@@ -232,6 +232,8 @@ void CGenetic::calculScores(void) {
                 QPointF *posRoue = population[i]->getPosRoue();
                 QPointF result;
                 int nbDehors = 0;
+                QPointF devant = QPointF((posRoue[0].x() + posRoue[1].x()) / 2, (posRoue[0].y() + posRoue[1].y()) / 2);
+                QPointF derriere = QPointF((posRoue[2].x() + posRoue[3].x()) / 2, (posRoue[2].y() + posRoue[3].y()) / 2);
 
                 inputs[0] = CDistanceHelper::calculDistance(&circuits[currentCircuit], posRoue[0], posRoue[2], result, angle);
                 inputs[1] = CDistanceHelper::calculDistance(&circuits[currentCircuit], posRoue[0], posRoue[1], result, angle + PI2);
@@ -241,7 +243,8 @@ void CGenetic::calculScores(void) {
                 inputs[5] = CDistanceHelper::calculDistance(&circuits[currentCircuit], posRoue[1], posRoue[2], result, angle + 7 * PI / 4);
                 inputs[6] = CDistanceHelper::calculDistance(&circuits[currentCircuit], posRoue[2], posRoue[3], result, angle + PI2);
                 inputs[7] = CDistanceHelper::calculDistance(&circuits[currentCircuit], posRoue[3], posRoue[2], result, angle + 3 * PI2);
-                inputs[8] = population[i]->getCurrentVitesse() * setup.getCoefVitesse();
+                inputs[8] = CDistanceHelper::calculDistance(&circuits[currentCircuit], devant, derriere, result, angle);
+                inputs[9] = population[i]->getCurrentVitesse() * population[i]->getCoefVitesse();
 
                 population[i]->setInputs(inputs);
 
@@ -262,6 +265,8 @@ void CGenetic::calculScores(void) {
                     population[i]->setVictoire(currentCircuit, gagne);
                 }
             }
+
+            this->wCircuit->setNbVoiture(nbAlive);
         }
 
         circuits[currentCircuit].setNbGagne(nbGagne);

@@ -35,6 +35,8 @@ private:
     double vMax;
     bool asColor;
     QColor color;
+
+    double initSeuil(void);
 };
 
 #endif // CVOITURE_H

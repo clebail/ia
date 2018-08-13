@@ -11,7 +11,7 @@
 class CVerdict : public QThread {
     Q_OBJECT
 public:
-    CVerdict(CWCircuit *wCircuit, double coefVitesse, QString jSon);
+    CVerdict(CWCircuit *wCircuit, QString circutResource, double coefVitesse, QString jSon);
     ~CVerdict(void);
     void run(void);
 private:
