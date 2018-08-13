@@ -53,7 +53,7 @@ void CVerdict::run(void) {
                 inputs[6] = CDistanceHelper::calculDistance(&circuit, posRoue[2], posRoue[3], result, angle + PI2);
                 inputs[7] = CDistanceHelper::calculDistance(&circuit, posRoue[3], posRoue[2], result, angle + 3 * PI2);
                 inputs[8] = CDistanceHelper::calculDistance(&circuit, devant, derriere, result, angle);
-                inputs[9] = voitures.at(i)->getCurrentVitesse() * coefVitesse;
+                inputs[9] = voitures.at(i)->getCurrentVitesse() * voitures.at(i)->getCoefVitesse();
 
                 voitures.at(i)->setInputs(inputs);
 

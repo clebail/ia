@@ -25,7 +25,7 @@ void CNeuroneVitesse::mute(int idx) {
 }
 
 void CNeuroneVitesse::initCoefVitesse(void) {
-    coefVitesse = ((double)(rand() % 50 + 1)) * -1;
+    coefVitesse = ((double)(rand() % 20 + 1)) * -1;
 }
 
 QString CNeuroneVitesse::serialize(void) {

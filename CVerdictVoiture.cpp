@@ -45,7 +45,7 @@ CVerdictVoiture * CVerdictVoiture::fronJSon(json_object *jObj) {
                         }
 
                         if(key == "coefVitesse") {
-                            static_cast<CNeuroneVitesse *>(result->ns[i])->setJSonGenes(object);
+                          	static_cast<CNeuroneVitesse *>(result->ns[i])->setCoefVitesse(json_object_get_double(object));
                             asGenes = true;
                         }
 
