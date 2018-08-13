@@ -84,19 +84,23 @@ void CWCircuit::setElapsedTime(QString elapsedTime) {
 
 void CWCircuit::setPositionRef(const QPoint& positionRef) {
 	if(circuit != 0) {
-        if(positionRef.x() > width() - MARGE || positionRef.y() > height() - MARGE) {
+		int cw = circuit->getImage().width();
+		int ch = circuit->getImage().height();
+		bool wt, ht;
+		
+        if((wt = positionRef.x() > width() - MARGE && width() < cw) || (ht = positionRef.y() > height() - MARGE && height() < ch)) {
 			QPoint p;
 			
-            if(positionRef.x() > width() - MARGE) {
+            if(wt) {
                 p.setX(positionRef.x() + MARGE - width());
                 if(p.x() < 0) p.setX(0);
-                if(p.x() + width() > circuit->getImage().width()) p.setX(circuit->getImage().width() - width());
+                if(p.x() + width() > cw) p.setX(cw - width());
             }
 
-            if(positionRef.y() > height() - MARGE) {
+            if(ht) {
                 p.setY(positionRef.y() + MARGE - height());
                 if(p.y() < 0) p.setY(0);
-                if(p.y() + height() > circuit->getImage().height()) p.setY(circuit->getImage().height() - height());
+                if(p.y() + height() > ch) p.setY(ch - height());
             }
 			
 			this->positionRef = p;

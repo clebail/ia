@@ -24,8 +24,6 @@ CVerdict::~CVerdict(void) {
 }
 
 void CVerdict::run(void) {
-    bool fini;
-    int nbAlive = voitures.size();
     int i;
 
     for(i=0;i<voitures.size();i++) {
@@ -34,7 +32,8 @@ void CVerdict::run(void) {
     }
 
     do {
-        for(i=0;i<voitures.size();i++) {
+		i = 0;
+        while(i<voitures.size()) {
             if(voitures.at(i)->isAlive()) {
                 double angle = voitures.at(i)->getCurrentAngle();
                 double inputs[NB_CAPTEUR+1];
@@ -61,20 +60,24 @@ void CVerdict::run(void) {
                     nbDehors += CDistanceHelper::isDehors(&circuit, posRoue[2]) ? 1 : 0;
                     nbDehors += CDistanceHelper::isDehors(&circuit, posRoue[3]) ? 1 : 0;
 
-                    voitures.at(i)->setAlive(nbDehors < 2);
-                    nbAlive -= (nbDehors < 2 ? 0 : 1);
+                    if(nbDehors >= 2) {
+						voitures.removeAt(i);	
+					} else {
+						i++;
+					}
                 } else {
-                    nbAlive--;
+                    voitures.removeAt(i);
                 }
-
-            }
+            } else {
+				voitures.removeAt(i);
+			}
         }
 
-        emit repaintRequested(voitures.at(0)->getPosition());
-        msleep(1000 / STEP_BY_SECOND);
-
-        fini = nbAlive == 0;
-    }while(!fini);
+        if(voitures.size()) {
+			emit repaintRequested(voitures.at(0)->getPosition());
+			msleep(1000 / STEP_BY_SECOND);
+		}
+    }while(voitures.size());
 }
 
 void CVerdict::parseVoitures(QString jSon) {
