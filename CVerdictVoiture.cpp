@@ -21,7 +21,6 @@ CVerdictVoiture * CVerdictVoiture::fronJSon(json_object *jObj) {
                     struct json_object_iterator itEnd;
                     bool asSeuil = false;
                     bool asGenes = false;
-                    bool asPente = false;
 
                     it = json_object_iter_begin(val);
                     itEnd = json_object_iter_end(val);
@@ -34,25 +33,19 @@ CVerdictVoiture * CVerdictVoiture::fronJSon(json_object *jObj) {
                             asSeuil = true;
                         }
 
-                        if(key == "pente" && json_object_get_type(object) == json_type_double) {
-                            result->ns[i]->setPente(json_object_get_double(object));
-                            asPente = true;
-                        }
-
                         if(key == "genes") {
                             result->ns[i]->setJSonGenes(object);
                             asGenes = true;
                         }
 
-                        if(key == "coefVitesse") {
-                          	static_cast<CNeuroneVitesse *>(result->ns[i])->setCoefVitesse(json_object_get_double(object));
-                            asGenes = true;
+                        if(key == "coefVitesse" && json_object_get_type(object) == json_type_int) {
+                            static_cast<CNeuroneVitesse *>(result->ns[i])->setCoefVitesse(json_object_get_int(object));
                         }
 
                         json_object_iter_next(&it);
                     }
 
-                    if(!asSeuil || !asGenes || !asPente) {
+                    if(!asSeuil || !asGenes) {
                         qCritical() << "JSon incorect, l'obejt doit contenir un attribut seuil, un attribut pente et un attribut genes";
                     }
                 } else {

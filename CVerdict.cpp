@@ -3,12 +3,11 @@
 #include "commun.h"
 #include "CDistanceHelper.h"
 
-CVerdict::CVerdict(CWCircuit *wCircuit, QString circutResource, double coefVitesse, QString jSon) {
+CVerdict::CVerdict(CWCircuit *wCircuit, QString circutResource, QString jSon) {
     parseVoitures(jSon);
 
     circuit = CCircuit(QPoint(387, 787), 0, circutResource, QPoint(25, 50));
     this->wCircuit = wCircuit;
-    this->coefVitesse = coefVitesse;
 
     this->wCircuit->setCircuit(&circuit);
 

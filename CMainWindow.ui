@@ -118,26 +118,6 @@
              </property>
             </widget>
            </item>
-           <item>
-            <widget class="QLabel" name="label_11">
-             <property name="text">
-              <string>Coef vitesse</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QLineEdit" name="leCoefVitesse">
-             <property name="inputMask">
-              <string/>
-             </property>
-             <property name="text">
-              <string>-15</string>
-             </property>
-             <property name="maxLength">
-              <number>32767</number>
-             </property>
-            </widget>
-           </item>
           </layout>
          </widget>
         </item>
@@ -219,20 +199,6 @@
             <widget class="QCheckBox" name="cbCreateImageVerdict">
              <property name="text">
               <string>Créer les images</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QLabel" name="label_12">
-             <property name="text">
-              <string>Coef vitesse</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QLineEdit" name="leCoefVitesseVerdict">
-             <property name="text">
-              <string>-15</string>
              </property>
             </widget>
            </item>

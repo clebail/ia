@@ -27,6 +27,7 @@ void CBaseVoiture::setStartInfo(QPoint position, double angle) {
     this->position = position;
     currentAngle = angle;
     alpha = 255;
+    nbAP = nbAM = 0;
 
     calculPosRoue();
 }
@@ -44,8 +45,12 @@ double CBaseVoiture::getCoefVitesse(void) {
     return static_cast<CNeuroneVitesse *>(ns[NV])->getCoefVitesse();
 }
 
+int CBaseVoiture::getNbChangementDirection(void) {
+    return nbAP + nbAM;
+}
+
 double CBaseVoiture::getVitesse(void) {
-    double a = ns[NV]->eval(0.01);
+    double a = ns[NV]->eval(PENTE_NEURONE);
     double v = currentVitesse;
 
     if(a >= ns[NV]->getSeuil()) {
@@ -61,12 +66,22 @@ double CBaseVoiture::getVitesse(void) {
 }
 
 double CBaseVoiture::getAngle(void) {
-    double vitesse = currentVitesse - 1;
-    double a1 = ns[NAP]->eval(0.01);
-    double a2 = ns[NAM]->eval(0.01);
+    double vitesse = currentVitesse;
+    double a1 = ns[NAP]->eval(PENTE_NEURONE);
+    double a2 = ns[NAM]->eval(PENTE_NEURONE);
     double eXp = exp((vitesse - V_MAX/2.0) * (1.0 / V_MAX * 10.0));
     double coef = (-eXp / (eXp + 1) + 1) * PERTE_ANGLE_MAX + 1 - PERTE_ANGLE_MAX;
-    double angle = currentAngle + coef * A_MAX * (a1 >= ns[NAP]->getSeuil() && a2 < ns[NAM]->getSeuil() ? 1 : a2 >= ns[NAM]->getSeuil() && a1 < ns[NAP]->getSeuil() ? -1 : 0);
+    double angle;
+
+    if(a1 >= ns[NAP]->getSeuil() && a2 < ns[NAM]->getSeuil()) {
+        nbAP++;
+        angle = currentAngle + coef * A_MAX;
+    } else if(a2 >= ns[NAM]->getSeuil() && a1 < ns[NAP]->getSeuil()) {
+        nbAM++;
+        angle = currentAngle - coef * A_MAX;
+    } else {
+        angle = currentAngle;
+    }
 
     return angle;
 }

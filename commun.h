@@ -12,5 +12,6 @@
 #define A_MAX					(PI / 12.0)
 #define STEP_BY_SECOND			24
 #define PERTE_ANGLE_MAX         0.5
+#define PENTE_NEURONE           0.01
 
 #endif // COMMUN_H

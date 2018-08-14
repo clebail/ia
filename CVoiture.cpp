@@ -43,6 +43,8 @@ void CVoiture::setStartInfo(QPoint position, double angle, const QList<CDroite *
     currentMarkerIdx = 0;
     vMax = 0;
     asColor = false;
+    sVitesse = 0;
+    nbIter = 0;
 }
 
 void CVoiture::init(void) {
@@ -51,7 +53,6 @@ void CVoiture::init(void) {
     for(i=0;i<NB_NEURONE;i++) {
         ns[i]->initGenes();
         ns[i]->initSeuil();
-        ns[i]->initPente();
 
         if(i == NV) {
             static_cast<CNeuroneVitesse *>(ns[i])->initCoefVitesse();
@@ -79,8 +80,7 @@ void CVoiture::from(CVoiture *v1, CVoiture *v2) {
 
 bool CVoiture::move(int timeElapsed, bool &gagne) {
     gagne = false;
-    int offset = champion ? 2000 : oldScore / 5;
-	QPointF orig = position;
+    QPointF orig = position;
 	
     if(alive && CVehicule::move(timeElapsed, gagne)) {
 		CDroite *d = CDroite::create(orig, position);
@@ -93,11 +93,14 @@ bool CVoiture::move(int timeElapsed, bool &gagne) {
             score = (++currentMarkerIdx) * 100 / markers.size();
 
             if(score == 100) {
+                score = 200; //champion ? 300 : 200;
                 score += (MAX_TIME - timeElapsed) / TIME_DIV;
+                score += vMax;
+                score -= (nbAP + nbAM);
+
                 alive = false;
                 gagne = true;
                 alpha = ALPHA;
-                score += offset;
 
                 delete d;
 
@@ -130,6 +133,10 @@ bool CVoiture::isVainqueur(int numCircuit) {
     return victoires[numCircuit];
 }
 
+bool CVoiture::isChampion(void) {
+    return champion;
+}
+
 QString CVoiture::serialize(void) {
 	int i;
 	QString ret = "[";
@@ -149,10 +156,16 @@ double CVoiture::getVMax(void) {
     return vMax;
 }
 
+double CVoiture::getVMoy(void) {
+    return sVitesse / nbIter;
+}
+
 double CVoiture::getVitesse(void) {
     double v = CBaseVoiture::getVitesse();
 
     vMax = qMax(vMax, v);
+    sVitesse += v;
+    nbIter++;
 
     return v;
 }

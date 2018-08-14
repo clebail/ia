@@ -20,9 +20,11 @@ public:
     void setAlive(bool alive);
     bool isAlive(void);
     double getCoefVitesse(void);
+    int getNbChangementDirection(void);
 protected:
     CNeurone *ns[NB_NEURONE];
     bool alive;
+    int nbAP, nbAM;
 
     double getVitesse(void);
     double getAngle(void);

@@ -11,7 +11,7 @@
 class CVerdict : public QThread {
     Q_OBJECT
 public:
-    CVerdict(CWCircuit *wCircuit, QString circutResource, double coefVitesse, QString jSon);
+    CVerdict(CWCircuit *wCircuit, QString circutResource, QString jSon);
     ~CVerdict(void);
     void run(void);
 private:
@@ -19,7 +19,6 @@ private:
     QList<CVerdictVoiture *> voitures;
     CCircuit circuit;
     CWCircuit *wCircuit;
-    double coefVitesse;
 private slots:
     void onWCircuitDrawVoitures(QPainter *painter, double dx, double dy);
 signals:

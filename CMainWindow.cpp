@@ -102,7 +102,6 @@ void CMainWindow::on_pbTest_clicked(bool) {
     setup.setNbCircuit(sbCircuit->value());
     setup.setCreateImages(cbCreateImage->isChecked());
     setup.setNbVainqueur(spVainqueur->value());
-    setup.setCoefVitesse(leCoefVitesse->text().toDouble());
 
     genetic = new CGenetic(wCircuit, setup);
 
@@ -204,7 +203,7 @@ void CMainWindow::on_pbVerdict_clicked(bool) {
         QString jSon = dialog.getJSon();
 
         if(!jSon.isEmpty()) {
-            CVerdict *verdict = new CVerdict(wCircuit, cbCircuit->itemData(cbCircuit->currentIndex()).toString(), leCoefVitesseVerdict->text().toDouble(), jSon);
+            CVerdict *verdict = new CVerdict(wCircuit, cbCircuit->itemData(cbCircuit->currentIndex()).toString(), jSon);
 
             connect(verdict, SIGNAL(repaintRequested(const QPointF&)), this, SLOT(onVerdictRepaintRequested(const QPointF&)));
 

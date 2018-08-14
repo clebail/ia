@@ -54,12 +54,6 @@ void CNeurone::from(const CNeurone& n1, const CNeurone& n2, int seuil) {
     }else {
         this->seuil = n2.seuil;
     }
-
-    if(rand() % 2 > 0.5) {
-        this->pente = n1.pente;
-    }else {
-        this->pente = n2.pente;
-    }
 }
 
 void CNeurone::mute(int idx) {
@@ -69,10 +63,6 @@ void CNeurone::mute(int idx) {
 
     if(rand() % 2 > 0.5) {
         initSeuil();
-    }
-
-    if(rand() % 2 > 0.5) {
-        initPente();
     }
 }
 
@@ -86,10 +76,6 @@ void CNeurone::initGenes(void) {
 
 void CNeurone::initSeuil(void) {
     seuil = ((double)(rand() % 801 + 100)) / 1000.0;
-}
-
-void CNeurone::initPente(void) {
-    pente = ((double)(rand() % 10000 + 1)) / 10000.0;
 }
 
 QString CNeurone::serialize(void) {
@@ -124,16 +110,9 @@ void CNeurone::setSeuil(double seuil) {
     this->seuil = seuil;
 }
 
-double CNeurone::getPente(void) {
-    return pente;
-}
-
-void CNeurone::setPente(double pente) {
-    this->pente = pente;
-}
 
 QString CNeurone::serializeSimples(void) {
-    QString ret = "\"seuil\": "+QString::number(seuil)+", \"pente\": "+QString::number(pente);
+    QString ret = "\"seuil\": "+QString::number(seuil);
 
     return ret;
 }

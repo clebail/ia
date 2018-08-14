@@ -179,7 +179,15 @@ void CGenetic::run(void) {
 		
         fini = calculVainqueurs();
 
-        qDebug() << QString("Num circuit %1, Meilleur score %2 (vmax %3), Nombre de gagnant %4, Total vainqueurs %5").arg(currentCircuit).arg(population[0]->getScore()).arg(population[0]->getVMax()).arg(circuits[currentCircuit].getNbGagne()).arg(vainqueurs.size());
+        qDebug() << QString("Num circuit %1, Meilleur score %2 (vmax %3, vmoy %4, cv %5, champion %6), Nombre de gagnant %7, Total vainqueurs %8")
+                    .arg(currentCircuit)
+                    .arg(population[0]->getScore())
+                    .arg(population[0]->getVMax())
+                    .arg(population[0]->getVMoy())
+                    .arg(population[0]->getNbChangementDirection())
+                    .arg(population[0]->isChampion())
+                    .arg(circuits[currentCircuit].getNbGagne())
+                    .arg(vainqueurs.size());
 		
         if(!fini) {
             croisePopuplation();
@@ -270,14 +278,14 @@ void CGenetic::calculScores(void) {
         }
 
         circuits[currentCircuit].setNbGagne(nbGagne);
-		
-		triPopulation();
 
         emit repaintRequested(population[0]->getPosition());
         msleep(1000 / STEP_BY_SECOND);
 
         timeElapsed = time.elapsed();
     }
+
+    triPopulation();
 }
 
 void CGenetic::onWCircuitDrawVoitures(QPainter *painter, double dx, double dy) {

@@ -15,13 +15,10 @@ public:
     virtual void mute(int idx);
     void initGenes(void);
     void initSeuil(void);
-    void initPente(void);
     virtual QString serialize(void);
     void setJSonGenes(json_object *jObj);
     double getSeuil(void);
     void setSeuil(double seuil);
-    double getPente(void);
-    void setPente(double pente);
 protected:
     QString serializeSimples(void);
     QString serializeGenes(void);
@@ -30,7 +27,6 @@ private:
     CCapteur *genes;
     double *inputs;
     double seuil;
-    double pente;
     double coefVitesse;
 };
 

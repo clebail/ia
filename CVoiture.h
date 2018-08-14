@@ -18,8 +18,10 @@ public:
     void setVictoire(int numCircuit, bool victoire);
     void setChampion(bool champion);
     bool isVainqueur(int numCircuit);
+    bool isChampion(void);
 	QString serialize(void);
     double getVMax(void);
+    double getVMoy(void);
 protected:
     CCapteur * getGene(int idx);
 
@@ -35,6 +37,8 @@ private:
     double vMax;
     bool asColor;
     QColor color;
+    double sVitesse;
+    int nbIter;
 
     double initSeuil(void);
 };
